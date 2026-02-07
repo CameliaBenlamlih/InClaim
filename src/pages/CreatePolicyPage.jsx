@@ -331,16 +331,22 @@ export default function CreatePolicyPage() {
               />
 
               {/* Ticket Price */}
-              <Input
-                label="Ticket Price (C2FLR)"
-                name="ticketPrice"
-                type="number"
-                value={formData.ticketPrice}
-                onChange={handleChange}
-                placeholder="100"
-                min="1"
-                step="0.01"
-              />
+              <div>
+                <Input
+                  label="Ticket Price You Paid (C2FLR)"
+                  name="ticketPrice"
+                  type="number"
+                  value={formData.ticketPrice}
+                  onChange={handleChange}
+                  placeholder="100"
+                  min="1"
+                  step="0.01"
+                />
+                <p className="text-xs text-gray-500 mt-1 flex items-start gap-1">
+                  <Info className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                  <span>Enter the amount you already paid to the airline/train company. This amount will be locked in escrow and refunded based on delays.</span>
+                </p>
+              </div>
 
               {/* Fixed Compensation Policy (Read-only) */}
               <div>
@@ -374,13 +380,16 @@ export default function CreatePolicyPage() {
                   <Lock className="w-5 h-5 text-primary-600 mt-0.5" />
                   <div className="flex-1">
                     <p className="text-sm font-medium text-primary-900 mb-2">
-                      Escrow Amount: {formData.ticketPrice} C2FLR
+                      Your {formData.ticketPrice} C2FLR will be locked in escrow
+                    </p>
+                    <p className="text-xs text-primary-600 mb-2">
+                      You've already paid the airline/train company. This creates a protection policy on the blockchain.
                     </p>
                     <div className="space-y-1 text-xs text-primary-700">
-                      <p>• On time: Payment released to carrier</p>
-                      <p>• 3-23h delay: {calculateRefund(formData.ticketPrice, 180).refundAmount} C2FLR instant refund</p>
-                      <p>• ≥24h delay: {calculateRefund(formData.ticketPrice, 1440).refundAmount} C2FLR instant refund</p>
-                      <p>• Cancelled: {calculateRefund(formData.ticketPrice, 0, true).refundAmount} C2FLR instant refund</p>
+                      <p>• On time arrival: No refund (money stays with carrier)</p>
+                      <p>• 3-23h delay: {calculateRefund(formData.ticketPrice, 180).refundAmount} C2FLR refund (20%)</p>
+                      <p>• ≥24h delay: {calculateRefund(formData.ticketPrice, 1440).refundAmount} C2FLR refund (50%)</p>
+                      <p>• Cancelled: {calculateRefund(formData.ticketPrice, 0, true).refundAmount} C2FLR full refund (100%)</p>
                     </div>
                   </div>
                 </div>

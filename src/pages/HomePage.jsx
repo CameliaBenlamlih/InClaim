@@ -92,7 +92,7 @@ export default function HomePage() {
           </h1>
 
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Instant compensation for delayed flights and trains. Trustless, automatic, on-chain.
+            Already bought your ticket? Protect it with blockchain escrow. Get instant compensation if delayed.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

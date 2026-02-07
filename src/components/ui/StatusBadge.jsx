@@ -3,10 +3,10 @@ import { CheckCircle, XCircle, Clock, AlertCircle } from 'lucide-react';
 import { cn, getStatusColor, getStatusLabel } from '../../lib/utils';
 
 const statusIcons = {
-  0: Clock,        // ACTIVE
-  1: CheckCircle,  // CLAIMED
-  2: XCircle,      // REJECTED
-  3: AlertCircle,  // EXPIRED
+  0: Clock,
+  1: CheckCircle,
+  2: XCircle,
+  3: AlertCircle,
 };
 
 export default function StatusBadge({ status, size = 'md', animated = true }) {
@@ -39,7 +39,7 @@ export default function StatusBadge({ status, size = 'md', animated = true }) {
     <Component
       {...animationProps}
       className={cn(
-        'inline-flex items-center gap-1.5 font-bold border uppercase tracking-wider font-mono',
+        'inline-flex items-center gap-1.5 font-medium border rounded-pill',
         sizeClasses[size],
         colorClass
       )}

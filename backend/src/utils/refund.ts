@@ -1,12 +1,3 @@
-/**
- * Refund Calculation Utilities - Backend Version
- * Fixed compensation policy for DelayClaim escrow system
- */
-
-/**
- * Fixed compensation policy (immutable)
- * These rules are the same for all users and cannot be modified
- */
 export const COMPENSATION_POLICY = [
   { 
     label: '0–2h59', 
@@ -39,41 +30,25 @@ export const COMPENSATION_POLICY = [
   },
 ];
 
-/**
- * Calculate refund percentage based on delay and cancellation status
- * @param delayMinutes - Delay in minutes
- * @param isCancelled - Whether the trip was cancelled
- * @returns Refund percentage (0, 20, 50, or 100)
- */
 export function getRefundPercent(delayMinutes: number, isCancelled: boolean = false): number {
-  // Cancellation always gets 100% refund
   if (isCancelled) {
     return 100;
   }
 
-  // Ensure delayMinutes is a valid number
   const delay = Number(delayMinutes);
   if (isNaN(delay) || delay < 0) {
     return 0;
   }
 
-  // Apply fixed policy rules
-  if (delay >= 1440) { // >= 24 hours (24 * 60)
+  if (delay >= 1440) {
     return 50;
-  } else if (delay >= 180) { // >= 3 hours (3 * 60)
+  } else if (delay >= 180) {
     return 20;
   } else {
     return 0;
   }
 }
 
-/**
- * Calculate refund amount based on ticket price and delay
- * @param ticketPriceWei - Ticket price in Wei (BigInt)
- * @param delayMinutes - Delay in minutes
- * @param isCancelled - Whether the trip was cancelled
- * @returns Object with refundPercent and refundAmountWei
- */
 export function calculateRefundWei(
   ticketPriceWei: bigint, 
   delayMinutes: number, 
@@ -88,12 +63,6 @@ export function calculateRefundWei(
   };
 }
 
-/**
- * Get the applicable policy rule for given delay/cancellation
- * @param delayMinutes - Delay in minutes
- * @param isCancelled - Whether the trip was cancelled
- * @returns The applicable policy rule
- */
 export function getApplicablePolicy(delayMinutes: number, isCancelled: boolean = false) {
   if (isCancelled) {
     return COMPENSATION_POLICY.find(p => p.isCancellation);
@@ -101,23 +70,18 @@ export function getApplicablePolicy(delayMinutes: number, isCancelled: boolean =
 
   const delay = Number(delayMinutes);
   if (isNaN(delay) || delay < 0) {
-    return COMPENSATION_POLICY[0]; // 0% policy
+    return COMPENSATION_POLICY[0];
   }
 
-  // Find the applicable policy based on delay
   if (delay >= 1440) {
-    return COMPENSATION_POLICY[2]; // >= 24h
+    return COMPENSATION_POLICY[2];
   } else if (delay >= 180) {
-    return COMPENSATION_POLICY[1]; // >= 3h
+    return COMPENSATION_POLICY[1];
   } else {
-    return COMPENSATION_POLICY[0]; // 0-2h59
+    return COMPENSATION_POLICY[0];
   }
 }
 
-/**
- * Get policy breakdown for API responses
- * @returns Policy breakdown array
- */
 export function getPolicyBreakdown() {
   return COMPENSATION_POLICY.map(policy => ({
     label: policy.label,

@@ -4,10 +4,6 @@ import { MockTransportAPI, MockConfig } from '../services/mockTransportApi';
 const router = Router();
 const transportApi = new MockTransportAPI();
 
-/**
- * GET /api/mock/status
- * Get transport status for a trip
- */
 router.get('/status', async (req: Request, res: Response) => {
   try {
     const { tripId, date } = req.query;
@@ -18,7 +14,6 @@ router.get('/status', async (req: Request, res: Response) => {
       });
     }
 
-    // Convert tripId to hash if it's a string
     let tripIdHash: string;
     if (typeof tripId === 'string' && tripId.startsWith('0x')) {
       tripIdHash = tripId;
@@ -49,10 +44,6 @@ router.get('/status', async (req: Request, res: Response) => {
   }
 });
 
-/**
- * POST /api/mock/config
- * Configure mock transport API responses
- */
 router.post('/config', async (req: Request, res: Response) => {
   try {
     const config: Partial<MockConfig> = req.body;
@@ -74,10 +65,6 @@ router.post('/config', async (req: Request, res: Response) => {
   }
 });
 
-/**
- * GET /api/mock/config
- * Get current mock configuration
- */
 router.get('/config', (req: Request, res: Response) => {
   res.json({
     config: transportApi.getConfig(),
@@ -108,10 +95,6 @@ router.get('/config', (req: Request, res: Response) => {
   });
 });
 
-/**
- * POST /api/mock/trip/:tripIdHash
- * Set specific status for a trip
- */
 router.post('/trip/:tripIdHash', (req: Request, res: Response) => {
   try {
     const { tripIdHash } = req.params;
@@ -138,10 +121,6 @@ router.post('/trip/:tripIdHash', (req: Request, res: Response) => {
   }
 });
 
-/**
- * DELETE /api/mock/trip/:tripIdHash
- * Remove specific status override for a trip
- */
 router.delete('/trip/:tripIdHash', (req: Request, res: Response) => {
   try {
     const { tripIdHash } = req.params;

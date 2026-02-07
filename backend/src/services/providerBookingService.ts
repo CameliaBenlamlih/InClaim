@@ -1,14 +1,9 @@
-/**
- * Provider Booking Service (Mock)
- * Simulates instant booking with airline/train companies
- */
-
 export interface Booking {
-  bookingId: string; // PNR-like reference
+  bookingId: string;
   quoteId: string;
   providerId: string;
   providerName: string;
-  tripId: string; // Flight/train number
+  tripId: string;
   tripType: 'flight' | 'train';
   origin: string;
   destination: string;
@@ -24,11 +19,9 @@ export interface Booking {
   confirmedAt?: Date;
 }
 
-// In-memory booking storage (use DB in production)
 const bookings = new Map<string, Booking>();
 
 function generatePNR(): string {
-  // Generate airline-style PNR (6 alphanumeric characters)
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let pnr = '';
   for (let i = 0; i < 6; i++) {
@@ -51,7 +44,6 @@ export async function createBooking(params: {
   passengerEmail: string;
   price: number;
 }): Promise<Booking> {
-  // Simulate provider API call delay
   await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
   
   const bookingId = generatePNR();
@@ -76,7 +68,6 @@ export async function createBooking(params: {
     createdAt: new Date(),
   };
   
-  // Simulate instant confirmation (95% success rate)
   if (Math.random() > 0.05) {
     booking.status = 'confirmed';
     booking.confirmedAt = new Date();
@@ -95,7 +86,6 @@ export async function getBooking(bookingId: string): Promise<Booking | null> {
 }
 
 export async function sendConfirmationEmail(booking: Booking): Promise<boolean> {
-  // Import and use real email service
   const { sendBookingConfirmation } = await import('./emailService');
   return sendBookingConfirmation(booking);
 }

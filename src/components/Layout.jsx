@@ -2,16 +2,15 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { useAppKit } from '@reown/appkit/react';
 import { motion } from 'framer-motion';
-import { Home, Info, Plus, FileText, Shield, Menu, X, HelpCircle } from 'lucide-react';
+import { Home, Info, Shield, Menu, X, Plane } from 'lucide-react';
 import { useState } from 'react';
 import { shortenAddress } from '../lib/utils';
+import Logo from './Logo';
 
 const navItems = [
   { path: '/', label: 'Home', icon: Home },
   { path: '/how-it-works', label: 'How It Works', icon: Info },
-  { path: '/demo', label: 'Demo Flow', icon: Plus },
-  { path: '/create', label: 'Create Policy', icon: Plus },
-  { path: '/policies', label: 'My Policies', icon: FileText },
+  { path: '/book', label: 'Book & Protect', icon: Plane },
 ];
 
 export default function Layout({ children }) {
@@ -21,32 +20,26 @@ export default function Layout({ children }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-dark text-dark-900">
-      <div className="texture-grid" />
+    <div className="min-h-screen bg-body text-dark-900 flex flex-col">
 
-      {/* Header */}
-      <header className="sticky top-0 z-50 glass border-b border-dark-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {}
+      <header className="sticky top-0 z-50 bg-body px-4 sm:px-8">
+        <div className="max-w-[1400px] mx-auto">
           <div className="flex items-center justify-between h-14">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-8 h-8 border border-dark-900 flex items-center justify-center group-hover:bg-dark-900 group-hover:text-dark transition-all duration-200">
-                <Shield className="w-4 h-4" />
-              </div>
-              <span className="font-bold text-lg tracking-tight text-dark-900 uppercase">
-                InClaim
-              </span>
+            {}
+            <Link to="/" className="flex items-center gap-2 group">
+              <Logo size="md" />
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-0">
+            {}
+            <nav className="hidden md:flex items-center gap-6">
               {navItems.map((item) => {
                 const isActive = location.pathname === item.path;
                 return (
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`relative px-4 py-2 font-bold text-xs uppercase tracking-wider transition-all duration-200 ${
+                    className={`relative text-[13px] font-medium transition-all duration-200 ${
                       isActive
                         ? 'text-dark-900'
                         : 'text-dark-500 hover:text-dark-900'
@@ -56,7 +49,7 @@ export default function Layout({ children }) {
                     {isActive && (
                       <motion.div
                         layoutId="nav-indicator"
-                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-dark-900"
+                        className="absolute -bottom-1 left-0 right-0 h-[2px] bg-accent"
                         transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                       />
                     )}
@@ -65,21 +58,21 @@ export default function Layout({ children }) {
               })}
             </nav>
 
-            {/* Wallet Button */}
+            {}
             <div className="flex items-center gap-4">
               <button
                 onClick={() => open()}
-                className={`hidden sm:flex items-center gap-2 px-4 py-2 font-mono text-xs uppercase tracking-wider transition-all duration-200 ${
+                className={`hidden sm:flex items-center gap-2 px-5 py-2 text-[13px] font-medium rounded-pill transition-all duration-200 ${
                   isConnected
-                    ? 'text-green-400 border border-green-400/30'
-                    : 'bg-dark-900 text-dark hover:bg-white'
+                    ? 'text-dark-900 border border-dark-200 bg-surface'
+                    : 'bg-dark-900 text-white hover:opacity-90'
                 }`}
               >
-                <div className={`w-2 h-2 ${isConnected ? 'bg-green-400' : 'bg-dark-400'}`} />
-                {isConnected ? shortenAddress(address) : 'Connect Wallet'}
+                <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-dark-400'}`} />
+                {isConnected ? shortenAddress(address) : 'Sign in'}
               </button>
 
-              {/* Mobile Menu Button */}
+              {}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="md:hidden p-2 text-dark-500 hover:text-dark-900"
@@ -90,13 +83,13 @@ export default function Layout({ children }) {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {}
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="md:hidden border-t border-dark-200 bg-dark"
+            className="md:hidden border-t border-dark-200 bg-body"
           >
             <div className="px-4 py-4 space-y-1">
               {navItems.map((item) => {
@@ -106,9 +99,9 @@ export default function Layout({ children }) {
                     key={item.path}
                     to={item.path}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-3 px-4 py-3 font-bold text-xs uppercase tracking-wider transition-all duration-200 ${
+                    className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all duration-200 ${
                       isActive
-                        ? 'text-dark-900 border-l-2 border-dark-900'
+                        ? 'text-dark-900 border-l-2 border-accent'
                         : 'text-dark-500 hover:text-dark-900'
                     }`}
                   >
@@ -121,30 +114,30 @@ export default function Layout({ children }) {
                   open();
                   setMobileMenuOpen(false);
                 }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 font-mono text-xs uppercase tracking-wider bg-dark-900 text-dark hover:bg-white transition-all"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium bg-dark-900 text-white rounded-pill hover:opacity-90 transition-all"
               >
-                <div className={`w-2 h-2 ${isConnected ? 'bg-green-400' : 'bg-dark-400'}`} />
-                {isConnected ? shortenAddress(address) : 'Connect Wallet'}
+                <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-dark-400'}`} />
+                {isConnected ? shortenAddress(address) : 'Sign in'}
               </button>
             </div>
           </motion.div>
         )}
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+      {}
+      <main className="flex-1 max-w-[1400px] mx-auto w-full px-4 sm:px-8 py-8 relative z-10">
         {children}
       </main>
 
-      {/* Footer */}
+      {}
       <footer className="border-t border-dark-200 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-8 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2 text-xs text-dark-500 uppercase tracking-widest font-mono">
-              <Shield className="w-3 h-3" />
-              <span>InClaim — Powered by Flare Data Connector</span>
+            <div className="flex items-center gap-2 text-xs text-dark-500">
+              <Logo size="sm" />
+              <span className="ml-1">— Powered by Flare Data Connector</span>
             </div>
-            <div className="flex items-center gap-4 text-xs text-dark-500 font-mono uppercase tracking-wider">
+            <div className="flex items-center gap-4 text-xs text-dark-500">
               <a
                 href="https://coston2-explorer.flare.network"
                 target="_blank"

@@ -1,13 +1,6 @@
-/**
- * Settlement Engine
- * Fixed compensation policies - NOT user-editable
- * Settlement only executed after successful FDC verification
- */
-
 import type { TripStatus } from './statusOracleService';
 import type { FDCVerificationResult } from './fdcVerificationService';
 
-// FIXED COMPENSATION POLICY - HARDCODED, NOT EDITABLE
 export const SETTLEMENT_POLICY = {
   ON_TIME: {
     condition: 'on_time',
@@ -17,15 +10,15 @@ export const SETTLEMENT_POLICY = {
   },
   MINOR_DELAY: {
     condition: 'delay_3h_to_24h',
-    minDelayMinutes: 180, // 3 hours
-    maxDelayMinutes: 1439, // <24 hours
+    minDelayMinutes: 180,
+    maxDelayMinutes: 1439,
     userRefundPercent: 20,
     providerReceivesPercent: 80,
     description: 'Delay between 3-23 hours',
   },
   MAJOR_DELAY: {
     condition: 'delay_24h_plus',
-    minDelayMinutes: 1440, // 24 hours
+    minDelayMinutes: 1440,
     userRefundPercent: 50,
     providerReceivesPercent: 50,
     description: 'Delay 24 hours or more',
@@ -61,7 +54,6 @@ export interface Settlement {
   createdAt: Date;
 }
 
-// In-memory settlement storage
 const settlements = new Map<string, Settlement>();
 
 export function calculateSettlement(
@@ -113,12 +105,10 @@ export async function createSettlement(params: {
 }): Promise<Settlement> {
   const { bookingId, tripId, tripType, totalAmount, tripStatus, fdcVerification } = params;
   
-  // CRITICAL: Verify FDC verification passed
   if (!fdcVerification.verified) {
     throw new Error(`Settlement rejected: FDC verification failed. ${fdcVerification.errorReason || 'Unknown error'}`);
   }
   
-  // Calculate settlement amounts
   const calculation = calculateSettlement(totalAmount, tripStatus);
   
   const settlementId = `SETTLE-${Date.now()}-${Math.random().toString(36).substring(7)}`;
@@ -137,11 +127,11 @@ export async function createSettlement(params: {
   
   settlements.set(settlementId, settlement);
   
-  console.log(`💰 Settlement Created: ${settlementId}`);
+  console.log(`Settlement Created: ${settlementId}`);
   console.log(`   Policy Applied: ${calculation.appliedPolicy}`);
   console.log(`   User Refund: $${calculation.userRefund} (${calculation.refundPercent}%)`);
   console.log(`   Provider Receives: $${calculation.providerPayment}`);
-  console.log(`   FDC Verified: ✅ ${fdcVerification.verificationId}`);
+  console.log(`   FDC Verified: ${fdcVerification.verificationId}`);
   
   return settlement;
 }
@@ -156,10 +146,8 @@ export async function executeSettlement(settlementId: string): Promise<Settlemen
     throw new Error('Settlement already executed');
   }
   
-  // Simulate on-chain transaction
   await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 2000));
   
-  // Generate mock transaction hash
   const txHash = `0x${Array.from({ length: 64 }, () => 
     Math.floor(Math.random() * 16).toString(16)
   ).join('')}`;
@@ -170,7 +158,7 @@ export async function executeSettlement(settlementId: string): Promise<Settlemen
   
   settlements.set(settlementId, settlement);
   
-  console.log(`✅ Settlement Executed: ${settlementId}`);
+  console.log(`Settlement Executed: ${settlementId}`);
   console.log(`   Transaction Hash: ${txHash.substring(0, 20)}...`);
   console.log(`   User receives: $${settlement.calculation.userRefund}`);
   console.log(`   Provider receives: $${settlement.calculation.providerPayment}`);

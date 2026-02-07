@@ -1,11 +1,5 @@
 import axios from 'axios';
 
-/**
- * Real Transport Status API
- * Integrates with AviationStack for real flight data
- * Falls back to mock data if API key is not configured
- */
-
 export type TransportStatus = 'ON_TIME' | 'DELAYED' | 'CANCELLED';
 
 export interface TransportStatusResponse {
@@ -46,55 +40,45 @@ export class RealTransportAPI {
     this.useMockFallback = !this.apiKey;
 
     if (this.useMockFallback) {
-      console.log('⚠️  RealTransportAPI: No API key configured, using mock fallback');
+      console.log('RealTransportAPI: No API key configured, using mock fallback');
       console.log('   Set AVIATIONSTACK_API_KEY in .env for real flight data');
     } else {
-      console.log('✅ RealTransportAPI: AviationStack API configured');
+      console.log('RealTransportAPI: AviationStack API configured');
       console.log(`   API Key: ${this.apiKey.substring(0, 8)}...`);
     }
   }
 
-  /**
-   * Get transport status for a trip
-   * Supports flight numbers (e.g., "BA123", "AF1234")
-   * For trains, falls back to mock data
-   */
+  
   async getStatus(tripIdHash: string, travelDate: number): Promise<TransportStatusResponse> {
-    // If no API key, use mock fallback
     if (this.useMockFallback) {
       return this.getMockStatus(tripIdHash, travelDate);
     }
 
-    // Extract trip ID from hash (this is a demo - in production, store mapping)
-    // For demo, we'll try to fetch any flight or use a default test flight
     const testFlightCode = process.env.TEST_FLIGHT_CODE || 'BA123';
 
     try {
-      console.log(`\n📡 Fetching real flight data from AviationStack...`);
+      console.log(`\nFetching real flight data from AviationStack...`);
       console.log(`   Flight code: ${testFlightCode}`);
       
       const flightData = await this.fetchFlightData(testFlightCode);
       
       if (flightData) {
         const response = this.parseFlightData(flightData, travelDate);
-        console.log(`✅ Real flight data retrieved: ${response.status}, ${response.delayMinutes}min delay`);
+        console.log(`Real flight data retrieved: ${response.status}, ${response.delayMinutes}min delay`);
         return response;
       }
 
-      // If no data found, fall back to mock
-      console.log('⚠️  No real flight data found, using mock fallback');
+      console.log('No real flight data found, using mock fallback');
       return this.getMockStatus(tripIdHash, travelDate);
 
     } catch (error: any) {
-      console.error('❌ Error fetching real flight data:', error.message);
+      console.error('Error fetching real flight data:', error.message);
       console.log('   Falling back to mock data');
       return this.getMockStatus(tripIdHash, travelDate);
     }
   }
 
-  /**
-   * Fetch flight data from AviationStack API
-   */
+  
   private async fetchFlightData(flightCode: string): Promise<FlightData | null> {
     try {
       const response = await axios.get(`${this.baseUrl}/flights`, {
@@ -119,16 +103,12 @@ export class RealTransportAPI {
     }
   }
 
-  /**
-   * Parse AviationStack flight data into our format
-   */
+  
   private parseFlightData(flight: FlightData, scheduledTime: number): TransportStatusResponse {
     const status = flight.flight_status.toLowerCase();
     
-    // Determine if cancelled
     const cancelled = status === 'cancelled';
     
-    // Calculate delay in minutes
     let delayMinutes = 0;
     if (flight.departure.delay) {
       delayMinutes = Math.abs(flight.departure.delay);
@@ -136,7 +116,6 @@ export class RealTransportAPI {
       delayMinutes = Math.abs(flight.arrival.delay);
     }
 
-    // Determine status
     let transportStatus: TransportStatus;
     if (cancelled) {
       transportStatus = 'CANCELLED';
@@ -146,7 +125,6 @@ export class RealTransportAPI {
       transportStatus = 'ON_TIME';
     }
 
-    // Calculate actual time
     let actualTime: number | null = scheduledTime;
     if (cancelled) {
       actualTime = null;
@@ -172,9 +150,7 @@ export class RealTransportAPI {
     };
   }
 
-  /**
-   * Mock fallback when no API key is configured
-   */
+  
   private getMockStatus(tripIdHash: string, travelDate: number): TransportStatusResponse {
     const defaultStatus = (process.env.MOCK_DEFAULT_STATUS as TransportStatus) || 'DELAYED';
     const defaultDelayMinutes = parseInt(process.env.MOCK_DEFAULT_DELAY_MINUTES || '90');
@@ -192,9 +168,7 @@ export class RealTransportAPI {
     };
   }
 
-  /**
-   * Test API connection and return status
-   */
+  
   async testConnection(): Promise<{ success: boolean; message: string; data?: any }> {
     if (!this.apiKey) {
       return {
@@ -231,16 +205,12 @@ export class RealTransportAPI {
     }
   }
 
-  /**
-   * Check if using real API or mock fallback
-   */
+  
   isUsingRealAPI(): boolean {
     return !this.useMockFallback;
   }
 
-  /**
-   * Get API status info
-   */
+  
   getStatus(): object {
     return {
       mode: this.useMockFallback ? 'mock' : 'real',

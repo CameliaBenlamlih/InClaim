@@ -1,8 +1,3 @@
-/**
- * Provider Quotes Service (Mock)
- * Simulates airline/train company price quotes with dynamic pricing
- */
-
 export interface QuoteProvider {
   id: string;
   name: string;
@@ -19,18 +14,17 @@ export interface Quote {
   destination: string;
   departureTime: Date;
   arrivalTime: Date;
-  basePrice: number; // USDC
-  currentPrice: number; // Dynamic price
+  basePrice: number;
+  currentPrice: number;
   currency: 'USDC';
   fareClass?: string;
   baggage?: string;
   cancellationPolicy?: string;
   seatsAvailable: number;
-  tripId: string; // Flight number or train number
+  tripId: string;
   lastUpdated: Date;
 }
 
-// Mock providers
 const PROVIDERS: QuoteProvider[] = [
   { id: 'BA', name: 'British Airways', type: 'flight' },
   { id: 'AF', name: 'Air France', type: 'flight' },
@@ -41,17 +35,15 @@ const PROVIDERS: QuoteProvider[] = [
   { id: 'DB', name: 'Deutsche Bahn', type: 'train' },
 ];
 
-// Price volatility simulation
 const priceVolatilityCache = new Map<string, number>();
 
 function getPriceWithVolatility(basePrice: number, quoteId: string): number {
-  // Simulate dynamic pricing - prices change ±5% over time
   const now = Date.now();
-  const seed = `${quoteId}-${Math.floor(now / 10000)}`; // Changes every 10s
+  const seed = `${quoteId}-${Math.floor(now / 10000)}`;
   
   let volatility = priceVolatilityCache.get(seed);
   if (!volatility) {
-    volatility = (Math.random() - 0.5) * 0.1; // -5% to +5%
+    volatility = (Math.random() - 0.5) * 0.1;
     priceVolatilityCache.set(seed, volatility);
   }
   
@@ -67,15 +59,12 @@ export async function searchQuotes(params: {
 }): Promise<Quote[]> {
   const { origin, destination, date, tripType, passengers = 1 } = params;
   
-  // Filter providers by type
   const relevantProviders = PROVIDERS.filter(p => p.type === tripType);
   
-  // Generate quotes from each provider
   const quotes: Quote[] = [];
   const departureDate = new Date(date);
   
   for (const provider of relevantProviders) {
-    // Generate 2-3 options per provider (different times/prices)
     const numOptions = Math.floor(Math.random() * 2) + 2;
     
     for (let i = 0; i < numOptions; i++) {
@@ -83,17 +72,16 @@ export async function searchQuotes(params: {
       departureTime.setHours(6 + i * 4 + Math.floor(Math.random() * 3));
       
       const duration = tripType === 'flight' 
-        ? 1.5 + Math.random() * 2 // 1.5-3.5 hours
-        : 2 + Math.random() * 4; // 2-6 hours
+        ? 1.5 + Math.random() * 2
+        : 2 + Math.random() * 4;
       
       const arrivalTime = new Date(departureTime);
       arrivalTime.setHours(arrivalTime.getHours() + Math.floor(duration));
       arrivalTime.setMinutes(arrivalTime.getMinutes() + Math.round((duration % 1) * 60));
       
-      // Base price calculation
       const basePrice = tripType === 'flight'
-        ? 150 + Math.random() * 300 // $150-450
-        : 50 + Math.random() * 150; // $50-200
+        ? 150 + Math.random() * 300
+        : 50 + Math.random() * 150;
       
       const quoteId = `${provider.id}-${origin}-${destination}-${i}-${date}`;
       const currentPrice = getPriceWithVolatility(basePrice, quoteId);
@@ -127,13 +115,10 @@ export async function searchQuotes(params: {
     }
   }
   
-  // Sort by price
   return quotes.sort((a, b) => a.currentPrice - b.currentPrice);
 }
 
 export async function getQuoteById(quoteId: string): Promise<Quote | null> {
-  // In a real system, this would query a database
-  // For demo, we'll reconstruct from the ID
   const parts = quoteId.split('-');
   if (parts.length < 4) return null;
   
@@ -141,8 +126,7 @@ export async function getQuoteById(quoteId: string): Promise<Quote | null> {
   const provider = PROVIDERS.find(p => p.id === providerId);
   if (!provider) return null;
   
-  // Reconstruct quote with current volatile price
-  const basePrice = 200; // Simplified for demo
+  const basePrice = 200;
   const currentPrice = getPriceWithVolatility(basePrice, quoteId);
   
   return {
@@ -167,7 +151,6 @@ export async function getQuoteById(quoteId: string): Promise<Quote | null> {
 }
 
 export async function refreshQuote(quoteId: string): Promise<Quote | null> {
-  // Clear cache to force price refresh
   const now = Date.now();
   const seed = `${quoteId}-${Math.floor(now / 10000)}`;
   priceVolatilityCache.delete(seed);

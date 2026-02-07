@@ -64,8 +64,7 @@ export default function DemoLanding() {
       return;
     }
 
-    // Navigate to results with search params
-    navigate('/demo/results', {
+    navigate('/book/results', {
       state: {
         tripType,
         origin: fromLocation.code || fromLocation.city,
@@ -80,7 +79,7 @@ export default function DemoLanding() {
 
   return (
     <div>
-      {/* Hero Section */}
+      {}
       <section className="pt-12 pb-16">
         <div className="max-w-6xl mx-auto">
           <motion.div
@@ -88,38 +87,38 @@ export default function DemoLanding() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-12"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 border border-dark-200 text-dark-500 text-xs font-bold uppercase tracking-widest font-mono mb-8">
-              <Zap className="w-3 h-3" />
-              Demo: Live Quote Purchase Flow
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-surface rounded-pill text-dark-500 text-xs font-medium mb-8 border border-dark-200/50">
+              <Zap className="w-3 h-3 text-accent" />
+              Live Quote & Booking
             </div>
             
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-dark-900 leading-none mb-6 uppercase tracking-tight">
+            <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl text-dark-900 leading-[1.05] mb-6">
               File in a flash,<br/>
-              <span className="text-dark-500">get your cash</span>
+              <span className="text-accent">get your cash</span>
             </h1>
             
-            <p className="text-base text-dark-500 mb-6 max-w-2xl mx-auto">
+            <p className="text-base text-dark-500 mb-6 max-w-2xl mx-auto leading-relaxed">
               Buy your ticket directly in InClaim. Get live quotes from providers.
               Automatic refunds powered by blockchain escrow + Flare FDC.
             </p>
             
-            <div className="flex items-center justify-center gap-6 text-xs text-dark-500 uppercase tracking-widest font-mono">
+            <div className="flex items-center justify-center gap-6 text-xs text-dark-500">
               <div className="flex items-center gap-2">
-                <Shield className="w-3 h-3 text-dark-700" />
+                <Shield className="w-3 h-3 text-accent" />
                 <span>FDC Verified</span>
               </div>
               <div className="flex items-center gap-2">
-                <Lock className="w-3 h-3 text-dark-700" />
+                <Lock className="w-3 h-3 text-accent" />
                 <span>Escrow Protected</span>
               </div>
               <div className="flex items-center gap-2">
-                <Zap className="w-3 h-3 text-dark-700" />
+                <Zap className="w-3 h-3 text-accent" />
                 <span>Fixed Policies</span>
               </div>
             </div>
           </motion.div>
 
-          {/* Search Card */}
+          {}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -128,7 +127,7 @@ export default function DemoLanding() {
             <Card className="max-w-4xl mx-auto">
               <CardContent className="p-8">
                 <form onSubmit={handleSearch} className="space-y-6">
-                  {/* Trip Type Selector - mode switch style */}
+                  {}
                   <div className="flex border-b border-dark-200">
                     <button
                       type="button"
@@ -138,7 +137,7 @@ export default function DemoLanding() {
                         setFromLocation(null);
                         setToLocation(null);
                       }}
-                      className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold uppercase tracking-wider transition-all relative ${
+                      className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-all relative ${
                         tripType === 'flight'
                           ? 'text-dark-900'
                           : 'text-dark-500 hover:text-dark-700'
@@ -147,7 +146,7 @@ export default function DemoLanding() {
                       <Plane className="w-4 h-4" />
                       <span>Flights</span>
                       {tripType === 'flight' && (
-                        <div className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-dark-900" />
+                        <div className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-accent" />
                       )}
                     </button>
                     
@@ -159,7 +158,7 @@ export default function DemoLanding() {
                         setFromLocation(null);
                         setToLocation(null);
                       }}
-                      className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold uppercase tracking-wider transition-all relative ${
+                      className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-medium transition-all relative ${
                         tripType === 'train'
                           ? 'text-dark-900'
                           : 'text-dark-500 hover:text-dark-700'
@@ -168,12 +167,12 @@ export default function DemoLanding() {
                       <Train className="w-4 h-4" />
                       <span>Trains</span>
                       {tripType === 'train' && (
-                        <div className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-dark-900" />
+                        <div className="absolute bottom-[-1px] left-0 right-0 h-[2px] bg-accent" />
                       )}
                     </button>
                   </div>
 
-                  {/* From/To Fields */}
+                  {}
                   <div className="grid md:grid-cols-2 gap-4">
                     <Autocomplete
                       label={tripType === 'flight' ? 'From Airport' : 'From Station'}
@@ -218,7 +217,7 @@ export default function DemoLanding() {
                     />
                   </div>
 
-                  {/* Date and Passengers */}
+                  {}
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className="label">
@@ -250,7 +249,7 @@ export default function DemoLanding() {
                     </div>
                   </div>
 
-                  {/* Search Button */}
+                  {}
                   <Button
                     type="submit"
                     size="lg"
@@ -265,23 +264,23 @@ export default function DemoLanding() {
             </Card>
           </motion.div>
 
-          {/* Info Badges */}
+          {}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="mt-8 flex flex-wrap justify-center gap-4 text-xs font-mono uppercase tracking-wider"
+            className="mt-8 flex flex-wrap justify-center gap-3 text-xs"
           >
-            <div className="px-4 py-2 border border-dark-200 text-dark-500">
+            <div className="px-4 py-2 bg-surface rounded-pill border border-dark-200/50 text-dark-500">
               Live provider quotes
             </div>
-            <div className="px-4 py-2 border border-dark-200 text-dark-500">
+            <div className="px-4 py-2 bg-surface rounded-pill border border-dark-200/50 text-dark-500">
               Blockchain escrow
             </div>
-            <div className="px-4 py-2 border border-dark-200 text-dark-500">
+            <div className="px-4 py-2 bg-surface rounded-pill border border-dark-200/50 text-dark-500">
               Instant booking
             </div>
-            <div className="px-4 py-2 border border-dark-200 text-dark-500">
+            <div className="px-4 py-2 bg-surface rounded-pill border border-dark-200/50 text-dark-500">
               FDC verified refunds
             </div>
           </motion.div>

@@ -6,15 +6,10 @@ import { verifySmtpConnection, sendBookingConfirmation } from '../services/email
 
 const router = Router();
 
-/**
- * GET /api/health/test-email
- * Test SMTP connection and optionally send a test email
- */
 router.get('/test-email', async (req: Request, res: Response) => {
   try {
     const { sendTo } = req.query;
     
-    // Check if SMTP is configured
     const smtpUser = process.env.SMTP_USER;
     const smtpPass = process.env.SMTP_PASS;
     
@@ -26,8 +21,7 @@ router.get('/test-email', async (req: Request, res: Response) => {
       });
     }
     
-    // Verify connection
-    console.log('🧪 Testing SMTP connection...');
+    console.log('Testing SMTP connection...');
     const connectionValid = await verifySmtpConnection();
     
     if (!connectionValid) {
@@ -47,7 +41,6 @@ router.get('/test-email', async (req: Request, res: Response) => {
       });
     }
     
-    // Optionally send test email
     if (sendTo) {
       const testBooking = {
         bookingId: 'TEST-PNR',
@@ -92,10 +85,6 @@ router.get('/test-email', async (req: Request, res: Response) => {
   }
 });
 
-/**
- * GET /api/health/status
- * Comprehensive health check showing real vs mock data usage
- */
 router.get('/status', async (req: Request, res: Response) => {
   try {
     const transportApi = new RealTransportAPI();
@@ -134,8 +123,8 @@ router.get('/status', async (req: Request, res: Response) => {
       realDataStatus: {
         isRealData: transportApi.isUsingRealAPI(),
         message: transportApi.isUsingRealAPI()
-          ? '✅ Using real flight data from AviationStack'
-          : '⚠️  Using mock data - configure AVIATIONSTACK_API_KEY for real data',
+          ? 'Using real flight data from AviationStack'
+          : 'Using mock data - configure AVIATIONSTACK_API_KEY for real data',
       },
     });
   } catch (error: any) {
@@ -146,10 +135,6 @@ router.get('/status', async (req: Request, res: Response) => {
   }
 });
 
-/**
- * GET /api/health/test-real-data
- * Test real API connection and fetch sample data
- */
 router.get('/test-real-data', async (req: Request, res: Response) => {
   try {
     const transportApi = new RealTransportAPI();
@@ -169,11 +154,11 @@ router.get('/test-real-data', async (req: Request, res: Response) => {
       });
     }
 
-    console.log('\n🧪 Testing real API connection...');
+    console.log('\nTesting real API connection...');
     const testResult = await transportApi.testConnection();
 
     if (testResult.success) {
-      console.log('✅ Real API test successful!');
+      console.log('Real API test successful!');
       res.json({
         success: true,
         message: testResult.message,
@@ -185,14 +170,14 @@ router.get('/test-real-data', async (req: Request, res: Response) => {
         },
       });
     } else {
-      console.log('❌ Real API test failed');
+      console.log('Real API test failed');
       res.status(400).json({
         success: false,
         message: testResult.message,
       });
     }
   } catch (error: any) {
-    console.error('❌ Test error:', error);
+    console.error('Test error:', error);
     res.status(500).json({
       success: false,
       error: error.message,
@@ -200,10 +185,6 @@ router.get('/test-real-data', async (req: Request, res: Response) => {
   }
 });
 
-/**
- * GET /api/health/fdc-info
- * Information about FDC implementation and upgrade path
- */
 router.get('/fdc-info', (req: Request, res: Response) => {
   res.json({
     currentImplementation: RealFDCService.getFDCInfo(),
@@ -247,52 +228,46 @@ router.get('/fdc-info', (req: Request, res: Response) => {
       currentBenefit: {
         title: 'What you get NOW with this hybrid approach',
         benefits: [
-          '✅ Real flight data from AviationStack API',
-          '✅ Actual delays, cancellations, and status',
-          '✅ 30-60 second data freshness',
-          '✅ Provable transactions on Coston2 explorer',
-          '✅ Same contract interface (easy upgrade later)',
-          '⚠️  Relayer is trusted (not fully trustless yet)',
+          'Real flight data from AviationStack API',
+          'Actual delays, cancellations, and status',
+          '30-60 second data freshness',
+          'Provable transactions on Coston2 explorer',
+          'Same contract interface (easy upgrade later)',
+          'Relayer is trusted (not fully trustless yet)',
         ],
       },
       fullFDCBenefit: {
         title: 'What you get AFTER whitelisting',
         benefits: [
-          '✅ Everything from hybrid mode, PLUS:',
-          '✅ Cryptographic proof of data authenticity',
-          '✅ No trust in relayer required',
-          '✅ Merkle proof verification on-chain',
-          '✅ True decentralization',
-          '✅ Production-ready security',
+          'Everything from hybrid mode, PLUS:',
+          'Cryptographic proof of data authenticity',
+          'No trust in relayer required',
+          'Merkle proof verification on-chain',
+          'True decentralization',
+          'Production-ready security',
         ],
       },
     },
   });
 });
 
-/**
- * POST /api/health/test-claim-flow
- * Dry-run test of the entire claim flow with real data (no transaction)
- */
 router.post('/test-claim-flow', async (req: Request, res: Response) => {
   try {
     const { tripId } = req.body;
     const testTripId = tripId || 'TEST_FLIGHT_123';
 
-    console.log(`\n🧪 Testing claim flow with trip: ${testTripId}`);
+    console.log(`\nTesting claim flow with trip: ${testTripId}`);
 
     const transportApi = new RealTransportAPI();
     const fdcService = new RealFDCService();
 
-    // Step 1: Get transport status
     console.log('Step 1: Fetching transport status...');
     const tripIdHash = `0x${'0'.repeat(64)}`;
-    const travelDate = Math.floor(Date.now() / 1000) - 3600; // 1 hour ago
+    const travelDate = Math.floor(Date.now() / 1000) - 3600;
     
     const transportStatus = await transportApi.getStatus(tripIdHash, travelDate);
     console.log(`  Status: ${transportStatus.status}, Delay: ${transportStatus.delayMinutes}min`);
 
-    // Step 2: Create attestation
     console.log('Step 2: Creating attestation...');
     const attestation = await fdcService.createAttestation({
       tripIdHash,
@@ -302,7 +277,7 @@ router.post('/test-claim-flow', async (req: Request, res: Response) => {
     });
     console.log(`  Attestation ID: ${attestation.attestationId}`);
 
-    console.log('✅ Claim flow test completed successfully');
+    console.log('Claim flow test completed successfully');
 
     res.json({
       success: true,
@@ -332,7 +307,7 @@ router.post('/test-claim-flow', async (req: Request, res: Response) => {
       },
     });
   } catch (error: any) {
-    console.error('❌ Test flow error:', error);
+    console.error('Test flow error:', error);
     res.status(500).json({
       success: false,
       error: error.message,

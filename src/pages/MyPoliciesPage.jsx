@@ -35,7 +35,6 @@ export default function MyPoliciesPage() {
   const { open } = useAppKit();
   const [policies, setPolicies] = useState([]);
 
-  // Get user's policy IDs
   const { data: policyIds, refetch, isLoading } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
@@ -44,7 +43,6 @@ export default function MyPoliciesPage() {
     enabled: !!address && isConnected,
   });
 
-  // Create contract calls for each policy
   const policyContracts = policyIds?.map((id) => ({
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
@@ -90,10 +88,10 @@ export default function MyPoliciesPage() {
       <div className="max-w-lg mx-auto">
         <Card>
           <CardContent className="p-12 text-center">
-            <div className="w-12 h-12 border border-dark-200 flex items-center justify-center mx-auto mb-6">
+            <div className="w-12 h-12 rounded-full bg-dark-100 flex items-center justify-center mx-auto mb-6">
               <Inbox className="w-5 h-5 text-dark-500" />
             </div>
-            <h2 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">
+            <h2 className="font-serif text-xl text-dark-900 mb-2">
               Connect Your Wallet
             </h2>
             <p className="text-dark-500 text-sm mb-6">
@@ -114,10 +112,10 @@ export default function MyPoliciesPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        {/* Header */}
+        {}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-dark-900 mb-2 uppercase tracking-wider">
+            <h1 className="font-serif text-3xl text-dark-900 mb-2">
               My Policies
             </h1>
             <p className="text-dark-500 text-sm">
@@ -140,19 +138,19 @@ export default function MyPoliciesPage() {
           </div>
         </div>
 
-        {/* Policies List */}
+        {}
         {isLoading || isPoliciesLoading ? (
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
               <Card key={i}>
                 <CardContent className="p-6">
                   <div className="animate-pulse flex items-center gap-4">
-                    <div className="w-10 h-10 bg-dark-100" />
+                    <div className="w-10 h-10 bg-dark-200/50 rounded-full" />
                     <div className="flex-1 space-y-2">
-                      <div className="h-3 bg-dark-100 w-1/4" />
-                      <div className="h-2 bg-dark-100 w-1/2" />
+                      <div className="h-3 bg-dark-200/50 rounded w-1/4" />
+                      <div className="h-2 bg-dark-200/50 rounded w-1/2" />
                     </div>
-                    <div className="w-16 h-6 bg-dark-100" />
+                    <div className="w-16 h-6 bg-dark-200/50 rounded-pill" />
                   </div>
                 </CardContent>
               </Card>
@@ -161,10 +159,10 @@ export default function MyPoliciesPage() {
         ) : policies.length === 0 ? (
           <Card>
             <CardContent className="p-12 text-center">
-              <div className="w-12 h-12 border border-dark-200 flex items-center justify-center mx-auto mb-6">
+              <div className="w-12 h-12 rounded-full bg-dark-100 flex items-center justify-center mx-auto mb-6">
                 <Inbox className="w-5 h-5 text-dark-500" />
               </div>
-              <h2 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">
+              <h2 className="font-serif text-xl text-dark-900 mb-2">
                 No Policies Yet
               </h2>
               <p className="text-dark-500 text-sm mb-6">
@@ -185,15 +183,15 @@ export default function MyPoliciesPage() {
           </div>
         )}
 
-        {/* Contract Info */}
-        <div className="mt-8 p-4 border border-dark-200">
+        {}
+        <div className="mt-8 p-4 bg-surface rounded-sm border border-dark-200/50">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] text-dark-500 uppercase tracking-widest">Contract Address</span>
+            <span className="text-[10px] text-dark-500 uppercase tracking-wider">Contract Address</span>
             <a
               href={getAddressExplorerUrl(CONTRACT_ADDRESS)}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs text-dark-700 hover:text-dark-900 flex items-center gap-1 font-mono"
+              className="text-xs text-accent hover:text-accent-dark flex items-center gap-1 font-mono"
             >
               {shortenAddress(CONTRACT_ADDRESS, 6)}
               <ExternalLink className="w-3 h-3" />
@@ -219,15 +217,15 @@ function PolicyCard({ policy, index }) {
       <Card hover>
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
-            {/* Icon */}
-            <div className="w-10 h-10 border border-dark-200 flex items-center justify-center">
-              <Icon className="w-5 h-5 text-dark-900" />
+            {}
+            <div className="w-10 h-10 rounded-full bg-dark-100 flex items-center justify-center">
+              <Icon className="w-5 h-5 text-dark-600" />
             </div>
 
-            {/* Info */}
+            {}
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-2">
-                <h3 className="text-sm font-bold text-dark-900 uppercase tracking-wider">
+                <h3 className="text-sm font-semibold text-dark-900">
                   Policy #{policy.id}
                 </h3>
                 <StatusBadge status={isExpired ? 3 : policy.status} size="sm" />
@@ -235,39 +233,39 @@ function PolicyCard({ policy, index }) {
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
                 <div>
-                  <span className="text-dark-400 uppercase tracking-widest text-[10px]">Type</span>
-                  <p className="font-mono text-dark-900 mt-0.5">
+                  <span className="text-dark-400 uppercase tracking-wider text-[10px]">Type</span>
+                  <p className="text-dark-900 mt-0.5">
                     {getTripTypeLabel(policy.tripType)}
                   </p>
                 </div>
                 <div>
-                  <span className="text-dark-400 uppercase tracking-widest text-[10px]">Travel Date</span>
-                  <p className="font-mono text-dark-900 mt-0.5">
+                  <span className="text-dark-400 uppercase tracking-wider text-[10px]">Travel Date</span>
+                  <p className="text-dark-900 mt-0.5">
                     {formatDate(policy.travelDate)}
                   </p>
                 </div>
                 <div>
-                  <span className="text-dark-400 uppercase tracking-widest text-[10px]">Threshold</span>
-                  <p className="font-mono text-dark-900 mt-0.5">
+                  <span className="text-dark-400 uppercase tracking-wider text-[10px]">Threshold</span>
+                  <p className="text-dark-900 mt-0.5">
                     {policy.thresholdMinutes} min
                   </p>
                 </div>
                 <div>
-                  <span className="text-dark-400 uppercase tracking-widest text-[10px]">Ticket Price</span>
-                  <p className="font-mono text-dark-900 mt-0.5">
+                  <span className="text-dark-400 uppercase tracking-wider text-[10px]">Ticket Price</span>
+                  <p className="text-dark-900 mt-0.5">
                     {formatC2FLR(policy.payoutAmount)} C2FLR
                   </p>
                 </div>
               </div>
 
-              {/* Deadline */}
-              <div className="mt-3 flex items-center gap-2 text-[10px] text-dark-400 font-mono uppercase tracking-wider">
+              {}
+              <div className="mt-3 flex items-center gap-2 text-[10px] text-dark-400 uppercase tracking-wider">
                 <Clock className="w-3 h-3" />
                 <span>Claim deadline: {formatDate(policy.deadline)}</span>
               </div>
             </div>
 
-            {/* Action */}
+            {}
             <div className="flex-shrink-0">
               {canClaim && !isExpired ? (
                 <Link to={`/claim/${policy.id}`}>
@@ -277,7 +275,7 @@ function PolicyCard({ policy, index }) {
                   </Button>
                 </Link>
               ) : policy.status === 0 && !isExpired ? (
-                <span className="text-[10px] text-dark-400 border border-dark-200 px-3 py-1.5 uppercase tracking-widest font-mono">
+                <span className="text-[10px] text-dark-400 border border-dark-200 px-3 py-1.5 rounded-pill">
                   Not yet claimable
                 </span>
               ) : (

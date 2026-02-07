@@ -1,70 +1,21 @@
-# DelayClaim - Trustless Travel Delay Compensation on Flare
+# InClaim - Trustless Travel Delay Compensation on Flare
 
-**From Paperwork to Cryptographic Truth - Now with REAL Flight Data! ✈️**
+**File in a flash, get your cash.**
 
-DelayClaim solves a real-world consumer injustice: passengers rarely claim compensation for delayed/cancelled trains and flights due to paperwork and customer-service friction. DelayClaim turns "rights" into "automatics" - if a trip is objectively delayed or cancelled, a smart contract pays out instantly with no disputes.
+Passengers rarely claim compensation for delayed or cancelled flights and trains due to paperwork and customer-service friction. InClaim turns rights into automatics -- if a trip is objectively delayed or cancelled, a smart contract pays out instantly with no disputes.
 
-## 🎯 Real Data Edition - What's New
-
-✅ **Real flight data** from AviationStack API (free tier available)  
-✅ **Real transactions** on Flare Coston2 blockchain  
-✅ **Verifiable on explorer** - every transaction is public  
-⚠️ **Hybrid FDC mode** - Real data + simplified proofs (upgrade path documented)
-
-👉 **[Read the Complete Real Data Guide →](./REAL_DATA_GUIDE.md)**
-
-## Key Innovation
-
-**Real-world flight status verification** - the system fetches actual delay and cancellation data from aviation APIs and processes claims based on real events, not simulations.
+## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    DelayClaim Architecture - Real Data Edition              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│   ┌──────────┐     ┌──────────────┐     ┌─────────────────────────────────┐ │
-│   │  User    │────▶│   Frontend   │────▶│      Smart Contract             │ │
-│   │  Wallet  │     │  (React/Vite)│     │   (DelayClaimInsurance.sol)     │ │
-│   └──────────┘     └──────────────┘     └─────────────────────────────────┘ │
-│                           │                           │                      │
-│                           │                           │                      │
-│                           ▼                           │                      │
-│                    ┌──────────────┐                   │                      │
-│                    │   Backend    │                   │                      │
-│                    │   Relayer    │                   │                      │
-│                    └──────────────┘                   │                      │
-│                           │                           │                      │
-│              ┌────────────┴────────────┐              │                      │
-│              ▼                         ▼              ▼                      │
-│     ┌─────────────────┐     ┌─────────────────────────────────────────────┐ │
-│     │ AviationStack   │     │         Hybrid FDC Mode                     │ │
-│     │   Real API      │     │    Real Data + MockFDCVerifier              │ │
-│     │  (30-60s data)  │     │    (Upgrade path to full FDC documented)    │ │
-│     └─────────────────┘     └─────────────────────────────────────────────┘ │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
+User Wallet  -->  Frontend (React/Vite)  -->  Smart Contract (DelayClaimInsurance.sol)
+                        |                              |
+                        v                              |
+                  Backend Relayer                      |
+                        |                              |
+              +---------+---------+                    |
+              v                   v                    v
+     Transport Status API    FDC Verification (MockFDCVerifier / Flare FDC)
 ```
-
-## Features
-
-- **Real Flight Data**: Live status from AviationStack API (delays, cancellations, 30-60s latency)
-- **Create Insurance Policies**: Cover flights or trains with customizable delay thresholds
-- **Automated Claims**: Claims processed based on real aviation data
-- **Instant Payouts**: Smart contract automatically pays when delay/cancellation is proven
-- **Verifiable Transactions**: All transactions visible on Coston2 Explorer
-- **Consumer-Grade UX**: One-click claims, transparent on-chain states
-
-## Real vs Mock Data
-
-| Component | Implementation | Status |
-|-----------|----------------|--------|
-| **Flight Status** | AviationStack API | ✅ **REAL** |
-| **Blockchain** | Flare Coston2 | ✅ **REAL** |
-| **Transactions** | MetaMask signed | ✅ **REAL** |
-| **Smart Contract** | DelayClaimInsurance.sol | ✅ **REAL** |
-| **FDC Proofs** | MockFDCVerifier (simplified) | ⚠️ **HYBRID** |
-
-**Hybrid Mode**: Uses real transport data with simplified proof mechanism until AviationStack API is whitelisted by Flare attestation providers. Full upgrade path documented in [`REAL_DATA_GUIDE.md`](./REAL_DATA_GUIDE.md).
 
 ## Technology Stack
 
@@ -72,39 +23,62 @@ DelayClaim solves a real-world consumer injustice: passengers rarely claim compe
 |-----------|------------|
 | Smart Contracts | Solidity 0.8.20, Hardhat |
 | Frontend | React 18, Vite, TailwindCSS, Framer Motion |
-| Wallet Connection | wagmi, @reown/appkit (WalletConnect) |
+| Wallet | wagmi, @reown/appkit (WalletConnect) |
 | Backend | Node.js, Express, TypeScript |
 | Blockchain | Flare Coston2 Testnet |
 | Data Verification | Flare Data Connector (FDC) |
 
+## Features
+
+- **Book & Protect**: Search live quotes, book tickets, and lock payment in blockchain escrow in one flow
+- **FDC Verification**: Trip status verified through Flare Data Connector attestation before any settlement
+- **Fixed Compensation Policy**: On time 0%, 3-23h delay 20%, 24h+ delay 50%, cancellation 100%
+- **Automatic Settlement**: FDC-gated settlement engine calculates and executes refunds
+- **Confirmation Emails**: Booking confirmation with protection details sent automatically
+
 ## Project Structure
 
 ```
-delayclaim/
-├── contracts/                 # Solidity smart contracts
+InClaim/
+├── contracts/
 │   ├── contracts/
 │   │   ├── DelayClaimInsurance.sol
 │   │   ├── MockFDCVerifier.sol
 │   │   └── interfaces/IFDCVerifier.sol
 │   ├── scripts/deploy.js
-│   ├── test/DelayClaimInsurance.test.js
 │   └── hardhat.config.js
-├── backend/                   # FDC Relayer service
-│   ├── src/
-│   │   ├── index.ts
-│   │   ├── routes/
-│   │   │   ├── claim.ts
-│   │   │   └── mockTransport.ts
-│   │   └── services/
-│   │       ├── contractService.ts
-│   │       ├── fdcService.ts
-│   │       └── mockTransportApi.ts
-│   └── package.json
-├── src/                       # Frontend React app
+├── backend/
+│   └── src/
+│       ├── index.ts
+│       ├── routes/
+│       │   ├── demo.ts
+│       │   ├── claim.ts
+│       │   └── health.ts
+│       └── services/
+│           ├── fdcService.ts
+│           ├── fdcVerificationService.ts
+│           ├── settlementEngine.ts
+│           ├── statusOracleService.ts
+│           ├── providerQuotesService.ts
+│           ├── providerBookingService.ts
+│           ├── contractService.ts
+│           └── emailService.ts
+├── src/
+│   ├── App.jsx
 │   ├── components/
 │   ├── pages/
-│   ├── lib/
-│   └── App.jsx
+│   │   ├── HomePage.jsx
+│   │   ├── HowItWorksPage.jsx
+│   │   └── demo/
+│   │       ├── DemoLanding.jsx
+│   │       ├── DemoResults.jsx
+│   │       ├── DemoCheckout.jsx
+│   │       └── DemoTrip.jsx
+│   └── lib/
+│       ├── contract.js
+│       ├── refund.js
+│       ├── utils.js
+│       └── web3.js
 └── README.md
 ```
 
@@ -115,339 +89,122 @@ delayclaim/
 - Node.js 18+
 - MetaMask or compatible wallet
 - C2FLR tokens from [Coston2 Faucet](https://faucet.flare.network/coston2)
-- **[OPTIONAL]** AviationStack API key for real flight data (free, no credit card)
 
-### 1. Clone and Install
+### Install
 
 ```bash
-# Install root dependencies (frontend)
 npm install
-
-# Install backend dependencies
-cd backend
-npm install
-cd ..
-
-# Install contract dependencies (if redeploying)
+cd backend && npm install && cd ..
 cd contracts && npm install && cd ..
 ```
 
-### 2. Get Real Flight Data API Key (Recommended)
+### Configure
 
-```bash
-# Visit https://aviationstack.com/signup/free
-# - Sign up (no credit card required)
-# - Get 100 free API requests per month
-# - Copy your API key from the dashboard
-```
-
-### 3. Configure Environment
-
-**Backend** - Create `backend/.env`:
-```bash
-cd backend
-cp .env.example .env
-# Edit .env and add:
-```
-
+**Backend** (`backend/.env`):
 ```env
-# Required
-RELAYER_PRIVATE_KEY=your_relayer_private_key_here
+RELAYER_PRIVATE_KEY=your_relayer_private_key
 CONTRACT_ADDRESS=0x52E2e5960962Eac37C03aD48Fbfb7293E9Dc8EB8
 FDC_VERIFIER_ADDRESS=0x647A26E9656E659822e816f5fE02D979D6F2c0A4
-
-# Real Data (optional but recommended)
-AVIATIONSTACK_API_KEY=your_api_key_here
-
-# Fallback if no API key
-MOCK_DEFAULT_STATUS=DELAYED
-MOCK_DEFAULT_DELAY_MINUTES=90
 ```
 
-**Frontend** - Create `.env.local` in root:
-```bash
-cd ..  # Back to root
-cp .env.local.example .env.local
-```
-
-Content:
+**Frontend** (`.env.local`):
 ```env
 VITE_CONTRACT_ADDRESS=0x52E2e5960962Eac37C03aD48Fbfb7293E9Dc8EB8
 VITE_BACKEND_URL=http://localhost:3001
 ```
 
-### 4. Start the Application
+### Run
 
 ```bash
-# Terminal 1: Start backend
-cd backend
-npm run dev
-
-# Terminal 2: Start frontend (from root)
-cd ..
+cd backend && npm run dev
 npm run dev
 ```
 
-### 5. Test Real Data Connection
+Frontend: http://localhost:5173
+Backend: http://localhost:3001
 
-```bash
-# Check if real API is working
-curl http://localhost:3001/api/health/test-real-data
+## User Flow
 
-# View system status
-curl http://localhost:3001/api/health/status
-```
+1. **Search** -- Enter origin, destination, date on the Book & Protect page
+2. **Select** -- Choose from live provider quotes with real-time pricing
+3. **Book** -- Enter passenger details, connect wallet, confirm purchase
+4. **Track** -- View live trip status (on time / delayed / cancelled)
+5. **Verify** -- Click "Verify with FDC" to attest trip status through Flare Data Connector
+6. **Settle** -- Execute settlement; refund calculated per fixed compensation policy
 
-**Expected**: You should see `"realDataActive": true` if API key is configured.
-
-### 6. Get Test Tokens
-
-Get C2FLR tokens from the [Flare Coston2 Faucet](https://faucet.flare.network/coston2).
-
-## Demo Walkthrough
-
-### Creating a Policy
-
-1. Connect your wallet to Coston2 testnet
-2. Navigate to "Create Policy"
-3. Select trip type (Flight/Train)
-4. Enter trip ID (e.g., "BA123")
-5. Select travel date
-6. Choose delay threshold (default: 60 minutes)
-7. Select payout amount (1/5/10 C2FLR)
-8. Confirm transaction (pays 10% premium)
-
-### Claiming Compensation
-
-1. Go to "My Policies"
-2. Find your active policy
-3. Click "Claim" to start verification
-4. Watch the FDC verification flow:
-   - **Step 1**: Fetching transport status
-   - **Step 2**: Creating FDC attestation
-   - **Step 3**: Submitting proof to contract
-   - **Step 4**: Claim resolved!
-5. If delayed/cancelled: Payout received instantly
-6. If on-time: Claim rejected (no payout)
-
-### Testing with Real Data
-
-If you configured AviationStack API key:
-
-```bash
-# Test real API connection
-curl http://localhost:3001/api/health/test-real-data
-
-# Test complete claim flow (dry run, no transaction)
-curl -X POST http://localhost:3001/api/health/test-claim-flow \
-  -H "Content-Type: application/json" \
-  -d '{"tripId": "TEST_FLIGHT"}'
-
-# Check system status
-curl http://localhost:3001/api/health/status
-```
-
-### Testing Different Scenarios (Mock Fallback)
-
-If no API key configured, use mock mode:
-
-```bash
-# Test delayed flight (90 minutes)
-curl -X POST http://localhost:3001/api/mock/config \
-  -H "Content-Type: application/json" \
-  -d '{"defaultStatus": "DELAYED", "defaultDelayMinutes": 90}'
-
-# Test cancelled train
-curl -X POST http://localhost:3001/api/mock/config \
-  -H "Content-Type: application/json" \
-  -d '{"defaultStatus": "CANCELLED"}'
-
-# Test on-time (claim rejected)
-curl -X POST http://localhost:3001/api/mock/config \
-  -H "Content-Type: application/json" \
-  -d '{"defaultStatus": "ON_TIME", "defaultDelayMinutes": 0}'
-```
-
-## How FDC Verification Works
+## FDC Verification Flow
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                        FDC Attestation Flow                                  │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│  1. USER INITIATES CLAIM                                                     │
-│     └──▶ Frontend calls POST /api/claim { policyId }                        │
-│                                                                              │
-│  2. BACKEND QUERIES TRANSPORT STATUS                                         │
-│     └──▶ Gets delay/cancellation data from external API                     │
-│                                                                              │
-│  3. FDC ATTESTATION REQUEST                                                  │
-│     └──▶ Backend creates attestation request with trip data                 │
-│     └──▶ Waits for FDC voting round to finalize                             │
-│     └──▶ Retrieves Merkle proof from FDC                                    │
-│                                                                              │
-│  4. ON-CHAIN VERIFICATION                                                    │
-│     └──▶ Backend submits proof to smart contract                            │
-│     └──▶ Contract verifies proof via FDC Verifier                           │
-│     └──▶ Contract checks: tripId + date match policy                        │
-│                                                                              │
-│  5. PAYOUT DECISION                                                          │
-│     └──▶ If cancelled OR delay >= threshold: PAY policy.owner               │
-│     └──▶ Else: REJECT claim (no payout)                                     │
-│                                                                              │
-│  TRUST MODEL:                                                                │
-│  - Backend is NOT trusted (acts as relayer only)                            │
-│  - FDC proof is cryptographically verified on-chain                         │
-│  - Contract only pays on valid, matching FDC attestation                    │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
+1. User clicks "Verify with FDC"
+2. Backend fetches current trip status from transport API
+3. Status data is hashed (SHA-256) for integrity
+4. FDC verification service attests the data
+5. Attestation hash + verification ID returned
+6. User clicks "Execute Settlement"
+7. Backend re-verifies via FDC (mandatory gate)
+8. Settlement engine calculates refund per fixed policy
+9. Settlement executed, transaction hash returned
 ```
 
-### Attestation Schema
+Settlement is rejected if FDC verification fails. No verification = no refund.
 
-```solidity
-struct TripStatus {
-    bytes32 tripIdHash;    // keccak256(tripIdString)
-    uint64 travelDate;     // Unix timestamp
-    bool cancelled;        // True if trip cancelled
-    uint16 delayMinutes;   // Delay in minutes
-    uint64 observedAt;     // When status was checked
-}
-```
+## Smart Contracts
 
-## Smart Contract Details
+### DelayClaimInsurance.sol
 
-### Policy Lifecycle
+- `createPolicy()` -- Create insurance policy (pays premium)
+- `submitTripProof()` -- Submit FDC proof to claim payout
+- `expirePolicy()` -- Expire policy after deadline
+- `fundPool()` / `withdrawPool()` -- Manage insurance pool
 
-```
-CREATED ──▶ ACTIVE ──┬──▶ CLAIMED (payout sent)
-                     ├──▶ REJECTED (no payout)
-                     └──▶ EXPIRED (deadline passed)
-```
+### MockFDCVerifier.sol
 
-### Key Functions
+- `registerAttestation()` -- Register valid attestation (owner only)
+- `verifyAttestation()` -- Verify attestation + Merkle proof
+- `attestationExists()` -- Check if attestation is registered
 
-| Function | Description |
-|----------|-------------|
-| `createPolicy()` | Create new insurance policy (pays premium) |
-| `submitTripProof()` | Submit FDC proof to claim payout |
-| `expirePolicy()` | Expire policy after deadline |
-| `fundPool()` | Add funds to insurance pool |
-| `withdrawPool()` | Owner withdraws from pool (safety limits) |
+### Security
 
-### Security Features
+- Attestation replay prevention (used attestation IDs tracked)
+- Checks-effects-interactions pattern
+- Pool balance validation before payout
+- Deadline enforcement on claims
+- Owner-only withdrawals with 90% safety limit
 
-- **Double-claim prevention**: Attestation IDs tracked, can't reuse
-- **Pool balance checks**: Reverts if insufficient funds
-- **Checks-effects-interactions**: Follows best practices
-- **Deadline enforcement**: Claims must be within deadline
-- **Owner-only withdrawals**: With 90% safety limit
-
-## API Reference
-
-### Backend Endpoints
+## API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/claim` | Process claim with real data verification |
-| GET | `/api/claim/:policyId` | Get policy status |
-| GET | `/api/health/status` | System status & real data config |
-| GET | `/api/health/test-real-data` | Test AviationStack API connection |
-| GET | `/api/health/fdc-info` | FDC upgrade path documentation |
-| POST | `/api/health/test-claim-flow` | Dry-run claim flow test |
-| GET | `/api/mock/status` | Get mock transport status (fallback) |
-| POST | `/api/mock/config` | Configure mock responses (fallback) |
-| GET | `/health` | Basic health check |
+| GET | `/api/demo/quotes` | Search travel quotes |
+| POST | `/api/demo/purchase` | Book a ticket |
+| GET | `/api/demo/booking/:id` | Get booking details |
+| GET | `/api/demo/status/:tripId` | Get live trip status |
+| POST | `/api/demo/fdc/verify` | FDC verification |
+| POST | `/api/demo/settle` | Execute settlement |
+| GET | `/api/demo/policy` | Get compensation policy |
+| GET | `/api/health/status` | System health |
 
-### Claim Request
-
-```json
-POST /api/claim
-{
-  "policyId": 1
-}
-```
-
-### Claim Response
-
-```json
-{
-  "success": true,
-  "policyId": 1,
-  "outcome": "CLAIMED",
-  "delayMinutes": 90,
-  "cancelled": false,
-  "thresholdMinutes": 60,
-  "txHash": "0x...",
-  "blockNumber": 12345678,
-  "explorerUrl": "https://coston2-explorer.flare.network/tx/0x..."
-}
-```
-
-## Network Configuration
-
-### Flare Coston2 Testnet
+## Network
 
 | Parameter | Value |
 |-----------|-------|
 | Chain ID | 114 |
-| RPC URL | https://coston2-api.flare.network/ext/C/rpc |
+| RPC | https://coston2-api.flare.network/ext/C/rpc |
 | Explorer | https://coston2-explorer.flare.network |
 | Currency | C2FLR |
 | Faucet | https://faucet.flare.network/coston2 |
 
-### Adding to MetaMask
+## FDC Upgrade Path
 
-```
-Network Name: Coston2
-RPC URL: https://coston2-api.flare.network/ext/C/rpc
-Chain ID: 114
-Symbol: C2FLR
-Explorer: https://coston2-explorer.flare.network
-```
+The current implementation uses a MockFDCVerifier with real transport data. To upgrade to full trustless FDC:
 
-## Running Tests
+1. Submit transport API source for whitelisting to Flare attestation providers
+2. Configure `FDC_HUB_ADDRESS` from FlareContractRegistry
+3. Implement `FdcHub.requestAttestation()` with JsonApi type
+4. Poll DA layer for finalized proof
+5. Replace MockFDCVerifier with FdcVerification contract
 
-```bash
-cd contracts
-npx hardhat test
-```
-
-Test coverage includes:
-- Policy creation
-- Claim with valid FDC proof
-- Claim rejection on insufficient delay
-- Claim rejection on wrong tripId
-- Policy expiration
-- Pool funding and withdrawal
-
-## Current Status & Roadmap
-
-### ✅ Completed (Real Data Edition)
-- Real flight data integration (AviationStack)
-- Real blockchain transactions (Coston2)
-- Hybrid FDC mode implementation
-- Comprehensive testing endpoints
-- Documentation for production upgrade
-
-### 🚧 In Progress
-- **API Whitelisting**: Request AviationStack whitelisting by Flare attestation providers
-- **Train Data**: Integration with rail APIs
-- **Multi-source**: Fallback to alternative flight APIs
-
-### 🔮 Future Improvements
-1. **Full FDC Integration**: Upgrade to trustless FDC after API whitelisting
-2. **Real FDC Verifier**: Deploy FdcVerification contract instead of mock
-3. **Dynamic Pricing**: Use FTSO price feeds for multi-currency payouts
-4. **Claim History**: On-chain event indexing with subgraphs
-5. **Mobile App**: React Native version
-6. **Multi-chain**: Deploy to Flare mainnet + other chains
-7. **More Data Sources**: Support multiple aviation APIs for redundancy
-
-### 📖 Documentation
-- **[REAL_DATA_GUIDE.md](./REAL_DATA_GUIDE.md)**: Complete setup and testing guide
-- **[FDC Upgrade Path](./REAL_DATA_GUIDE.md#fdc-upgrade-path)**: How to transition to full FDC
-- **[Troubleshooting](./REAL_DATA_GUIDE.md#troubleshooting)**: Common issues and solutions
+The contract interface is designed to support this upgrade without changes to the frontend.
 
 ## License
 
@@ -456,6 +213,6 @@ MIT
 ## Links
 
 - [Flare Network](https://flare.network)
-- [Flare Data Connector Docs](https://docs.flare.network/tech/data-connector/)
+- [Flare Data Connector](https://dev.flare.network/fdc/overview)
 - [Coston2 Faucet](https://faucet.flare.network/coston2)
 - [Coston2 Explorer](https://coston2-explorer.flare.network)

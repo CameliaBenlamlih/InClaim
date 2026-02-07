@@ -1,9 +1,3 @@
-/**
- * FDC Verification Service
- * CRITICAL: All settlements MUST pass FDC verification
- * No verification = No settlement/refund
- */
-
 import type { TripStatus } from './statusOracleService';
 
 export interface FDCVerificationRequest {
@@ -13,33 +7,27 @@ export interface FDCVerificationRequest {
   actualDeparture?: Date;
   status: string;
   delayMinutes: number;
-  dataSourceHash: string; // Hash of the external data source response
+  dataSourceHash: string;
 }
 
 export interface FDCVerificationResult {
   verified: boolean;
   verificationId: string;
   timestamp: Date;
-  attestationHash?: string; // FDC attestation proof hash
+  attestationHash?: string;
   fdcRequestId?: string;
   errorReason?: string;
   dataIntegrity: 'valid' | 'tampered' | 'unverifiable';
 }
 
-/**
- * Mock FDC Verifier (for demo without real FDC connection)
- * In production, this connects to Flare Data Connector
- */
 class MockFDCVerifier {
   private verificationCache = new Map<string, FDCVerificationResult>();
   
   async verify(request: FDCVerificationRequest): Promise<FDCVerificationResult> {
-    // Simulate FDC API call delay
     await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
     
     const verificationId = `FDC-${Date.now()}-${Math.random().toString(36).substring(7)}`;
     
-    // Simulate 98% success rate (FDC can fail occasionally)
     const success = Math.random() > 0.02;
     
     if (!success) {
@@ -52,8 +40,7 @@ class MockFDCVerifier {
       };
     }
     
-    // Simulate data integrity check
-    const dataValid = Math.random() > 0.01; // 99% data integrity
+    const dataValid = Math.random() > 0.01;
     
     const result: FDCVerificationResult = {
       verified: dataValid,
@@ -69,7 +56,7 @@ class MockFDCVerifier {
     
     this.verificationCache.set(verificationId, result);
     
-    console.log(`🔐 FDC Verification: ${result.verified ? '✅ VERIFIED' : '❌ FAILED'}`);
+    console.log(`FDC Verification: ${result.verified ? 'VERIFIED' : 'FAILED'}`);
     console.log(`   Verification ID: ${verificationId}`);
     console.log(`   Trip: ${request.tripId} (${request.tripType})`);
     console.log(`   Status: ${request.status}, Delay: ${request.delayMinutes}min`);
@@ -85,10 +72,6 @@ class MockFDCVerifier {
   }
 }
 
-/**
- * Real FDC Verifier (for production)
- * Connects to Flare Data Connector smart contract
- */
 class RealFDCVerifier {
   private fdcContractAddress: string;
   private attestationProviders: string[];
@@ -99,11 +82,6 @@ class RealFDCVerifier {
   }
   
   async verify(request: FDCVerificationRequest): Promise<FDCVerificationResult> {
-    // TODO: Implement real FDC smart contract interaction
-    // 1. Submit attestation request to FDC
-    // 2. Wait for consensus from attestation providers
-    // 3. Verify Merkle proof
-    // 4. Return attestation hash
     
     throw new Error('Real FDC verification not implemented. Use mock verifier or configure FDC contract.');
   }
@@ -113,7 +91,6 @@ class RealFDCVerifier {
   }
 }
 
-// Singleton verifier instance
 let verifier: MockFDCVerifier | RealFDCVerifier;
 
 export function initializeFDCVerifier(useMock: boolean = true, config?: any) {
@@ -132,7 +109,7 @@ export async function verifyTripStatus(
   dataSourceHash: string
 ): Promise<FDCVerificationResult> {
   if (!verifier) {
-    initializeFDCVerifier(true); // Default to mock
+    initializeFDCVerifier(true);
   }
   
   const request: FDCVerificationRequest = {
@@ -155,5 +132,4 @@ export async function getFDCVerification(verificationId: string): Promise<FDCVer
   return verifier.getVerification(verificationId);
 }
 
-// Initialize with mock by default
 initializeFDCVerifier(true);

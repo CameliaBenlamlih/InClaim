@@ -1,8 +1,3 @@
-/**
- * Demo API Routes
- * Backend endpoints for the new demo purchase flow
- */
-
 import express, { Request, Response } from 'express';
 import * as quotesService from '../services/providerQuotesService';
 import * as bookingService from '../services/providerBookingService';
@@ -13,7 +8,6 @@ import crypto from 'crypto';
 
 const router = express.Router();
 
-// GET /api/demo/quotes - Search for travel quotes
 router.get('/quotes', async (req: Request, res: Response) => {
   try {
     const { origin, destination, date, tripType, passengers } = req.query;
@@ -39,7 +33,6 @@ router.get('/quotes', async (req: Request, res: Response) => {
   }
 });
 
-// GET /api/demo/quotes/:id/refresh - Refresh a specific quote
 router.get('/quotes/:id/refresh', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -56,7 +49,6 @@ router.get('/quotes/:id/refresh', async (req: Request, res: Response) => {
   }
 });
 
-// POST /api/demo/purchase - Purchase a ticket
 router.post('/purchase', async (req: Request, res: Response) => {
   try {
     const { 
@@ -72,13 +64,11 @@ router.post('/purchase', async (req: Request, res: Response) => {
       });
     }
     
-    // Get quote details
     const quote = await quotesService.getQuoteById(quoteId);
     if (!quote) {
       return res.status(404).json({ error: 'Quote not found or expired' });
     }
     
-    // Create booking with provider
     const booking = await bookingService.createBooking({
       quoteId: quote.id,
       providerId: quote.providerId,
@@ -100,7 +90,6 @@ router.post('/purchase', async (req: Request, res: Response) => {
       });
     }
     
-    // Send confirmation email
     await bookingService.sendConfirmationEmail(booking);
     
     res.json({ 
@@ -111,9 +100,14 @@ router.post('/purchase', async (req: Request, res: Response) => {
         status: booking.status,
         tripId: booking.tripId,
         tripType: booking.tripType,
+        providerId: booking.providerId,
+        providerName: booking.providerName,
         origin: booking.origin,
         destination: booking.destination,
         departureTime: booking.departureTime,
+        arrivalTime: booking.arrivalTime,
+        passengerName: booking.passengerName,
+        passengerEmail: booking.passengerEmail,
         price: booking.price,
         currency: booking.currency,
         confirmationEmailSent: booking.confirmationEmail,
@@ -125,7 +119,6 @@ router.post('/purchase', async (req: Request, res: Response) => {
   }
 });
 
-// GET /api/demo/booking/:bookingId - Get booking details
 router.get('/booking/:bookingId', async (req: Request, res: Response) => {
   try {
     const { bookingId } = req.params;
@@ -142,7 +135,6 @@ router.get('/booking/:bookingId', async (req: Request, res: Response) => {
   }
 });
 
-// GET /api/demo/status/:tripId - Get trip status
 router.get('/status/:tripId', async (req: Request, res: Response) => {
   try {
     const { tripId } = req.params;
@@ -167,7 +159,6 @@ router.get('/status/:tripId', async (req: Request, res: Response) => {
   }
 });
 
-// POST /api/demo/fdc/verify - Verify trip status via FDC
 router.post('/fdc/verify', async (req: Request, res: Response) => {
   try {
     const { tripId, tripType, date } = req.body;
@@ -178,20 +169,17 @@ router.post('/fdc/verify', async (req: Request, res: Response) => {
       });
     }
     
-    // Get current trip status
     const tripStatus = await statusService.getTripStatus(
       tripId,
       tripType,
       new Date(date)
     );
     
-    // Create hash of the status data (simulates data source signature)
     const dataSourceHash = crypto
       .createHash('sha256')
       .update(JSON.stringify(tripStatus))
       .digest('hex');
     
-    // Verify via FDC
     const verification = await fdcService.verifyTripStatus(tripStatus, dataSourceHash);
     
     res.json({ 
@@ -205,7 +193,6 @@ router.post('/fdc/verify', async (req: Request, res: Response) => {
   }
 });
 
-// POST /api/demo/settle - Create and execute settlement
 router.post('/settle', async (req: Request, res: Response) => {
   try {
     const { bookingId } = req.body;
@@ -214,29 +201,24 @@ router.post('/settle', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Missing bookingId' });
     }
     
-    // Get booking
     const booking = await bookingService.getBooking(bookingId);
     if (!booking) {
       return res.status(404).json({ error: 'Booking not found' });
     }
     
-    // Get trip status
     const tripStatus = await statusService.getTripStatus(
       booking.tripId,
       booking.tripType,
       booking.departureTime
     );
     
-    // Create data hash
     const dataSourceHash = crypto
       .createHash('sha256')
       .update(JSON.stringify(tripStatus))
       .digest('hex');
     
-    // FDC Verification (MANDATORY)
     const fdcVerification = await fdcService.verifyTripStatus(tripStatus, dataSourceHash);
     
-    // Create settlement (will throw if FDC verification failed)
     const settlement = await settlementService.createSettlement({
       bookingId: booking.bookingId,
       tripId: booking.tripId,
@@ -246,7 +228,6 @@ router.post('/settle', async (req: Request, res: Response) => {
       fdcVerification,
     });
     
-    // Execute settlement (simulate on-chain transaction)
     const executedSettlement = await settlementService.executeSettlement(settlement.id);
     
     res.json({ 
@@ -259,7 +240,6 @@ router.post('/settle', async (req: Request, res: Response) => {
   }
 });
 
-// GET /api/demo/settlement/:bookingId - Get settlement by booking
 router.get('/settlement/:bookingId', async (req: Request, res: Response) => {
   try {
     const { bookingId } = req.params;
@@ -276,7 +256,6 @@ router.get('/settlement/:bookingId', async (req: Request, res: Response) => {
   }
 });
 
-// GET /api/demo/policy - Get fixed settlement policy
 router.get('/policy', async (req: Request, res: Response) => {
   try {
     const policy = settlementService.getSettlementPolicy();
@@ -287,7 +266,6 @@ router.get('/policy', async (req: Request, res: Response) => {
   }
 });
 
-// Admin endpoint for demo control (simulate status changes)
 router.post('/admin/set-status', async (req: Request, res: Response) => {
   try {
     const { tripId, date, status, delayMinutes } = req.body;
@@ -299,8 +277,6 @@ router.post('/admin/set-status', async (req: Request, res: Response) => {
       });
     }
     
-    // This would set the status - implementation depends on mock adapter API
-    // For now, return success
     res.json({ 
       success: true, 
       message: 'Status updated (demo mode)' 

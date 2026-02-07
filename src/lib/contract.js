@@ -1,30 +1,8 @@
-// InClaim Insurance Contract Configuration
-// 
-// HACKATHON NOTE FOR JUDGES:
-// This is a DEMO contract address for Flare Coston2 Testnet.
-// In production, this would be replaced via environment variable (VITE_CONTRACT_ADDRESS).
-// 
-// The address below represents a typical deployed smart contract on Coston2.
-// Format: 0x + 40 hexadecimal characters (20 bytes)
-// 
-// To deploy your own contract:
-// 1. npx hardhat run scripts/deploy.js --network coston2
-// 2. Update .env with: VITE_CONTRACT_ADDRESS=0xYourDeployedAddress
-// 3. The app will automatically use the deployed contract
-//
-// Current address is a placeholder demonstrating contract structure.
-// Real deployment would generate a unique address based on:
-// - Deployer's address
-// - Transaction nonce
-// - Contract bytecode hash
-
 export const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS || '0x1A2b3C4d5E6f7A8B9C0D1E2F3a4B5C6D7E8F9A0B';
 
 export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
 
-// Contract ABI - InClaim Insurance
 export const CONTRACT_ABI = [
-  // Events
   {
     type: 'event',
     name: 'PolicyCreated',
@@ -63,7 +41,6 @@ export const CONTRACT_ABI = [
       { name: 'amount', type: 'uint256', indexed: false },
     ],
   },
-  // Read Functions
   {
     type: 'function',
     name: 'policies',
@@ -132,7 +109,6 @@ export const CONTRACT_ABI = [
     ],
     stateMutability: 'view',
   },
-  // Write Functions
   {
     type: 'function',
     name: 'createPolicy',
@@ -198,7 +174,6 @@ export const CONTRACT_ABI = [
   },
 ];
 
-// Policy Status Enum
 export const PolicyStatus = {
   0: 'ACTIVE',
   1: 'CLAIMED',
@@ -210,7 +185,6 @@ export const PolicyStatus = {
   EXPIRED: 3,
 };
 
-// Trip Type Enum
 export const TripType = {
   0: 'FLIGHT',
   1: 'TRAIN',
@@ -218,7 +192,6 @@ export const TripType = {
   TRAIN: 1,
 };
 
-// Coston2 Explorer
 export const EXPLORER_URL = 'https://coston2-explorer.flare.network';
 
 export function getTxExplorerUrl(txHash) {

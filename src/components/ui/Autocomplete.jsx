@@ -109,11 +109,11 @@ export default function Autocomplete({
           placeholder={placeholder}
           disabled={disabled}
           className={`
-            w-full pl-12 pr-10 py-3 border bg-transparent
-            font-mono text-sm tracking-tight
+            w-full pl-12 pr-10 py-3 border bg-white rounded-sm
+            text-sm
             transition-all duration-200 outline-none
             ${error 
-              ? 'border-red-500/50 focus:border-red-400' 
+              ? 'border-red-200 focus:border-red-400' 
               : 'border-dark-200 focus:border-dark-500'
             }
             ${disabled ? 'bg-dark-100 cursor-not-allowed opacity-50' : ''}
@@ -125,7 +125,7 @@ export default function Autocomplete({
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-dark-100 transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-dark-200/50 rounded-full transition-colors"
           >
             <X className="w-4 h-4 text-dark-500" />
           </button>
@@ -143,7 +143,7 @@ export default function Autocomplete({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-50 w-full mt-1 bg-dark-50 border border-dark-200 overflow-hidden"
+            className="absolute z-50 w-full mt-1 bg-surface border border-dark-200 rounded-sm shadow-lg overflow-hidden"
           >
             <div className="max-h-64 overflow-y-auto">
               {options.map((option, index) => (
@@ -156,7 +156,7 @@ export default function Autocomplete({
                     w-full text-left px-4 py-3 transition-colors text-sm
                     ${highlightedIndex === index 
                       ? 'bg-dark-100 text-dark-900' 
-                      : 'hover:bg-dark-100 text-dark-700'
+                      : 'hover:bg-dark-50 text-dark-600'
                     }
                   `}
                   whileHover={{ x: 4 }}

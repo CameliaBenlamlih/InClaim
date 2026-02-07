@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Contract ABIs (minimal for required functions)
 const INSURANCE_ABI = [
   'function getPolicy(uint256 policyId) view returns (tuple(address owner, uint8 tripType, bytes32 tripIdHash, uint64 travelDate, uint16 thresholdMinutes, uint256 payoutAmount, uint64 deadline, uint8 status, uint64 createdAt))',
   'function submitTripProof(uint256 policyId, tuple(bytes32 tripIdHash, uint64 travelDate, bool cancelled, uint16 delayMinutes, uint64 observedAt) tripStatus, tuple(bytes32[] merkleProof, bytes32 attestationId) proof)',
@@ -69,7 +68,6 @@ export class ContractService {
     if (verifierAddress) {
       this.verifierContract = new Contract(verifierAddress, VERIFIER_ABI, this.wallet);
     } else {
-      // Create dummy contract for demo mode
       this.verifierContract = new Contract(ethers.ZeroAddress, VERIFIER_ABI, this.wallet);
     }
 
@@ -79,9 +77,7 @@ export class ContractService {
     console.log(`  Verifier address: ${verifierAddress || 'Not configured (demo mode)'}`);
   }
 
-  /**
-   * Get policy details from the contract
-   */
+  
   async getPolicy(policyId: string | number): Promise<Policy | null> {
     try {
       const policy = await this.insuranceContract.getPolicy(policyId);
@@ -103,9 +99,7 @@ export class ContractService {
     }
   }
 
-  /**
-   * Register attestation in the mock verifier
-   */
+  
   async registerAttestation(attestationId: string): Promise<void> {
     try {
       if (this.verifierContract.target === ethers.ZeroAddress) {
@@ -124,13 +118,10 @@ export class ContractService {
       console.log(`  Registered attestation: ${attestationId}`);
     } catch (error) {
       console.error('Error registering attestation:', error);
-      // Don't throw - this might fail if verifier is not deployed
     }
   }
 
-  /**
-   * Submit trip proof to the insurance contract
-   */
+  
   async submitTripProof(
     policyId: string | number,
     tripStatus: TripStatus,
@@ -154,32 +145,24 @@ export class ContractService {
     return tx;
   }
 
-  /**
-   * Get relayer wallet address
-   */
+  
   getRelayerAddress(): string {
     return this.wallet.address;
   }
 
-  /**
-   * Get relayer balance
-   */
+  
   async getRelayerBalance(): Promise<string> {
     const balance = await this.provider.getBalance(this.wallet.address);
     return ethers.formatEther(balance);
   }
 
-  /**
-   * Get contract pool balance
-   */
+  
   async getPoolBalance(): Promise<string> {
     const balance = await this.insuranceContract.poolBalance();
     return ethers.formatEther(balance);
   }
 
-  /**
-   * Get total policies count
-   */
+  
   async getPolicyCount(): Promise<number> {
     const count = await this.insuranceContract.policyCounter();
     return Number(count);

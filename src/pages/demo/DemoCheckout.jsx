@@ -22,12 +22,12 @@ export default function DemoCheckout() {
   });
   
   const [purchasing, setPurchasing] = useState(false);
-  const [purchaseStage, setPurchaseStage] = useState('idle'); // idle, paying, booking, complete
+  const [purchaseStage, setPurchaseStage] = useState('idle');
   const [error, setError] = useState('');
   const [bookingResult, setBookingResult] = useState(null);
 
   if (!quote) {
-    navigate('/demo');
+    navigate('/book');
     return null;
   }
 
@@ -52,11 +52,9 @@ export default function DemoCheckout() {
       setPurchasing(true);
       setError('');
       
-      // Stage 1: Payment (simulated)
       setPurchaseStage('paying');
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Stage 2: Booking with provider
       setPurchaseStage('booking');
       const response = await fetch(`${BACKEND_URL}/api/demo/purchase`, {
         method: 'POST',
@@ -83,9 +81,8 @@ export default function DemoCheckout() {
       setPurchaseStage('complete');
       setBookingResult(data.booking);
       
-      // Navigate to trip page after 2 seconds
       setTimeout(() => {
-        navigate(`/demo/trip/${data.booking.bookingId}`, {
+        navigate(`/book/trip/${data.booking.bookingId}`, {
           state: {
             booking: data.booking,
             quote,
@@ -113,12 +110,12 @@ export default function DemoCheckout() {
   return (
     <div className="py-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold text-dark-900 mb-8 uppercase tracking-wider">
+        <h1 className="font-serif text-3xl text-dark-900 mb-8">
           Complete Your Purchase
         </h1>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Checkout Form */}
+          {}
           <div className="lg:col-span-2">
             <Card>
               <CardHeader>
@@ -149,14 +146,14 @@ export default function DemoCheckout() {
                     disabled={purchasing}
                   />
 
-                  {/* Wallet Connection */}
+                  {}
                   <div>
                     <label className="label">
                       Payment Wallet
                     </label>
                     {isConnected ? (
-                      <div className="p-4 border border-green-500/30 bg-green-500/10">
-                        <div className="flex items-center gap-2 text-green-400">
+                      <div className="p-4 border border-green-200 bg-green-50 rounded-sm">
+                        <div className="flex items-center gap-2 text-green-600">
                           <CheckCircle className="w-4 h-4" />
                           <span className="font-mono text-xs">
                             {address?.substring(0, 6)}...{address?.substring(address.length - 4)}
@@ -172,29 +169,29 @@ export default function DemoCheckout() {
                   </div>
 
                   {error && (
-                    <div className="p-4 border border-red-500/30 bg-red-500/10 flex items-start gap-2 text-red-400">
+                    <div className="p-4 border border-red-200 bg-red-50 rounded-sm flex items-start gap-2 text-red-600">
                       <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                      <p className="text-xs font-mono">{error}</p>
+                      <p className="text-xs">{error}</p>
                     </div>
                   )}
 
-                  {/* Purchase Progress */}
+                  {}
                   {purchasing && (
-                    <div className="p-6 border border-dark-200 bg-dark-50">
+                    <div className="p-6 border border-dark-200 bg-surface rounded-sm">
                       <div className="space-y-4">
                         <div className="flex items-center gap-3">
                           <Loader2 className="w-4 h-4 animate-spin text-dark-700" />
                           <div className="flex-1">
                             {purchaseStage === 'paying' && (
-                              <p className="text-xs font-bold text-dark-900 uppercase tracking-wider">Processing payment...</p>
+                              <p className="text-xs font-semibold text-dark-900">Processing payment...</p>
                             )}
                             {purchaseStage === 'booking' && (
-                              <p className="text-xs font-bold text-dark-900 uppercase tracking-wider">Booking with {quote.providerName}...</p>
+                              <p className="text-xs font-semibold text-dark-900">Booking with {quote.providerName}...</p>
                             )}
                             {purchaseStage === 'complete' && (
                               <div className="flex items-center gap-2">
-                                <CheckCircle className="w-4 h-4 text-green-400" />
-                                <p className="text-xs font-bold text-green-400 uppercase tracking-wider">Booking confirmed!</p>
+                                <CheckCircle className="w-4 h-4 text-green-500" />
+                                <p className="text-xs font-semibold text-green-600">Booking confirmed!</p>
                               </div>
                             )}
                           </div>
@@ -234,7 +231,7 @@ export default function DemoCheckout() {
                     )}
                   </Button>
 
-                  <p className="text-[10px] text-dark-500 text-center uppercase tracking-widest font-mono">
+                  <p className="text-[11px] text-dark-500 text-center">
                     Funds locked in blockchain escrow. Automatic refunds via FDC verification.
                   </p>
                 </form>
@@ -242,7 +239,7 @@ export default function DemoCheckout() {
             </Card>
           </div>
 
-          {/* Trip Summary */}
+          {}
           <div>
             <Card>
               <CardHeader>
@@ -255,7 +252,7 @@ export default function DemoCheckout() {
                   <p className="text-xs text-dark-500 font-mono">{quote.tripId}</p>
                 </div>
 
-                <div className="pt-4 border-t border-dotted border-dark-200">
+                <div className="pt-4 border-t border-dark-200">
                   <p className="text-[10px] text-dark-500 mb-2 uppercase tracking-widest">Route</p>
                   <div className="space-y-2">
                     <div>
@@ -272,19 +269,19 @@ export default function DemoCheckout() {
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-dotted border-dark-200">
+                <div className="pt-4 border-t border-dark-200">
                   <p className="text-[10px] text-dark-500 mb-1 uppercase tracking-widest">Fare Class</p>
                   <p className="text-sm text-dark-900">{quote.fareClass}</p>
                 </div>
 
                 {quote.baggage && (
-                  <div className="pt-4 border-t border-dotted border-dark-200">
+                  <div className="pt-4 border-t border-dark-200">
                     <p className="text-[10px] text-dark-500 mb-1 uppercase tracking-widest">Baggage</p>
                     <p className="text-sm text-dark-900">{quote.baggage}</p>
                   </div>
                 )}
 
-                <div className="pt-4 border-t border-dotted border-dark-200">
+                <div className="pt-4 border-t border-dark-200">
                   <p className="text-[10px] text-dark-500 mb-1 uppercase tracking-widest">Passengers</p>
                   <p className="text-sm text-dark-900">{searchParams.passengers}</p>
                 </div>
@@ -303,11 +300,11 @@ export default function DemoCheckout() {
                   <p className="text-[10px] text-dark-500 mt-1 font-mono uppercase">USDC</p>
                 </div>
 
-                <div className="pt-4 border-t border-dark-200 bg-dark-100 -mx-6 -mb-6 px-6 py-4">
-                  <p className="text-[10px] text-dark-700 font-bold mb-2 uppercase tracking-widest">
+                <div className="pt-4 border-t border-dark-200 bg-dark-50 -mx-6 -mb-6 px-6 py-4 rounded-b-card">
+                  <p className="text-[10px] text-dark-900 font-semibold mb-2">
                     Protected by InClaim
                   </p>
-                  <ul className="text-[10px] text-dark-500 space-y-1 font-mono">
+                  <ul className="text-[10px] text-dark-500 space-y-1">
                     <li>3-23h delay: 20% refund</li>
                     <li>24h+ delay: 50% refund</li>
                     <li>Cancellation: 100% refund</li>

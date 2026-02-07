@@ -22,16 +22,6 @@ export interface AttestationResult {
   };
 }
 
-/**
- * FDC Service - Flare Data Connector Integration
- * 
- * In production, this would:
- * 1. Submit attestation request to FDC
- * 2. Wait for attestation to be finalized
- * 3. Retrieve Merkle proof from FDC
- * 
- * For hackathon demo, we simulate the FDC flow with deterministic proofs
- */
 export class FDCService {
   private attestationCounter = 0;
 
@@ -40,18 +30,7 @@ export class FDCService {
     console.log('  In production, this would connect to Flare Data Connector');
   }
 
-  /**
-   * Create an attestation for transport status
-   * 
-   * Production flow:
-   * 1. Call FDC Hub's requestAttestation()
-   * 2. Wait for voting round to finalize
-   * 3. Retrieve proof from FDC
-   * 
-   * Demo flow:
-   * - Generate deterministic attestation ID
-   * - Create mock Merkle proof
-   */
+  
   async createAttestation(request: AttestationRequest): Promise<AttestationResult> {
     console.log('Creating FDC attestation...');
     console.log(`  Trip ID Hash: ${request.tripIdHash}`);
@@ -59,13 +38,10 @@ export class FDCService {
     console.log(`  Cancelled: ${request.cancelled}`);
     console.log(`  Delay Minutes: ${request.delayMinutes}`);
 
-    // Simulate FDC attestation delay
     await this.simulateAttestationDelay();
 
-    // Generate attestation ID from request data
     const attestationId = this.generateAttestationId(request);
     
-    // Generate mock Merkle proof
     const merkleProof = this.generateMerkleProof(attestationId, request);
 
     const result: AttestationResult = {
@@ -89,13 +65,10 @@ export class FDCService {
     return result;
   }
 
-  /**
-   * Generate deterministic attestation ID from request data
-   */
+  
   private generateAttestationId(request: AttestationRequest): string {
     this.attestationCounter++;
     
-    // Create unique attestation ID from request data + counter + timestamp
     const data = ethers.solidityPacked(
       ['bytes32', 'uint64', 'bool', 'uint16', 'uint256', 'uint256'],
       [
@@ -111,16 +84,10 @@ export class FDCService {
     return ethers.keccak256(data);
   }
 
-  /**
-   * Generate mock Merkle proof
-   * 
-   * In production, this would be retrieved from FDC after attestation is finalized
-   */
+  
   private generateMerkleProof(attestationId: string, request: AttestationRequest): string[] {
-    // Generate deterministic proof elements
     const proof: string[] = [];
 
-    // Create 3 proof elements (typical Merkle tree depth)
     for (let i = 0; i < 3; i++) {
       const proofElement = ethers.keccak256(
         ethers.solidityPacked(
@@ -134,27 +101,18 @@ export class FDCService {
     return proof;
   }
 
-  /**
-   * Simulate FDC attestation delay
-   * In production, waiting for voting round finalization takes ~90 seconds
-   */
+  
   private async simulateAttestationDelay(): Promise<void> {
-    // For demo, use shorter delay (1-2 seconds)
     const delay = Math.random() * 1000 + 1000;
     await new Promise(resolve => setTimeout(resolve, delay));
   }
 
-  /**
-   * Verify an attestation (for testing)
-   */
+  
   async verifyAttestation(attestationId: string): Promise<boolean> {
-    // In demo mode, all properly formatted attestations are valid
     return attestationId.startsWith('0x') && attestationId.length === 66;
   }
 
-  /**
-   * Get FDC status info
-   */
+  
   getStatus(): object {
     return {
       mode: 'demo',

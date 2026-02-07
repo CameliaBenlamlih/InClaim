@@ -72,7 +72,6 @@ export default function CreatePolicyPage() {
 
   const handleFromSearch = (query) => {
     setFormData(prev => ({ ...prev, from: query }));
-    // Use airports for flights, stations for trains
     const suggestions = formData.tripType === '0' 
       ? searchAirports(query) 
       : searchStations(query);
@@ -81,7 +80,6 @@ export default function CreatePolicyPage() {
 
   const handleToSearch = (query) => {
     setFormData(prev => ({ ...prev, to: query }));
-    // Use airports for flights, stations for trains
     const suggestions = formData.tripType === '0' 
       ? searchAirports(query) 
       : searchStations(query);
@@ -142,12 +140,9 @@ export default function CreatePolicyPage() {
 
     try {
       const travelTimestamp = BigInt(dateToTimestamp(formData.travelDate));
-      // Deadline is 7 days after travel date
       const deadline = travelTimestamp + BigInt(7 * 24 * 60 * 60);
       const ticketPriceWei = parseEther(formData.ticketPrice);
-      // Max payout is 100% of ticket price (for cancellation)
       const maxPayoutWei = ticketPriceWei;
-      // Threshold is now fixed at 180 minutes (3 hours) for 20% refund
       const thresholdMinutes = 180;
 
       writeContract({
@@ -162,7 +157,7 @@ export default function CreatePolicyPage() {
           maxPayoutWei,
           deadline,
         ],
-        value: ticketPriceWei, // Full ticket price locked in escrow
+        value: ticketPriceWei,
       });
     } catch (err) {
       console.error('Error creating policy:', err);
@@ -179,23 +174,23 @@ export default function CreatePolicyPage() {
       >
         <Card>
           <CardContent className="p-8 text-center">
-            <div className="w-12 h-12 border border-green-500/30 flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="w-5 h-5 text-green-400" />
+            <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-5 h-5 text-green-500" />
             </div>
-            <h2 className="text-xl font-bold text-dark-900 mb-2 uppercase tracking-wider">
+            <h2 className="font-serif text-xl text-dark-900 mb-2">
               Policy Created!
             </h2>
             <p className="text-dark-500 text-sm mb-6">
               Your travel delay insurance policy has been created successfully.
             </p>
             
-            <div className="bg-dark-100 p-4 mb-6">
-              <p className="text-[10px] text-dark-500 mb-1 uppercase tracking-widest">Transaction Hash</p>
+            <div className="bg-dark-50 rounded-sm p-4 mb-6">
+              <p className="text-[10px] text-dark-500 mb-1 uppercase tracking-wider">Transaction Hash</p>
               <a
                 href={getTxExplorerUrl(hash)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-dark-700 hover:text-dark-900 font-mono text-xs break-all"
+                className="text-accent hover:text-accent-dark font-mono text-xs break-all"
               >
                 {hash}
               </a>
@@ -241,10 +236,10 @@ export default function CreatePolicyPage() {
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-dark-900 mb-2 uppercase tracking-wider">
+          <h1 className="font-serif text-3xl text-dark-900 mb-2">
             Create Escrow Policy
           </h1>
-          <p className="text-dark-500 text-sm">
+          <p className="text-dark-500 text-sm leading-relaxed">
             Lock your ticket payment. Get instant refunds if delays happen.
           </p>
         </div>
@@ -252,7 +247,7 @@ export default function CreatePolicyPage() {
         <Card>
           <CardContent className="p-6 sm:p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Trip Type */}
+              {}
               <div>
                 <label className="label">Trip Type</label>
                 <div className="grid grid-cols-2 gap-4">
@@ -264,9 +259,9 @@ export default function CreatePolicyPage() {
                       key={type.value}
                       type="button"
                       onClick={() => setFormData(prev => ({ ...prev, tripType: type.value }))}
-                      className={`flex items-center justify-center gap-3 p-4 border transition-all text-xs font-bold uppercase tracking-wider ${
+                      className={`flex items-center justify-center gap-3 p-4 border rounded-sm transition-all text-sm font-medium ${
                         formData.tripType === type.value
-                          ? 'border-dark-900 text-dark-900'
+                          ? 'border-dark-900 text-dark-900 bg-surface'
                           : 'border-dark-200 hover:border-dark-400 text-dark-500'
                       }`}
                     >
@@ -277,7 +272,7 @@ export default function CreatePolicyPage() {
                 </div>
               </div>
 
-              {/* From Location */}
+              {}
               <Autocomplete
                 label="From"
                 value={formData.from}
@@ -294,7 +289,7 @@ export default function CreatePolicyPage() {
                 )}
               />
 
-              {/* To Location */}
+              {}
               <Autocomplete
                 label="To"
                 value={formData.to}
@@ -311,7 +306,7 @@ export default function CreatePolicyPage() {
                 )}
               />
 
-              {/* Trip ID */}
+              {}
               <Input
                 label="Trip ID (Flight Number / Train ID)"
                 name="tripId"
@@ -320,7 +315,7 @@ export default function CreatePolicyPage() {
                 placeholder="e.g., BA123 or IC502"
               />
 
-              {/* Travel Date */}
+              {}
               <Input
                 label="Travel Date"
                 name="travelDate"
@@ -330,7 +325,7 @@ export default function CreatePolicyPage() {
                 min={new Date().toISOString().split('T')[0]}
               />
 
-              {/* Ticket Price */}
+              {}
               <div>
                 <Input
                   label="Ticket Price You Paid (C2FLR)"
@@ -342,30 +337,30 @@ export default function CreatePolicyPage() {
                   min="1"
                   step="0.01"
                 />
-                <p className="text-[10px] text-dark-400 mt-1 flex items-start gap-1 font-mono">
+                <p className="text-[11px] text-dark-400 mt-1 flex items-start gap-1">
                   <Info className="w-3 h-3 mt-0.5 flex-shrink-0" />
                   <span>Enter the amount you already paid to the airline/train company. This amount will be locked in escrow and refunded based on delays.</span>
                 </p>
               </div>
 
-              {/* Fixed Compensation Policy (Read-only) */}
+              {}
               <div>
                 <label className="label flex items-center gap-2">
                   Compensation Policy (Fixed)
                   <Info className="w-3 h-3 text-dark-400" />
                 </label>
-                <div className="space-y-0 divide-y divide-dotted divide-dark-200">
+                <div className="space-y-0 divide-y divide-dark-200">
                   {COMPENSATION_POLICY.map((policy, index) => (
                     <div
                       key={index}
                       className="flex items-center justify-between py-2 px-2"
                     >
                       <span className="text-xs text-dark-500">{policy.label}</span>
-                      <span className={`text-xs font-mono font-bold ${
+                      <span className={`text-xs font-mono font-semibold ${
                         policy.refundPercent === 0 ? 'text-dark-500' :
-                        policy.refundPercent === 20 ? 'text-yellow-400' :
-                        policy.refundPercent === 50 ? 'text-orange-400' :
-                        'text-red-400'
+                        policy.refundPercent === 20 ? 'text-yellow-600' :
+                        policy.refundPercent === 50 ? 'text-orange-500' :
+                        'text-red-500'
                       }`}>
                         {policy.refundPercent}% refund
                       </span>
@@ -374,18 +369,18 @@ export default function CreatePolicyPage() {
                 </div>
               </div>
 
-              {/* Estimated Refund Examples */}
-              <div className="border border-dark-200 p-4">
+              {}
+              <div className="bg-dark-50 rounded-sm p-4">
                 <div className="flex items-start gap-3">
-                  <Lock className="w-4 h-4 text-dark-700 mt-0.5" />
+                  <Lock className="w-4 h-4 text-dark-600 mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-xs font-bold text-dark-900 mb-2 uppercase tracking-wider">
+                    <p className="text-xs font-semibold text-dark-900 mb-2">
                       Your {formData.ticketPrice} C2FLR will be locked in escrow
                     </p>
-                    <p className="text-[10px] text-dark-500 mb-2 font-mono">
+                    <p className="text-[11px] text-dark-500 mb-2">
                       You've already paid the airline/train company. This creates a protection policy on the blockchain.
                     </p>
-                    <div className="space-y-1 text-[10px] text-dark-500 font-mono">
+                    <div className="space-y-1 text-[11px] text-dark-500">
                       <p>On time: No refund (money stays with carrier)</p>
                       <p>3-23h delay: {calculateRefund(formData.ticketPrice, 180).refundAmount} C2FLR refund (20%)</p>
                       <p>24h+ delay: {calculateRefund(formData.ticketPrice, 1440).refundAmount} C2FLR refund (50%)</p>
@@ -395,15 +390,15 @@ export default function CreatePolicyPage() {
                 </div>
               </div>
 
-              {/* Error */}
+              {}
               {(error || writeError) && (
-                <div className="flex items-center gap-2 p-4 border border-red-500/30 bg-red-500/10 text-red-400">
+                <div className="flex items-center gap-2 p-4 border border-red-200 bg-red-50 text-red-600 rounded-sm">
                   <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                  <p className="text-xs font-mono">{error || writeError?.message}</p>
+                  <p className="text-xs">{error || writeError?.message}</p>
                 </div>
               )}
 
-              {/* Submit */}
+              {}
               <Button
                 type="submit"
                 className="w-full"
@@ -428,16 +423,16 @@ export default function CreatePolicyPage() {
           </CardContent>
         </Card>
 
-        {/* Info Box */}
-        <div className="mt-6 p-4 border border-dark-200">
-          <h3 className="text-xs font-bold text-dark-900 mb-2 uppercase tracking-wider">Escrow System</h3>
-          <ul className="text-xs text-dark-500 space-y-1 font-mono">
+        {}
+        <div className="mt-6 p-4 bg-surface rounded-sm border border-dark-200/50">
+          <h3 className="text-xs font-semibold text-dark-900 mb-2">Escrow System</h3>
+          <ul className="text-xs text-dark-500 space-y-1">
             <li>1. Your ticket payment is locked on Flare blockchain</li>
             <li>2. After travel date, submit a claim to verify delay status</li>
             <li>3. Instant refund based on fixed compensation policy</li>
             <li>4. Claim deadline: 7 days after travel date</li>
           </ul>
-          <a href="/how-it-works" className="text-xs font-bold text-dark-700 hover:text-dark-900 mt-2 inline-block uppercase tracking-wider">
+          <a href="/how-it-works" className="text-xs font-medium text-accent hover:text-accent-dark mt-2 inline-block">
             Learn more →
           </a>
         </div>

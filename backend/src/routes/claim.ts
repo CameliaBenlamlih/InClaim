@@ -9,10 +9,6 @@ const contractService = new ContractService();
 const fdcService = new RealFDCService();
 const transportApi = new RealTransportAPI();
 
-/**
- * POST /api/claim
- * Process a claim for a policy using FDC verification
- */
 router.post('/', async (req: Request, res: Response) => {
   try {
     const { policyId } = req.body;
@@ -25,7 +21,6 @@ router.post('/', async (req: Request, res: Response) => {
     console.log(`Processing claim for Policy #${policyId}`);
     console.log('='.repeat(60));
 
-    // Step 1: Get policy details from contract
     console.log('\n1. Fetching policy details...');
     const policy = await contractService.getPolicy(policyId);
     
@@ -33,7 +28,7 @@ router.post('/', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Policy not found' });
     }
 
-    if (policy.status !== 0) { // Not ACTIVE
+    if (policy.status !== 0) {
       const statusNames = ['ACTIVE', 'CLAIMED', 'REJECTED', 'EXPIRED'];
       return res.status(400).json({ 
         error: `Policy is not active. Current status: ${statusNames[policy.status]}` 
@@ -45,7 +40,6 @@ router.post('/', async (req: Request, res: Response) => {
     console.log(`   Threshold: ${policy.thresholdMinutes} minutes`);
     console.log(`   Payout: ${policy.payoutAmount} wei`);
 
-    // Step 2: Query transport status from external API
     console.log('\n2. Querying transport status...');
     const transportStatus = await transportApi.getStatus(
       policy.tripIdHash,
@@ -56,7 +50,6 @@ router.post('/', async (req: Request, res: Response) => {
     console.log(`   Delay: ${transportStatus.delayMinutes} minutes`);
     console.log(`   Cancelled: ${transportStatus.cancelled}`);
 
-    // Step 3: Create FDC attestation request
     console.log('\n3. Creating FDC attestation...');
     const attestation = await fdcService.createAttestation({
       tripIdHash: policy.tripIdHash,
@@ -68,12 +61,10 @@ router.post('/', async (req: Request, res: Response) => {
     console.log(`   Attestation ID: ${attestation.attestationId}`);
     console.log(`   Merkle Proof: [${attestation.proof.merkleProof.length} elements]`);
 
-    // Step 4: Register attestation in mock verifier (for demo)
     console.log('\n4. Registering attestation in verifier...');
     await contractService.registerAttestation(attestation.attestationId);
     console.log('   Attestation registered!');
 
-    // Step 5: Submit proof to contract
     console.log('\n5. Submitting proof to contract...');
     const tripStatus = {
       tripIdHash: policy.tripIdHash,
@@ -95,7 +86,6 @@ router.post('/', async (req: Request, res: Response) => {
     const receipt = await tx.wait();
     console.log(`   Confirmed in block ${receipt?.blockNumber}`);
 
-    // Calculate refund based on fixed policy
     const refundPercent = getRefundPercent(transportStatus.delayMinutes, transportStatus.cancelled);
     const { refundAmountWei } = calculateRefundWei(
       BigInt(policy.payoutAmount), 
@@ -135,10 +125,6 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-/**
- * GET /api/claim/:policyId
- * Get claim status for a policy
- */
 router.get('/:policyId', async (req: Request, res: Response) => {
   try {
     const { policyId } = req.params;

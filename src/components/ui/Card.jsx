@@ -7,7 +7,7 @@ export function Card({ children, className, hover = false, ...props }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      whileHover={hover ? { y: -1, borderColor: '#8c8c8c' } : undefined}
+      whileHover={hover ? { y: -2, boxShadow: '0 8px 24px rgba(0,0,0,0.04)' } : undefined}
       className={cn('card p-6', className)}
       {...props}
     >

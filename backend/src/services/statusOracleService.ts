@@ -1,11 +1,5 @@
-/**
- * Status Oracle Service
- * Fetches real-time flight/train status from external APIs
- * Adapter pattern allows switching between real and mock data
- */
-
 export interface TripStatus {
-  tripId: string; // Flight/train number
+  tripId: string;
   tripType: 'flight' | 'train';
   status: 'on_time' | 'delayed' | 'cancelled' | 'diverted' | 'unknown';
   scheduledDeparture: Date;
@@ -25,21 +19,16 @@ interface StatusAdapter {
   getTrainStatus(trainNumber: string, date: Date): Promise<TripStatus>;
 }
 
-/**
- * Mock Status Adapter (for demo without API keys)
- */
 class MockStatusAdapter implements StatusAdapter {
   private statusSimulations = new Map<string, TripStatus>();
   
   async getFlightStatus(flightNumber: string, date: Date): Promise<TripStatus> {
     const key = `${flightNumber}-${date.toISOString().split('T')[0]}`;
     
-    // Check if we have a simulated status
     if (this.statusSimulations.has(key)) {
       return this.statusSimulations.get(key)!;
     }
     
-    // Generate realistic status
     const random = Math.random();
     let status: TripStatus['status'];
     let delayMinutes = 0;
@@ -48,10 +37,10 @@ class MockStatusAdapter implements StatusAdapter {
       status = 'on_time';
     } else if (random < 0.85) {
       status = 'delayed';
-      delayMinutes = Math.floor(Math.random() * 180) + 30; // 30-210 min
+      delayMinutes = Math.floor(Math.random() * 180) + 30;
     } else if (random < 0.95) {
       status = 'delayed';
-      delayMinutes = Math.floor(Math.random() * 600) + 360; // 6-16 hours
+      delayMinutes = Math.floor(Math.random() * 600) + 360;
     } else {
       status = 'cancelled';
       delayMinutes = 0;
@@ -62,7 +51,7 @@ class MockStatusAdapter implements StatusAdapter {
       ? undefined 
       : new Date(scheduledDeparture.getTime() + delayMinutes * 60000);
     
-    const scheduledArrival = new Date(scheduledDeparture.getTime() + 2 * 3600000); // +2h
+    const scheduledArrival = new Date(scheduledDeparture.getTime() + 2 * 3600000);
     const actualArrival = actualDeparture 
       ? new Date(actualDeparture.getTime() + 2 * 3600000)
       : undefined;
@@ -101,10 +90,10 @@ class MockStatusAdapter implements StatusAdapter {
       status = 'on_time';
     } else if (random < 0.90) {
       status = 'delayed';
-      delayMinutes = Math.floor(Math.random() * 120) + 15; // 15-135 min
+      delayMinutes = Math.floor(Math.random() * 120) + 15;
     } else if (random < 0.97) {
       status = 'delayed';
-      delayMinutes = Math.floor(Math.random() * 480) + 240; // 4-12 hours
+      delayMinutes = Math.floor(Math.random() * 480) + 240;
     } else {
       status = 'cancelled';
     }
@@ -137,7 +126,6 @@ class MockStatusAdapter implements StatusAdapter {
     return tripStatus;
   }
   
-  // Admin method to manually set status (for demo control panel)
   setStatus(tripId: string, date: Date, status: Partial<TripStatus>) {
     const key = `${tripId}-${date.toISOString().split('T')[0]}`;
     const existing = this.statusSimulations.get(key);
@@ -147,25 +135,16 @@ class MockStatusAdapter implements StatusAdapter {
   }
 }
 
-/**
- * Real Status Adapter (for production with actual APIs)
- * Placeholder - implement with AviationStack, FlightAware, etc.
- */
 class RealStatusAdapter implements StatusAdapter {
   async getFlightStatus(flightNumber: string, date: Date): Promise<TripStatus> {
-    // TODO: Implement real API integration
-    // Example: AviationStack, FlightAware, FlightRadar24
     throw new Error('Real flight status API not configured. Use mock adapter or add API keys.');
   }
   
   async getTrainStatus(trainNumber: string, date: Date): Promise<TripStatus> {
-    // TODO: Implement real API integration
-    // Example: National rail APIs, SNCF API, etc.
     throw new Error('Real train status API not configured. Use mock adapter or add API keys.');
   }
 }
 
-// Singleton adapter instance
 let adapter: StatusAdapter;
 
 export function initializeStatusOracle(useMock: boolean = true) {
@@ -178,7 +157,7 @@ export async function getTripStatus(
   date: Date
 ): Promise<TripStatus> {
   if (!adapter) {
-    initializeStatusOracle(true); // Default to mock
+    initializeStatusOracle(true);
   }
   
   if (tripType === 'flight') {
@@ -188,10 +167,8 @@ export async function getTripStatus(
   }
 }
 
-// Export mock adapter for admin control panel
 export function getMockAdapter(): MockStatusAdapter | null {
   return adapter instanceof MockStatusAdapter ? adapter : null;
 }
 
-// Initialize with mock by default
 initializeStatusOracle(true);

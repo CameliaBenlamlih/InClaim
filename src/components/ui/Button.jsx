@@ -6,9 +6,10 @@ import { cn } from '../../lib/utils';
 const variants = {
   primary: 'btn-primary',
   secondary: 'btn-secondary',
-  ghost: 'text-dark-500 hover:text-dark-900 px-4 py-2 uppercase tracking-wider text-xs font-bold',
-  danger: 'bg-red-500/20 border border-red-500/50 hover:bg-red-500/30 text-red-400 px-6 py-3 font-bold uppercase tracking-wider text-xs',
-  success: 'bg-green-500/20 border border-green-500/50 hover:bg-green-500/30 text-green-400 px-6 py-3 font-bold uppercase tracking-wider text-xs',
+  accent: 'btn-accent',
+  ghost: 'text-dark-500 hover:text-dark-900 px-4 py-2 text-sm font-medium',
+  danger: 'bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 px-6 py-3 font-medium text-sm rounded-pill',
+  success: 'bg-green-50 border border-green-200 hover:bg-green-100 text-green-600 px-6 py-3 font-medium text-sm rounded-pill',
 };
 
 const sizes = {

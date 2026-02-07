@@ -156,7 +156,10 @@ export default function DemoTrip() {
   };
 
   const formatTime = (date) => {
-    return new Date(date).toLocaleTimeString('en-US', { 
+    if (!date) return '—';
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return '—';
+    return d.toLocaleTimeString('en-US', { 
       hour: '2-digit', 
       minute: '2-digit',
       hour12: false 
@@ -164,7 +167,10 @@ export default function DemoTrip() {
   };
 
   const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-US', { 
+    if (!date) return '—';
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return '—';
+    return d.toLocaleDateString('en-US', { 
       weekday: 'long', 
       year: 'numeric', 
       month: 'long', 
@@ -189,7 +195,7 @@ export default function DemoTrip() {
             <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
             <h2 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">Booking Not Found</h2>
             <p className="text-dark-500 text-sm mb-4">{error || 'This booking could not be found'}</p>
-            <Button onClick={() => navigate('/demo')}>Back to Search</Button>
+            <Button onClick={() => navigate('/book')}>Back to Search</Button>
           </CardContent>
         </Card>
       </div>
@@ -201,7 +207,7 @@ export default function DemoTrip() {
   return (
     <div className="py-8">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
+        {}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -228,9 +234,9 @@ export default function DemoTrip() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Column */}
+          {}
           <div className="lg:col-span-2 space-y-6">
-            {/* Trip Details */}
+            {}
             <Card>
               <CardHeader>
                 <CardTitle>Trip Details</CardTitle>
@@ -289,7 +295,7 @@ export default function DemoTrip() {
               </CardContent>
             </Card>
 
-            {/* Live Status Tracking */}
+            {}
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
@@ -371,7 +377,7 @@ export default function DemoTrip() {
               </CardContent>
             </Card>
 
-            {/* FDC Verification */}
+            {}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -472,7 +478,7 @@ export default function DemoTrip() {
               </CardContent>
             </Card>
 
-            {/* Settlement */}
+            {}
             {fdcVerification?.verified && (
               <Card>
                 <CardHeader>
@@ -578,9 +584,9 @@ export default function DemoTrip() {
             )}
           </div>
 
-          {/* Sidebar */}
+          {}
           <div className="space-y-6">
-            {/* Fixed Policy Card */}
+            {}
             <Card>
               <CardHeader>
                 <CardTitle>Compensation Policy</CardTitle>
@@ -610,7 +616,7 @@ export default function DemoTrip() {
               </CardContent>
             </Card>
 
-            {/* Payment Info */}
+            {}
             <Card>
               <CardHeader>
                 <CardTitle>Payment Details</CardTitle>

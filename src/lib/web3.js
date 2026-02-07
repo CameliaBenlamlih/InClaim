@@ -3,7 +3,6 @@ import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { QueryClient } from '@tanstack/react-query';
 import { http } from 'viem';
 
-// Flare Coston2 Testnet Configuration
 export const coston2 = {
   id: 114,
   name: 'Coston2',
@@ -22,13 +21,10 @@ export const coston2 = {
   testnet: true,
 };
 
-// WalletConnect Project ID
 const projectId = '0ab3f2c9a30c1add3cff35eadf12cfc7';
 
-// Define chains
 const chains = [coston2];
 
-// Create wagmi adapter
 export const wagmiAdapter = new WagmiAdapter({
   networks: chains,
   projectId,
@@ -37,10 +33,8 @@ export const wagmiAdapter = new WagmiAdapter({
   },
 });
 
-// Create query client
 export const queryClient = new QueryClient();
 
-// Create AppKit modal
 createAppKit({
   adapters: [wagmiAdapter],
   networks: chains,
@@ -61,5 +55,4 @@ createAppKit({
   }
 });
 
-// Export wagmi config
 export const config = wagmiAdapter.wagmiConfig;

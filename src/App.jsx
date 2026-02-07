@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import { BrowserRouter as Router } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import CreatePolicyPage from './pages/CreatePolicyPage';
@@ -16,27 +15,23 @@ import DemoTrip from './pages/demo/DemoTrip';
 
 export default function App() {
   return (
-    <Router>
-      <Layout>
-        <AnimatePresence mode="wait">
-          <Routes>
-            {/* Existing routes - UNCHANGED */}
-            <Route path="/" element={<HomePage />} />
-            <Route path="/how-it-works" element={<HowItWorksPage />} />
-            <Route path="/create" element={<CreatePolicyPage />} />
-            <Route path="/policies" element={<MyPoliciesPage />} />
-            <Route path="/claim/:policyId" element={<ClaimPage />} />
+    <Layout>
+      <AnimatePresence mode="wait">
+        <Routes>
+          {/* Existing routes - UNCHANGED */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/how-it-works" element={<HowItWorksPage />} />
+          <Route path="/create" element={<CreatePolicyPage />} />
+          <Route path="/policies" element={<MyPoliciesPage />} />
+          <Route path="/claim/:policyId" element={<ClaimPage />} />
 
-            {/* NEW: Demo purchase flow routes */}
-            <Route path="/demo" element={<Layout />}>
-              <Route index element={<DemoLanding />} />
-              <Route path="results" element={<DemoResults />} />
-              <Route path="checkout" element={<DemoCheckout />} />
-              <Route path="trip/:bookingId" element={<DemoTrip />} />
-            </Route>
-          </Routes>
-        </AnimatePresence>
-      </Layout>
-    </Router>
+          {/* NEW: Demo purchase flow routes */}
+          <Route path="/demo" element={<DemoLanding />} />
+          <Route path="/demo/results" element={<DemoResults />} />
+          <Route path="/demo/checkout" element={<DemoCheckout />} />
+          <Route path="/demo/trip/:bookingId" element={<DemoTrip />} />
+        </Routes>
+      </AnimatePresence>
+    </Layout>
   );
 }

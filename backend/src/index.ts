@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { claimRouter } from './routes/claim';
 import { mockTransportRouter } from './routes/mockTransport';
 import { healthRouter } from './routes/health';
+import demoRouter from './routes/demo';
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ app.use(express.json());
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
-    service: 'DelayClaim Backend - Real Data Edition',
+    service: 'InClaim Backend - Real Data + Demo Edition',
     timestamp: new Date().toISOString()
   });
 });
@@ -27,6 +28,7 @@ app.get('/health', (req, res) => {
 app.use('/api/claim', claimRouter);
 app.use('/api/mock', mockTransportRouter);
 app.use('/api/health', healthRouter);
+app.use('/api/demo', demoRouter); // NEW: Demo purchase flow routes
 
 // Error handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -40,12 +42,19 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 app.listen(PORT, () => {
   console.log(`
 ╔═══════════════════════════════════════════════════════════╗
-║            DelayClaim Backend - Real Data Edition          ║
-║                   FDC Relayer Service                      ║
+║              InClaim Backend - Demo Edition                ║
+║         "File in a flash, get your cash" 🚀                ║
 ╠═══════════════════════════════════════════════════════════╣
 ║  Server running on http://localhost:${PORT}                   ║
 ║                                                           ║
-║  Core Endpoints:                                          ║
+║  DEMO Endpoints (NEW):                                    ║
+║  - GET  /api/demo/quotes        Live provider quotes      ║
+║  - POST /api/demo/purchase      Buy ticket in InClaim     ║
+║  - POST /api/demo/fdc/verify    FDC verification gate     ║
+║  - POST /api/demo/settle        Settlement execution      ║
+║  - GET  /api/demo/policy        Fixed refund policy       ║
+║                                                           ║
+║  Legacy Endpoints:                                        ║
 ║  - POST /api/claim              Process claim with FDC    ║
 ║  - GET  /api/claim/:id          Get policy status         ║
 ║                                                           ║

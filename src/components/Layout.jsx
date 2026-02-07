@@ -2,15 +2,16 @@ import { Link, useLocation } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { useAppKit } from '@reown/appkit/react';
 import { motion } from 'framer-motion';
-import { Plane, FileText, Shield, Menu, X, HelpCircle } from 'lucide-react';
+import { Home, Info, Plus, FileText, Shield, Menu, X, HelpCircle } from 'lucide-react';
 import { useState } from 'react';
 import { shortenAddress } from '../lib/utils';
 
 const navItems = [
-  { path: '/', label: 'Home', icon: Shield },
-  { path: '/how-it-works', label: 'How It Works', icon: HelpCircle },
-  { path: '/create', label: 'Create Policy', icon: FileText },
-  { path: '/policies', label: 'My Policies', icon: Plane },
+  { path: '/', label: 'Home', icon: Home },
+  { path: '/how-it-works', label: 'How It Works', icon: Info },
+  { path: '/demo', label: '✨ Demo Flow', icon: Plus },
+  { path: '/create', label: 'Create Policy', icon: Plus },
+  { path: '/policies', label: 'My Policies', icon: FileText },
 ];
 
 export default function Layout({ children }) {

@@ -1,0 +1,117 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/Users/Camelia/Desktop/Oxford/version 1/contracts/contracts/DelayClaimInsurance.sol": {
+      "lastModificationDate": 1770418105988,
+      "contentHash": "9b3997f9f6c6482b89ca8e581c023b81",
+      "sourceName": "contracts/DelayClaimInsurance.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IFDCVerifier.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "DelayClaimInsurance"
+      ]
+    },
+    "/Users/Camelia/Desktop/Oxford/version 1/contracts/contracts/interfaces/IFDCVerifier.sol": {
+      "lastModificationDate": 1770418105988,
+      "contentHash": "dc817886b29c3b0a8add1d6c6eb4f4bc",
+      "sourceName": "contracts/interfaces/IFDCVerifier.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IFDCVerifier"
+      ]
+    },
+    "/Users/Camelia/Desktop/Oxford/version 1/contracts/contracts/MockFDCVerifier.sol": {
+      "lastModificationDate": 1770418105988,
+      "contentHash": "ab978852ba6f194d57a8736d0976ef23",
+      "sourceName": "contracts/MockFDCVerifier.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IFDCVerifier.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "MockFDCVerifier"
+      ]
+    }
+  }
+}

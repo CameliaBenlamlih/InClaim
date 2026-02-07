@@ -15,8 +15,8 @@ export default function LoadingSpinner({ size = 'md', className }) {
       animate={{ rotate: 360 }}
       transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
     >
-      <div className="absolute inset-0 rounded-full border-2 border-gray-200" />
-      <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-flare-500" />
+      <div className="absolute inset-0 rounded-full border-2 border-dark-200" />
+      <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-dark-700" />
     </motion.div>
   );
 }

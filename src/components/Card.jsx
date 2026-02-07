@@ -31,7 +31,7 @@ export default function Card({
       className={cn(
         'card',
         paddingClasses[padding],
-        hover && 'hover:shadow-md hover:border-gray-200 transition-all duration-200',
+        hover && 'hover:border-dark-500 transition-all duration-200',
         className
       )}
       {...props}
@@ -51,7 +51,7 @@ export function CardHeader({ children, className }) {
 
 export function CardTitle({ children, className }) {
   return (
-    <h3 className={cn('text-lg font-semibold text-gray-900', className)}>
+    <h3 className={cn('text-sm font-bold text-dark-900 uppercase tracking-wider', className)}>
       {children}
     </h3>
   );
@@ -59,7 +59,7 @@ export function CardTitle({ children, className }) {
 
 export function CardDescription({ children, className }) {
   return (
-    <p className={cn('text-sm text-gray-500 mt-1', className)}>
+    <p className={cn('text-sm text-dark-500 mt-1', className)}>
       {children}
     </p>
   );
@@ -75,7 +75,7 @@ export function CardContent({ children, className }) {
 
 export function CardFooter({ children, className }) {
   return (
-    <div className={cn('mt-4 pt-4 border-t border-gray-100', className)}>
+    <div className={cn('mt-4 pt-4 border-t border-dark-200', className)}>
       {children}
     </div>
   );

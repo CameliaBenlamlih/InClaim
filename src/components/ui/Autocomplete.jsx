@@ -89,14 +89,14 @@ export default function Autocomplete({
   return (
     <div ref={containerRef} className="relative">
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="label">
           {label}
         </label>
       )}
       
       <div className="relative">
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-          <Icon className="w-5 h-5" />
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-dark-400">
+          <Icon className="w-4 h-4" />
         </div>
         
         <input
@@ -109,14 +109,15 @@ export default function Autocomplete({
           placeholder={placeholder}
           disabled={disabled}
           className={`
-            w-full pl-12 pr-10 py-3 rounded-xl border-2 
+            w-full pl-12 pr-10 py-3 border bg-transparent
+            font-mono text-sm tracking-tight
             transition-all duration-200 outline-none
             ${error 
-              ? 'border-red-300 focus:border-red-500' 
-              : 'border-gray-200 focus:border-red-500'
+              ? 'border-red-500/50 focus:border-red-400' 
+              : 'border-dark-200 focus:border-dark-500'
             }
-            ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}
-            placeholder:text-gray-400
+            ${disabled ? 'bg-dark-100 cursor-not-allowed opacity-50' : ''}
+            placeholder:text-dark-400 text-dark-900
           `}
         />
 
@@ -124,15 +125,15 @@ export default function Autocomplete({
           <button
             type="button"
             onClick={handleClear}
-            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-lg transition-colors"
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-dark-100 transition-colors"
           >
-            <X className="w-4 h-4 text-gray-400" />
+            <X className="w-4 h-4 text-dark-500" />
           </button>
         )}
       </div>
 
       {error && (
-        <p className="mt-1 text-sm text-red-600">{error}</p>
+        <p className="mt-1 text-xs text-red-400 font-mono">{error}</p>
       )}
 
       <AnimatePresence>
@@ -142,7 +143,7 @@ export default function Autocomplete({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.15 }}
-            className="absolute z-50 w-full mt-2 bg-white rounded-xl border-2 border-gray-200 shadow-xl overflow-hidden"
+            className="absolute z-50 w-full mt-1 bg-dark-50 border border-dark-200 overflow-hidden"
           >
             <div className="max-h-64 overflow-y-auto">
               {options.map((option, index) => (
@@ -152,10 +153,10 @@ export default function Autocomplete({
                   onClick={() => handleSelect(option)}
                   onMouseEnter={() => setHighlightedIndex(index)}
                   className={`
-                    w-full text-left px-4 py-3 transition-colors
+                    w-full text-left px-4 py-3 transition-colors text-sm
                     ${highlightedIndex === index 
-                      ? 'bg-red-50 text-red-700' 
-                      : 'hover:bg-gray-50 text-gray-900'
+                      ? 'bg-dark-100 text-dark-900' 
+                      : 'hover:bg-dark-100 text-dark-700'
                     }
                   `}
                   whileHover={{ x: 4 }}

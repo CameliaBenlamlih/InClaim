@@ -2,8 +2,95 @@ import { Router, Request, Response } from 'express';
 import { RealTransportAPI } from '../services/realTransportApi';
 import { RealFDCService } from '../services/realFdcService';
 import { ContractService } from '../services/contractService';
+import { verifySmtpConnection, sendBookingConfirmation } from '../services/emailService';
 
 const router = Router();
+
+/**
+ * GET /api/health/test-email
+ * Test SMTP connection and optionally send a test email
+ */
+router.get('/test-email', async (req: Request, res: Response) => {
+  try {
+    const { sendTo } = req.query;
+    
+    // Check if SMTP is configured
+    const smtpUser = process.env.SMTP_USER;
+    const smtpPass = process.env.SMTP_PASS;
+    
+    if (!smtpUser || !smtpPass) {
+      return res.status(400).json({
+        success: false,
+        error: 'SMTP not configured',
+        message: 'Add SMTP_USER and SMTP_PASS to backend/.env',
+      });
+    }
+    
+    // Verify connection
+    console.log('🧪 Testing SMTP connection...');
+    const connectionValid = await verifySmtpConnection();
+    
+    if (!connectionValid) {
+      return res.status(400).json({
+        success: false,
+        error: 'SMTP connection failed',
+        message: 'Check your Gmail App Password. Make sure 2-Step Verification is enabled.',
+        troubleshooting: {
+          step1: 'Go to https://myaccount.google.com/security',
+          step2: 'Enable 2-Step Verification if not already enabled',
+          step3: 'Go to https://myaccount.google.com/apppasswords',
+          step4: 'Generate a NEW App Password (select "Mail" and "Other")',
+          step5: 'Copy the 16-character password (no spaces)',
+          step6: 'Update SMTP_PASS in backend/.env',
+          step7: 'Restart the backend server',
+        },
+      });
+    }
+    
+    // Optionally send test email
+    if (sendTo) {
+      const testBooking = {
+        bookingId: 'TEST-PNR',
+        quoteId: 'test',
+        providerId: 'test',
+        providerName: 'Test Airline',
+        tripId: 'TEST123',
+        tripType: 'flight' as const,
+        origin: 'LHR',
+        destination: 'CDG',
+        departureTime: new Date(),
+        arrivalTime: new Date(Date.now() + 2 * 60 * 60 * 1000),
+        passengerName: 'Test User',
+        passengerEmail: sendTo as string,
+        price: 199.99,
+        currency: 'USDC' as const,
+        status: 'confirmed' as const,
+        confirmationEmail: false,
+        createdAt: new Date(),
+      };
+      
+      const sent = await sendBookingConfirmation(testBooking);
+      
+      return res.json({
+        success: sent,
+        message: sent ? `Test email sent to ${sendTo}` : 'Failed to send test email',
+        smtpConfigured: true,
+      });
+    }
+    
+    res.json({
+      success: true,
+      message: 'SMTP connection verified successfully',
+      smtpUser,
+      tip: 'Add ?sendTo=your@email.com to send a test email',
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+});
 
 /**
  * GET /api/health/status

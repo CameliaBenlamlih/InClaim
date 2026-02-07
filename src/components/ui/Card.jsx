@@ -7,7 +7,7 @@ export function Card({ children, className, hover = false, ...props }) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      whileHover={hover ? { y: -2, boxShadow: '0 8px 30px rgba(0,0,0,0.08)' } : undefined}
+      whileHover={hover ? { y: -1, borderColor: '#8c8c8c' } : undefined}
       className={cn('card p-6', className)}
       {...props}
     >
@@ -26,7 +26,7 @@ export function CardHeader({ children, className }) {
 
 export function CardTitle({ children, className }) {
   return (
-    <h3 className={cn('text-lg font-semibold text-gray-900', className)}>
+    <h3 className={cn('text-sm font-bold text-dark-900 uppercase tracking-wider', className)}>
       {children}
     </h3>
   );
@@ -34,7 +34,7 @@ export function CardTitle({ children, className }) {
 
 export function CardDescription({ children, className }) {
   return (
-    <p className={cn('text-sm text-gray-500 mt-1', className)}>
+    <p className={cn('text-sm text-dark-500 mt-1', className)}>
       {children}
     </p>
   );
@@ -50,7 +50,7 @@ export function CardContent({ children, className }) {
 
 export function CardFooter({ children, className }) {
   return (
-    <div className={cn('mt-4 pt-4 border-t border-gray-100', className)}>
+    <div className={cn('mt-4 pt-4 border-t border-dark-200', className)}>
       {children}
     </div>
   );

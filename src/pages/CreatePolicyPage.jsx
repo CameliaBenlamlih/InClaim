@@ -179,23 +179,23 @@ export default function CreatePolicyPage() {
       >
         <Card>
           <CardContent className="p-8 text-center">
-            <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="w-8 h-8 text-green-500" />
+            <div className="w-12 h-12 border border-green-500/30 flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-5 h-5 text-green-400" />
             </div>
-            <h2 className="text-2xl font-display font-bold text-gray-900 mb-2">
+            <h2 className="text-xl font-bold text-dark-900 mb-2 uppercase tracking-wider">
               Policy Created!
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-dark-500 text-sm mb-6">
               Your travel delay insurance policy has been created successfully.
             </p>
             
-            <div className="bg-gray-50 rounded-xl p-4 mb-6">
-              <p className="text-sm text-gray-500 mb-1">Transaction Hash</p>
+            <div className="bg-dark-100 p-4 mb-6">
+              <p className="text-[10px] text-dark-500 mb-1 uppercase tracking-widest">Transaction Hash</p>
               <a
                 href={getTxExplorerUrl(hash)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary-500 hover:text-primary-600 font-mono text-sm break-all"
+                className="text-dark-700 hover:text-dark-900 font-mono text-xs break-all"
               >
                 {hash}
               </a>
@@ -241,10 +241,10 @@ export default function CreatePolicyPage() {
         animate={{ opacity: 1, y: 0 }}
       >
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-display font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold text-dark-900 mb-2 uppercase tracking-wider">
             Create Escrow Policy
           </h1>
-          <p className="text-gray-600">
+          <p className="text-dark-500 text-sm">
             Lock your ticket payment. Get instant refunds if delays happen.
           </p>
         </div>
@@ -264,14 +264,14 @@ export default function CreatePolicyPage() {
                       key={type.value}
                       type="button"
                       onClick={() => setFormData(prev => ({ ...prev, tripType: type.value }))}
-                      className={`flex items-center justify-center gap-3 p-4 rounded-xl border-2 transition-all ${
+                      className={`flex items-center justify-center gap-3 p-4 border transition-all text-xs font-bold uppercase tracking-wider ${
                         formData.tripType === type.value
-                          ? 'border-primary-500 bg-primary-50 text-primary-700'
-                          : 'border-gray-200 hover:border-gray-300 text-gray-600'
+                          ? 'border-dark-900 text-dark-900'
+                          : 'border-dark-200 hover:border-dark-400 text-dark-500'
                       }`}
                     >
-                      <type.icon className="w-5 h-5" />
-                      <span className="font-medium">{type.label}</span>
+                      <type.icon className="w-4 h-4" />
+                      <span>{type.label}</span>
                     </button>
                   ))}
                 </div>
@@ -288,8 +288,8 @@ export default function CreatePolicyPage() {
                 formatOption={formatAirport}
                 renderOption={(airport) => (
                   <div>
-                    <div className="font-semibold">{airport.city} ({airport.code})</div>
-                    <div className="text-sm text-gray-500">{airport.name}</div>
+                    <div className="font-bold text-dark-900">{airport.city} ({airport.code})</div>
+                    <div className="text-xs text-dark-500">{airport.name}</div>
                   </div>
                 )}
               />
@@ -305,8 +305,8 @@ export default function CreatePolicyPage() {
                 formatOption={formatAirport}
                 renderOption={(airport) => (
                   <div>
-                    <div className="font-semibold">{airport.city} ({airport.code})</div>
-                    <div className="text-sm text-gray-500">{airport.name}</div>
+                    <div className="font-bold text-dark-900">{airport.city} ({airport.code})</div>
+                    <div className="text-xs text-dark-500">{airport.name}</div>
                   </div>
                 )}
               />
@@ -342,7 +342,7 @@ export default function CreatePolicyPage() {
                   min="1"
                   step="0.01"
                 />
-                <p className="text-xs text-gray-500 mt-1 flex items-start gap-1">
+                <p className="text-[10px] text-dark-400 mt-1 flex items-start gap-1 font-mono">
                   <Info className="w-3 h-3 mt-0.5 flex-shrink-0" />
                   <span>Enter the amount you already paid to the airline/train company. This amount will be locked in escrow and refunded based on delays.</span>
                 </p>
@@ -352,20 +352,20 @@ export default function CreatePolicyPage() {
               <div>
                 <label className="label flex items-center gap-2">
                   Compensation Policy (Fixed)
-                  <Info className="w-4 h-4 text-gray-400" />
+                  <Info className="w-3 h-3 text-dark-400" />
                 </label>
-                <div className="space-y-2">
+                <div className="space-y-0 divide-y divide-dotted divide-dark-200">
                   {COMPENSATION_POLICY.map((policy, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-3 rounded-lg border border-gray-200 bg-gray-50"
+                      className="flex items-center justify-between py-2 px-2"
                     >
-                      <span className="text-sm text-gray-700">{policy.label}</span>
-                      <span className={`text-sm font-semibold ${
-                        policy.refundPercent === 0 ? 'text-gray-600' :
-                        policy.refundPercent === 20 ? 'text-yellow-600' :
-                        policy.refundPercent === 50 ? 'text-orange-600' :
-                        'text-red-600'
+                      <span className="text-xs text-dark-500">{policy.label}</span>
+                      <span className={`text-xs font-mono font-bold ${
+                        policy.refundPercent === 0 ? 'text-dark-500' :
+                        policy.refundPercent === 20 ? 'text-yellow-400' :
+                        policy.refundPercent === 50 ? 'text-orange-400' :
+                        'text-red-400'
                       }`}>
                         {policy.refundPercent}% refund
                       </span>
@@ -375,21 +375,21 @@ export default function CreatePolicyPage() {
               </div>
 
               {/* Estimated Refund Examples */}
-              <div className="bg-primary-50 rounded-xl p-4 border border-primary-200">
+              <div className="border border-dark-200 p-4">
                 <div className="flex items-start gap-3">
-                  <Lock className="w-5 h-5 text-primary-600 mt-0.5" />
+                  <Lock className="w-4 h-4 text-dark-700 mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-primary-900 mb-2">
+                    <p className="text-xs font-bold text-dark-900 mb-2 uppercase tracking-wider">
                       Your {formData.ticketPrice} C2FLR will be locked in escrow
                     </p>
-                    <p className="text-xs text-primary-600 mb-2">
+                    <p className="text-[10px] text-dark-500 mb-2 font-mono">
                       You've already paid the airline/train company. This creates a protection policy on the blockchain.
                     </p>
-                    <div className="space-y-1 text-xs text-primary-700">
-                      <p>• On time arrival: No refund (money stays with carrier)</p>
-                      <p>• 3-23h delay: {calculateRefund(formData.ticketPrice, 180).refundAmount} C2FLR refund (20%)</p>
-                      <p>• ≥24h delay: {calculateRefund(formData.ticketPrice, 1440).refundAmount} C2FLR refund (50%)</p>
-                      <p>• Cancelled: {calculateRefund(formData.ticketPrice, 0, true).refundAmount} C2FLR full refund (100%)</p>
+                    <div className="space-y-1 text-[10px] text-dark-500 font-mono">
+                      <p>On time: No refund (money stays with carrier)</p>
+                      <p>3-23h delay: {calculateRefund(formData.ticketPrice, 180).refundAmount} C2FLR refund (20%)</p>
+                      <p>24h+ delay: {calculateRefund(formData.ticketPrice, 1440).refundAmount} C2FLR refund (50%)</p>
+                      <p>Cancelled: {calculateRefund(formData.ticketPrice, 0, true).refundAmount} C2FLR full refund (100%)</p>
                     </div>
                   </div>
                 </div>
@@ -397,9 +397,9 @@ export default function CreatePolicyPage() {
 
               {/* Error */}
               {(error || writeError) && (
-                <div className="flex items-center gap-2 p-4 rounded-xl bg-red-50 text-red-700">
-                  <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                  <p className="text-sm">{error || writeError?.message}</p>
+                <div className="flex items-center gap-2 p-4 border border-red-500/30 bg-red-500/10 text-red-400">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <p className="text-xs font-mono">{error || writeError?.message}</p>
                 </div>
               )}
 
@@ -429,15 +429,15 @@ export default function CreatePolicyPage() {
         </Card>
 
         {/* Info Box */}
-        <div className="mt-6 p-4 rounded-xl bg-blue-50 border border-blue-100">
-          <h3 className="font-medium text-blue-900 mb-2">Escrow System</h3>
-          <ul className="text-sm text-blue-700 space-y-1">
+        <div className="mt-6 p-4 border border-dark-200">
+          <h3 className="text-xs font-bold text-dark-900 mb-2 uppercase tracking-wider">Escrow System</h3>
+          <ul className="text-xs text-dark-500 space-y-1 font-mono">
             <li>1. Your ticket payment is locked on Flare blockchain</li>
             <li>2. After travel date, submit a claim to verify delay status</li>
             <li>3. Instant refund based on fixed compensation policy</li>
             <li>4. Claim deadline: 7 days after travel date</li>
           </ul>
-          <a href="/how-it-works" className="text-sm font-medium text-primary-600 hover:text-primary-700 mt-2 inline-block">
+          <a href="/how-it-works" className="text-xs font-bold text-dark-700 hover:text-dark-900 mt-2 inline-block uppercase tracking-wider">
             Learn more →
           </a>
         </div>

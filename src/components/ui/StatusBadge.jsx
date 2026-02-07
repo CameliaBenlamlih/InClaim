@@ -15,15 +15,15 @@ export default function StatusBadge({ status, size = 'md', animated = true }) {
   const label = getStatusLabel(status);
 
   const sizeClasses = {
-    sm: 'px-2 py-0.5 text-xs',
-    md: 'px-3 py-1 text-sm',
-    lg: 'px-4 py-1.5 text-base',
+    sm: 'px-2 py-0.5 text-[10px]',
+    md: 'px-3 py-1 text-xs',
+    lg: 'px-4 py-1.5 text-sm',
   };
 
   const iconSizes = {
     sm: 'w-3 h-3',
-    md: 'w-4 h-4',
-    lg: 'w-5 h-5',
+    md: 'w-3 h-3',
+    lg: 'w-4 h-4',
   };
 
   const Component = animated ? motion.span : 'span';
@@ -39,7 +39,7 @@ export default function StatusBadge({ status, size = 'md', animated = true }) {
     <Component
       {...animationProps}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full font-medium border',
+        'inline-flex items-center gap-1.5 font-bold border uppercase tracking-wider font-mono',
         sizeClasses[size],
         colorClass
       )}

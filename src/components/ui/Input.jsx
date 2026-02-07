@@ -17,13 +17,13 @@ const Input = forwardRef(function Input(
         type={type}
         className={cn(
           'input-field',
-          error && 'border-red-500 focus:ring-red-500/20 focus:border-red-500',
+          error && 'border-red-500/50 focus:border-red-400',
           className
         )}
         {...props}
       />
       {error && (
-        <p className="mt-1.5 text-sm text-red-500">{error}</p>
+        <p className="mt-1.5 text-xs text-red-400 font-mono">{error}</p>
       )}
     </div>
   );

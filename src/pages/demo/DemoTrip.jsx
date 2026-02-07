@@ -139,19 +139,19 @@ export default function DemoTrip() {
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'on_time': return <CheckCircle className="w-5 h-5 text-green-600" />;
-      case 'delayed': return <Clock className="w-5 h-5 text-orange-600" />;
-      case 'cancelled': return <AlertCircle className="w-5 h-5 text-red-600" />;
-      default: return <Clock className="w-5 h-5 text-gray-600" />;
+      case 'on_time': return <CheckCircle className="w-4 h-4 text-green-400" />;
+      case 'delayed': return <Clock className="w-4 h-4 text-orange-400" />;
+      case 'cancelled': return <AlertCircle className="w-4 h-4 text-red-400" />;
+      default: return <Clock className="w-4 h-4 text-dark-500" />;
     }
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'on_time': return 'bg-green-50 text-green-700 border-green-200';
-      case 'delayed': return 'bg-orange-50 text-orange-700 border-orange-200';
-      case 'cancelled': return 'bg-red-50 text-red-700 border-red-200';
-      default: return 'bg-gray-50 text-gray-700 border-gray-200';
+      case 'on_time': return 'bg-green-500/10 text-green-400 border-green-500/30';
+      case 'delayed': return 'bg-orange-500/10 text-orange-400 border-orange-500/30';
+      case 'cancelled': return 'bg-red-500/10 text-red-400 border-red-500/30';
+      default: return 'bg-dark-100 text-dark-500 border-dark-200';
     }
   };
 
@@ -176,7 +176,7 @@ export default function DemoTrip() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <LoadingSpinner />
-        <p className="ml-4 text-gray-600">Loading trip details...</p>
+        <p className="ml-4 text-dark-500 font-mono text-xs uppercase tracking-wider">Loading trip details...</p>
       </div>
     );
   }
@@ -186,9 +186,9 @@ export default function DemoTrip() {
       <div className="min-h-screen flex items-center justify-center">
         <Card className="max-w-md">
           <CardContent className="p-8 text-center">
-            <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Booking Not Found</h2>
-            <p className="text-gray-600 mb-4">{error || 'This booking could not be found'}</p>
+            <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
+            <h2 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">Booking Not Found</h2>
+            <p className="text-dark-500 text-sm mb-4">{error || 'This booking could not be found'}</p>
             <Button onClick={() => navigate('/demo')}>Back to Search</Button>
           </CardContent>
         </Card>
@@ -199,32 +199,29 @@ export default function DemoTrip() {
   const Icon = booking.tripType === 'flight' ? Plane : Train;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4">
+    <div className="py-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <div className="flex items-center gap-3 mb-2">
-                <Icon className="w-8 h-8 text-primary-600" />
-                <h1 className="text-3xl font-display font-bold text-gray-900">
-                  {booking.origin} → {booking.destination}
-                </h1>
-              </div>
-              <p className="text-gray-600">
-                Booking: <span className="font-mono font-semibold">{booking.bookingId}</span>
+              <h1 className="text-3xl font-bold text-dark-900 uppercase tracking-tight mb-1">
+                {booking.origin} — {booking.destination}
+              </h1>
+              <p className="text-xs text-dark-500 font-mono uppercase tracking-wider">
+                Booking: {booking.bookingId}
               </p>
             </div>
             
             <div className="text-right">
-              <div className="text-sm text-gray-500 mb-1">Status</div>
-              <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full border ${
+              <div className="text-[10px] text-dark-500 mb-1 uppercase tracking-widest">Status</div>
+              <div className={`inline-flex items-center gap-2 px-3 py-1 border text-xs font-bold uppercase tracking-wider font-mono ${
                 booking.status === 'confirmed' 
-                  ? 'bg-green-50 text-green-700 border-green-200'
-                  : 'bg-gray-50 text-gray-700 border-gray-200'
+                  ? 'bg-green-500/10 text-green-400 border-green-500/30'
+                  : 'bg-dark-100 text-dark-500 border-dark-200'
               }`}>
-                {booking.status === 'confirmed' && <CheckCircle className="w-4 h-4" />}
-                <span className="font-semibold capitalize">{booking.status}</span>
+                {booking.status === 'confirmed' && <CheckCircle className="w-3 h-3" />}
+                <span>{booking.status}</span>
               </div>
             </div>
           </div>
@@ -241,53 +238,50 @@ export default function DemoTrip() {
               <CardContent className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">Provider</p>
-                    <p className="font-semibold text-gray-900">{booking.providerName}</p>
-                    <p className="text-sm text-gray-600">{booking.tripId}</p>
+                    <p className="text-[10px] text-dark-500 mb-1 uppercase tracking-widest">Provider</p>
+                    <p className="font-bold text-dark-900 text-sm">{booking.providerName}</p>
+                    <p className="text-xs text-dark-500 font-mono">{booking.tripId}</p>
                   </div>
                   
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">Passenger</p>
+                    <p className="text-[10px] text-dark-500 mb-1 uppercase tracking-widest">Passenger</p>
                     <div className="flex items-center gap-2">
-                      <User className="w-4 h-4 text-gray-400" />
-                      <p className="font-medium text-gray-900">{booking.passengerName}</p>
+                      <User className="w-3 h-3 text-dark-400" />
+                      <p className="text-sm text-dark-900">{booking.passengerName}</p>
                     </div>
                     <div className="flex items-center gap-2 mt-1">
-                      <Mail className="w-4 h-4 text-gray-400" />
-                      <p className="text-sm text-gray-600">{booking.passengerEmail}</p>
+                      <Mail className="w-3 h-3 text-dark-400" />
+                      <p className="text-xs text-dark-500 font-mono">{booking.passengerEmail}</p>
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-gray-200">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-gray-400" />
-                      <p className="text-sm text-gray-600">{formatDate(booking.departureTime)}</p>
-                    </div>
+                <div className="pt-4 border-t border-dotted border-dark-200">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Calendar className="w-3 h-3 text-dark-400" />
+                    <p className="text-xs text-dark-500 font-mono">{formatDate(booking.departureTime)}</p>
                   </div>
                   
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-2xl font-bold text-gray-900">{formatTime(booking.departureTime)}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <MapPin className="w-4 h-4 text-gray-400" />
-                        <p className="text-sm text-gray-600">{booking.origin}</p>
+                      <p className="text-xl font-mono font-bold text-dark-900">{formatTime(booking.departureTime)}</p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <span className="text-[10px] font-mono font-bold uppercase bg-dark-900 text-dark px-1 py-[1px]">
+                          {booking.origin}
+                        </span>
                       </div>
                     </div>
                     
                     <div className="flex-1 px-8">
-                      <div className="relative">
-                        <div className="h-px bg-gray-300" />
-                        <Icon className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 bg-white" />
-                      </div>
+                      <div className="border-b-2 border-dotted border-dark-300" />
                     </div>
                     
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-gray-900">{formatTime(booking.arrivalTime)}</p>
-                      <div className="flex items-center gap-2 mt-1 justify-end">
-                        <MapPin className="w-4 h-4 text-gray-400" />
-                        <p className="text-sm text-gray-600">{booking.destination}</p>
+                      <p className="text-xl font-mono font-bold text-dark-900">{formatTime(booking.arrivalTime)}</p>
+                      <div className="flex items-center gap-1 mt-1 justify-end">
+                        <span className="text-[10px] font-mono font-bold uppercase bg-dark-900 text-dark px-1 py-[1px]">
+                          {booking.destination}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -301,12 +295,12 @@ export default function DemoTrip() {
                 <div className="flex items-center justify-between">
                   <CardTitle>Live Status Tracking</CardTitle>
                   <Button
-                    variant="secondary"
+                    variant="ghost"
                     size="sm"
                     onClick={refreshStatus}
                     disabled={refreshing}
                   >
-                    <RefreshCw className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+                    <RefreshCw className={`w-3 h-3 ${refreshing ? 'animate-spin' : ''}`} />
                     Refresh
                   </Button>
                 </div>
@@ -314,13 +308,13 @@ export default function DemoTrip() {
               <CardContent>
                 {tripStatus ? (
                   <div className="space-y-4">
-                    <div className={`p-4 rounded-xl border flex items-center justify-between ${getStatusColor(tripStatus.status)}`}>
+                    <div className={`p-4 border flex items-center justify-between ${getStatusColor(tripStatus.status)}`}>
                       <div className="flex items-center gap-3">
                         {getStatusIcon(tripStatus.status)}
                         <div>
-                          <p className="font-semibold capitalize">{tripStatus.status.replace('_', ' ')}</p>
+                          <p className="font-bold text-xs uppercase tracking-wider">{tripStatus.status.replace('_', ' ')}</p>
                           {tripStatus.delayMinutes > 0 && (
-                            <p className="text-sm mt-1">
+                            <p className="text-xs font-mono mt-1">
                               Delay: {Math.floor(tripStatus.delayMinutes / 60)}h {tripStatus.delayMinutes % 60}m
                             </p>
                           )}
@@ -329,46 +323,46 @@ export default function DemoTrip() {
                       
                       {tripStatus.gate && (
                         <div className="text-right">
-                          <p className="text-xs font-medium">Gate {tripStatus.gate}</p>
+                          <p className="text-[10px] font-mono font-bold uppercase">Gate {tripStatus.gate}</p>
                           {tripStatus.terminal && (
-                            <p className="text-xs">Terminal {tripStatus.terminal}</p>
+                            <p className="text-[10px] font-mono text-dark-500">Terminal {tripStatus.terminal}</p>
                           )}
                         </div>
                       )}
                       
                       {tripStatus.platform && (
                         <div className="text-right">
-                          <p className="text-xs font-medium">Platform {tripStatus.platform}</p>
+                          <p className="text-[10px] font-mono font-bold uppercase">Platform {tripStatus.platform}</p>
                         </div>
                       )}
                     </div>
                     
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
-                        <p className="text-gray-500 mb-1">Scheduled Departure</p>
-                        <p className="font-medium text-gray-900">
+                        <p className="text-[10px] text-dark-500 mb-1 uppercase tracking-widest">Scheduled</p>
+                        <p className="font-mono text-dark-900">
                           {formatTime(tripStatus.scheduledDeparture)}
                         </p>
                       </div>
                       
                       {tripStatus.actualDeparture && (
                         <div>
-                          <p className="text-gray-500 mb-1">Actual Departure</p>
-                          <p className="font-medium text-gray-900">
+                          <p className="text-[10px] text-dark-500 mb-1 uppercase tracking-widest">Actual</p>
+                          <p className="font-mono text-dark-900">
                             {formatTime(tripStatus.actualDeparture)}
                           </p>
                         </div>
                       )}
                     </div>
                     
-                    <div className="text-xs text-gray-500">
-                      Data source: {tripStatus.dataSource} • Updated: {new Date(tripStatus.lastUpdated).toLocaleTimeString()}
+                    <div className="text-[10px] text-dark-400 font-mono uppercase tracking-wider">
+                      Source: {tripStatus.dataSource} | {new Date(tripStatus.lastUpdated).toLocaleTimeString()}
                     </div>
                   </div>
                 ) : (
                   <div className="text-center py-8">
-                    <Clock className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                    <p className="text-gray-500">Awaiting status update...</p>
+                    <Clock className="w-8 h-8 text-dark-300 mx-auto mb-3" />
+                    <p className="text-dark-500 text-sm">Awaiting status update...</p>
                     <Button variant="secondary" size="sm" className="mt-4" onClick={refreshStatus}>
                       Check Status
                     </Button>
@@ -381,32 +375,32 @@ export default function DemoTrip() {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-primary-600" />
+                  <Shield className="w-4 h-4 text-dark-700" />
                   FDC Verification
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {fdcVerification ? (
                   <div className="space-y-4">
-                    <div className={`p-4 rounded-xl border ${
+                    <div className={`p-4 border ${
                       fdcVerification.verified 
-                        ? 'bg-green-50 border-green-200'
-                        : 'bg-red-50 border-red-200'
+                        ? 'bg-green-500/10 border-green-500/30'
+                        : 'bg-red-500/10 border-red-500/30'
                     }`}>
                       <div className="flex items-start gap-3">
                         {fdcVerification.verified ? (
-                          <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
+                          <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
                         ) : (
-                          <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
+                          <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                         )}
                         <div className="flex-1">
-                          <p className={`font-semibold mb-1 ${
-                            fdcVerification.verified ? 'text-green-900' : 'text-red-900'
+                          <p className={`font-bold text-xs uppercase tracking-wider mb-1 ${
+                            fdcVerification.verified ? 'text-green-400' : 'text-red-400'
                           }`}>
                             {fdcVerification.verified ? 'Verification Successful' : 'Verification Failed'}
                           </p>
-                          <p className={`text-sm ${
-                            fdcVerification.verified ? 'text-green-700' : 'text-red-700'
+                          <p className={`text-xs ${
+                            fdcVerification.verified ? 'text-green-400/70' : 'text-red-400/70'
                           }`}>
                             {fdcVerification.verified 
                               ? 'Trip status verified by Flare Data Connector'
@@ -417,33 +411,33 @@ export default function DemoTrip() {
                       </div>
                     </div>
                     
-                    <div className="space-y-2 text-sm">
+                    <div className="space-y-2 text-xs">
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Verification ID</span>
-                        <span className="font-mono text-gray-900">{fdcVerification.verificationId}</span>
+                        <span className="text-dark-500 uppercase tracking-wider">Verification ID</span>
+                        <span className="font-mono text-dark-900">{fdcVerification.verificationId}</span>
                       </div>
                       
                       {fdcVerification.attestationHash && (
                         <div className="flex justify-between">
-                          <span className="text-gray-500">Attestation Hash</span>
-                          <span className="font-mono text-xs text-gray-900">
+                          <span className="text-dark-500 uppercase tracking-wider">Attestation Hash</span>
+                          <span className="font-mono text-dark-700">
                             {fdcVerification.attestationHash.substring(0, 20)}...
                           </span>
                         </div>
                       )}
                       
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Data Integrity</span>
-                        <span className={`font-medium ${
-                          fdcVerification.dataIntegrity === 'valid' ? 'text-green-600' : 'text-red-600'
+                        <span className="text-dark-500 uppercase tracking-wider">Data Integrity</span>
+                        <span className={`font-mono font-bold ${
+                          fdcVerification.dataIntegrity === 'valid' ? 'text-green-400' : 'text-red-400'
                         }`}>
                           {fdcVerification.dataIntegrity}
                         </span>
                       </div>
                       
                       <div className="flex justify-between">
-                        <span className="text-gray-500">Timestamp</span>
-                        <span className="text-gray-900">
+                        <span className="text-dark-500 uppercase tracking-wider">Timestamp</span>
+                        <span className="font-mono text-dark-700">
                           {new Date(fdcVerification.timestamp).toLocaleString()}
                         </span>
                       </div>
@@ -451,8 +445,8 @@ export default function DemoTrip() {
                   </div>
                 ) : tripStatus ? (
                   <div className="text-center py-8">
-                    <Shield className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                    <p className="text-gray-600 mb-4">Status data ready for FDC verification</p>
+                    <Shield className="w-8 h-8 text-dark-300 mx-auto mb-3" />
+                    <p className="text-dark-500 text-sm mb-4">Status data ready for FDC verification</p>
                     <Button onClick={handleVerifyFDC} disabled={verifying}>
                       {verifying ? (
                         <>
@@ -466,13 +460,13 @@ export default function DemoTrip() {
                         </>
                       )}
                     </Button>
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-[10px] text-dark-400 mt-2 uppercase tracking-widest font-mono">
                       Verification required before settlement
                     </p>
                   </div>
                 ) : (
                   <div className="text-center py-8">
-                    <p className="text-gray-500">Awaiting trip status data...</p>
+                    <p className="text-dark-500 text-sm">Awaiting trip status data...</p>
                   </div>
                 )}
               </CardContent>
@@ -483,58 +477,58 @@ export default function DemoTrip() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <DollarSign className="w-5 h-5 text-primary-600" />
+                    <DollarSign className="w-4 h-4 text-dark-700" />
                     Settlement
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   {settlement ? (
                     <div className="space-y-4">
-                      <div className={`p-4 rounded-xl border ${
+                      <div className={`p-4 border ${
                         settlement.executed 
-                          ? 'bg-green-50 border-green-200'
-                          : 'bg-blue-50 border-blue-200'
+                          ? 'bg-green-500/10 border-green-500/30'
+                          : 'bg-blue-500/10 border-blue-500/30'
                       }`}>
-                        <div className="flex items-center gap-3 mb-3">
+                        <div className="flex items-center gap-3">
                           {settlement.executed ? (
-                            <CheckCircle className="w-6 h-6 text-green-600" />
+                            <CheckCircle className="w-4 h-4 text-green-400" />
                           ) : (
-                            <Loader2 className="w-6 h-6 text-blue-600 animate-spin" />
+                            <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />
                           )}
-                          <p className={`font-semibold ${
-                            settlement.executed ? 'text-green-900' : 'text-blue-900'
+                          <p className={`font-bold text-xs uppercase tracking-wider ${
+                            settlement.executed ? 'text-green-400' : 'text-blue-400'
                           }`}>
                             {settlement.executed ? 'Settlement Complete' : 'Processing Settlement...'}
                           </p>
                         </div>
                       </div>
                       
-                      <div className="bg-gray-50 rounded-xl p-4 space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Policy Applied</span>
-                          <span className="font-semibold text-gray-900">
+                      <div className="bg-dark-100 p-4 space-y-3">
+                        <div className="flex justify-between items-center text-xs">
+                          <span className="text-dark-500 uppercase tracking-wider">Policy Applied</span>
+                          <span className="font-bold text-dark-900 font-mono">
                             {settlement.calculation.appliedPolicy.replace('_', ' ')}
                           </span>
                         </div>
                         
-                        <div className="flex justify-between items-center">
-                          <span className="text-gray-600">Total Amount</span>
-                          <span className="font-semibold text-gray-900">
+                        <div className="flex justify-between items-center text-xs">
+                          <span className="text-dark-500 uppercase tracking-wider">Total Amount</span>
+                          <span className="font-bold text-dark-900 font-mono">
                             ${settlement.calculation.totalAmount}
                           </span>
                         </div>
                         
-                        <div className="border-t border-gray-200 pt-3 space-y-2">
+                        <div className="border-t border-dark-200 pt-3 space-y-2">
                           <div className="flex justify-between items-center">
-                            <span className="text-gray-600">Your Refund ({settlement.calculation.refundPercent}%)</span>
-                            <span className="text-2xl font-bold text-green-600">
+                            <span className="text-xs text-dark-500 uppercase tracking-wider">Your Refund ({settlement.calculation.refundPercent}%)</span>
+                            <span className="text-xl font-mono font-bold text-green-400">
                               ${settlement.calculation.userRefund}
                             </span>
                           </div>
                           
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-600">Provider Receives</span>
-                            <span className="font-semibold text-gray-900">
+                          <div className="flex justify-between items-center text-xs">
+                            <span className="text-dark-500 uppercase tracking-wider">Provider Receives</span>
+                            <span className="font-bold text-dark-700 font-mono">
                               ${settlement.calculation.providerPayment}
                             </span>
                           </div>
@@ -542,21 +536,21 @@ export default function DemoTrip() {
                       </div>
                       
                       {settlement.transactionHash && (
-                        <div className="pt-4 border-t border-gray-200">
-                          <p className="text-sm text-gray-500 mb-2">Transaction Hash</p>
+                        <div className="pt-4 border-t border-dark-200">
+                          <p className="text-[10px] text-dark-500 mb-2 uppercase tracking-widest">Transaction Hash</p>
                           <div className="flex items-center gap-2">
-                            <code className="flex-1 text-xs bg-gray-100 p-2 rounded font-mono">
+                            <code className="flex-1 text-[10px] bg-dark-100 p-2 font-mono text-dark-700">
                               {settlement.transactionHash.substring(0, 40)}...
                             </code>
-                            <ExternalLink className="w-4 h-4 text-gray-400" />
+                            <ExternalLink className="w-3 h-3 text-dark-400" />
                           </div>
                         </div>
                       )}
                     </div>
                   ) : (
                     <div className="text-center py-8">
-                      <Lock className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                      <p className="text-gray-600 mb-4">Ready to execute settlement</p>
+                      <Lock className="w-8 h-8 text-dark-300 mx-auto mb-3" />
+                      <p className="text-dark-500 text-sm mb-4">Ready to execute settlement</p>
                       <Button onClick={handleSettle} disabled={settling}>
                         {settling ? (
                           <>
@@ -577,9 +571,9 @@ export default function DemoTrip() {
             )}
 
             {error && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-2 text-red-700">
-                <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                <p className="text-sm">{error}</p>
+              <div className="p-4 border border-red-500/30 bg-red-500/10 flex items-start gap-2 text-red-400">
+                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <p className="text-xs font-mono">{error}</p>
               </div>
             )}
           </div>
@@ -589,29 +583,29 @@ export default function DemoTrip() {
             {/* Fixed Policy Card */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Compensation Policy</CardTitle>
+                <CardTitle>Compensation Policy</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3 text-sm">
-                  <div className="flex justify-between items-center pb-3 border-b border-gray-200">
-                    <span className="text-gray-600">On time</span>
-                    <span className="font-semibold text-gray-900">0%</span>
+                <div className="space-y-3 text-xs">
+                  <div className="flex justify-between items-center pb-3 border-b border-dotted border-dark-200">
+                    <span className="text-dark-500 uppercase tracking-wider">On time</span>
+                    <span className="font-mono font-bold text-dark-500">0%</span>
                   </div>
-                  <div className="flex justify-between items-center pb-3 border-b border-gray-200">
-                    <span className="text-gray-600">3-23h delay</span>
-                    <span className="font-semibold text-orange-600">20%</span>
+                  <div className="flex justify-between items-center pb-3 border-b border-dotted border-dark-200">
+                    <span className="text-dark-500 uppercase tracking-wider">3-23h delay</span>
+                    <span className="font-mono font-bold text-orange-400">20%</span>
                   </div>
-                  <div className="flex justify-between items-center pb-3 border-b border-gray-200">
-                    <span className="text-gray-600">≥24h delay</span>
-                    <span className="font-semibold text-red-600">50%</span>
+                  <div className="flex justify-between items-center pb-3 border-b border-dotted border-dark-200">
+                    <span className="text-dark-500 uppercase tracking-wider">24h+ delay</span>
+                    <span className="font-mono font-bold text-red-400">50%</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Cancellation</span>
-                    <span className="font-semibold text-green-600">100%</span>
+                    <span className="text-dark-500 uppercase tracking-wider">Cancellation</span>
+                    <span className="font-mono font-bold text-green-400">100%</span>
                   </div>
                 </div>
-                <p className="text-xs text-gray-500 mt-4">
-                  🔒 Fixed policy - cannot be modified
+                <p className="text-[10px] text-dark-400 mt-4 uppercase tracking-widest font-mono">
+                  Fixed policy — cannot be modified
                 </p>
               </CardContent>
             </Card>
@@ -619,26 +613,26 @@ export default function DemoTrip() {
             {/* Payment Info */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Payment Details</CardTitle>
+                <CardTitle>Payment Details</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3 text-sm">
+              <CardContent className="space-y-3 text-xs">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Amount Paid</span>
-                  <span className="font-semibold text-gray-900">${booking.price}</span>
+                  <span className="text-dark-500 uppercase tracking-wider">Amount Paid</span>
+                  <span className="font-mono font-bold text-dark-900">${booking.price}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Currency</span>
-                  <span className="font-medium text-gray-900">{booking.currency}</span>
+                  <span className="text-dark-500 uppercase tracking-wider">Currency</span>
+                  <span className="font-mono text-dark-900">{booking.currency}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Escrow Status</span>
-                  <span className="inline-flex items-center gap-1 text-green-600 font-medium">
+                  <span className="text-dark-500 uppercase tracking-wider">Escrow Status</span>
+                  <span className="inline-flex items-center gap-1 text-green-400 font-mono font-bold">
                     <Lock className="w-3 h-3" />
                     Locked
                   </span>
                 </div>
-                <div className="pt-3 border-t border-gray-200">
-                  <p className="text-xs text-gray-500">
+                <div className="pt-3 border-t border-dark-200">
+                  <p className="text-[10px] text-dark-400 font-mono uppercase tracking-wider">
                     Funds secured in blockchain escrow until settlement
                   </p>
                 </div>

@@ -95,17 +95,9 @@ export async function getBooking(bookingId: string): Promise<Booking | null> {
 }
 
 export async function sendConfirmationEmail(booking: Booking): Promise<boolean> {
-  // Mock email sending
-  console.log(`📧 Sending confirmation email to ${booking.passengerEmail}`);
-  console.log(`   PNR: ${booking.bookingId}`);
-  console.log(`   Trip: ${booking.origin} → ${booking.destination}`);
-  console.log(`   ${booking.tripType.toUpperCase()} ${booking.tripId}`);
-  console.log(`   Departure: ${booking.departureTime.toISOString()}`);
-  
-  // Simulate email API delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  return true;
+  // Import and use real email service
+  const { sendBookingConfirmation } = await import('./emailService');
+  return sendBookingConfirmation(booking);
 }
 
 export function getAllBookings(): Booking[] {

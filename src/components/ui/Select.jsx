@@ -18,7 +18,7 @@ const Select = forwardRef(function Select(
           ref={ref}
           className={cn(
             'input-field appearance-none pr-10',
-            error && 'border-red-500 focus:ring-red-500/20 focus:border-red-500',
+            error && 'border-red-500/50 focus:border-red-400',
             className
           )}
           {...props}
@@ -34,10 +34,10 @@ const Select = forwardRef(function Select(
             </option>
           ))}
         </select>
-        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-dark-500 pointer-events-none" />
       </div>
       {error && (
-        <p className="mt-1.5 text-sm text-red-500">{error}</p>
+        <p className="mt-1.5 text-xs text-red-400 font-mono">{error}</p>
       )}
     </div>
   );

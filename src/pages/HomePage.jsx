@@ -69,29 +69,24 @@ export default function HomePage() {
   return (
     <div className="space-y-20 pb-12">
       {/* Hero Section */}
-      <section className="relative pt-8 pb-16">
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-500/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-primary-500/5 rounded-full blur-3xl" />
-        </div>
-
+      <section className="relative pt-12 pb-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center max-w-4xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 border border-primary-100 text-primary-600 text-sm font-medium mb-6">
-            <Shield className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 border border-dark-200 text-dark-500 text-xs font-bold uppercase tracking-widest font-mono mb-8">
+            <Shield className="w-3 h-3" />
             Powered by Flare
           </div>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-display font-bold text-gray-900 leading-tight mb-6">
-            <span className="text-primary-600">File in a flash,</span><br/>
-            get your cash
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-dark-900 leading-none mb-6 uppercase tracking-tight">
+            File in a flash,<br/>
+            <span className="text-dark-500">get your cash</span>
           </h1>
 
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-base text-dark-500 mb-10 max-w-2xl mx-auto">
             Already bought your ticket? Protect it with blockchain escrow. Get instant compensation if delayed.
           </p>
 
@@ -100,13 +95,13 @@ export default function HomePage() {
               <Link to="/create">
                 <Button size="lg">
                   Create Policy
-                  <ArrowRight className="w-5 h-5" />
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
             ) : (
               <Button size="lg" onClick={() => open()}>
                 Connect Wallet
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4" />
               </Button>
             )}
             <Link to="/policies">
@@ -117,15 +112,15 @@ export default function HomePage() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto">
+          <div className="grid grid-cols-3 gap-8 mt-16 max-w-2xl mx-auto border-t border-dashed border-dark-200 pt-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="text-center"
             >
-              <div className="text-3xl font-bold gradient-text">100%</div>
-              <div className="text-sm text-gray-500 mt-1">Trustless</div>
+              <div className="text-3xl font-mono font-bold text-dark-900">100%</div>
+              <div className="text-xs text-dark-500 mt-1 uppercase tracking-widest">Trustless</div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -133,8 +128,8 @@ export default function HomePage() {
               transition={{ delay: 0.3 }}
               className="text-center"
             >
-              <div className="text-3xl font-bold gradient-text">~30s</div>
-              <div className="text-sm text-gray-500 mt-1">Claim Time</div>
+              <div className="text-3xl font-mono font-bold text-dark-900">~30s</div>
+              <div className="text-xs text-dark-500 mt-1 uppercase tracking-widest">Claim Time</div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -142,8 +137,8 @@ export default function HomePage() {
               transition={{ delay: 0.4 }}
               className="text-center"
             >
-              <div className="text-3xl font-bold gradient-text">0</div>
-              <div className="text-sm text-gray-500 mt-1">Paperwork</div>
+              <div className="text-3xl font-mono font-bold text-dark-900">0</div>
+              <div className="text-xs text-dark-500 mt-1 uppercase tracking-widest">Paperwork</div>
             </motion.div>
           </div>
         </motion.div>
@@ -151,26 +146,26 @@ export default function HomePage() {
 
       {/* Travel Types */}
       <section>
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card hover>
+        <div className="grid md:grid-cols-2 gap-[1px] bg-dark-200">
+          <Card hover className="border-0">
             <CardContent className="p-8">
-              <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center mb-4">
-                <Plane className="w-6 h-6 text-primary-600" />
+              <div className="w-10 h-10 border border-dark-200 flex items-center justify-center mb-4">
+                <Plane className="w-5 h-5 text-dark-900" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Flight Coverage</h3>
-              <p className="text-gray-600">
+              <h3 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">Flight Coverage</h3>
+              <p className="text-dark-500 text-sm">
                 Lock your flight ticket payment. Get automatic refunds for delays and cancellations.
               </p>
             </CardContent>
           </Card>
 
-          <Card hover>
+          <Card hover className="border-0">
             <CardContent className="p-8">
-              <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center mb-4">
-                <Train className="w-6 h-6 text-primary-600" />
+              <div className="w-10 h-10 border border-dark-200 flex items-center justify-center mb-4">
+                <Train className="w-5 h-5 text-dark-900" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Train Coverage</h3>
-              <p className="text-gray-600">
+              <h3 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">Train Coverage</h3>
+              <p className="text-dark-500 text-sm">
                 Lock your train ticket payment. Get automatic refunds when delays happen.
               </p>
             </CardContent>
@@ -181,15 +176,15 @@ export default function HomePage() {
       {/* Features */}
       <section>
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-display font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold text-dark-900 mb-4 uppercase tracking-wider">
             Why InClaim?
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-dark-500 max-w-2xl mx-auto text-sm">
             Traditional travel insurance requires trust. InClaim uses blockchain escrow for automatic, trustless refunds.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-[1px] bg-dark-200">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
@@ -197,15 +192,15 @@ export default function HomePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="h-full">
+              <Card className="h-full border-0">
                 <CardContent className="p-6">
-                  <div className="w-12 h-12 rounded-xl bg-primary-500 flex items-center justify-center mb-4">
-                    <feature.icon className="w-6 h-6 text-white" />
+                  <div className="w-10 h-10 border border-dark-900 flex items-center justify-center mb-4">
+                    <feature.icon className="w-5 h-5 text-dark-900" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-dark-500 text-sm">
                     {feature.description}
                   </p>
                 </CardContent>
@@ -218,15 +213,15 @@ export default function HomePage() {
       {/* How It Works */}
       <section>
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-display font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold text-dark-900 mb-4 uppercase tracking-wider">
             How It Works
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-dark-500 max-w-2xl mx-auto text-sm">
             Four simple steps to trustless travel compensation
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-[1px] bg-dark-200">
           {steps.map((step, index) => (
             <motion.div
               key={step.number}
@@ -235,172 +230,59 @@ export default function HomePage() {
               transition={{ delay: index * 0.1 }}
               className="relative"
             >
-              <Card className="h-full">
+              <Card className="h-full border-0">
                 <CardContent className="p-6 text-center">
-                  <div className="text-4xl font-display font-bold text-primary-100 mb-4">
+                  <div className="text-4xl font-mono font-bold text-dark-200 mb-4">
                     {step.number}
                   </div>
-                  <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                    <step.icon className="w-6 h-6 text-gray-700" />
+                  <div className="w-10 h-10 border border-dark-200 flex items-center justify-center mx-auto mb-4">
+                    <step.icon className="w-5 h-5 text-dark-700" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">
                     {step.title}
                   </h3>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-dark-500 text-sm">
                     {step.description}
                   </p>
                 </CardContent>
               </Card>
-              {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-0.5 bg-gray-200" />
-              )}
             </motion.div>
           ))}
         </div>
       </section>
 
-    {/* Travel Types */}
-    <section>
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card hover>
-          <CardContent className="p-8">
-            <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center mb-4">
-              <Plane className="w-6 h-6 text-primary-600" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Flight Coverage</h3>
-            <p className="text-gray-600">
-              Lock your flight ticket payment. Get automatic refunds for delays and cancellations.
+      {/* CTA */}
+      <section>
+        <Card className="bg-dark-900 border-dark-200">
+          <CardContent className="p-12 text-center">
+            <h2 className="text-2xl font-bold text-dark mb-4 uppercase tracking-wider">
+              Ready to get started?
+            </h2>
+            <p className="text-dark-400 mb-8 max-w-xl mx-auto text-sm">
+              File in a flash, get your cash. Lock your ticket payment in under a minute. Get automatic refunds if delays happen.
             </p>
-          </CardContent>
-        </Card>
-
-        <Card hover>
-          <CardContent className="p-8">
-            <div className="w-12 h-12 rounded-xl bg-primary-50 flex items-center justify-center mb-4">
-              <Train className="w-6 h-6 text-primary-600" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Train Coverage</h3>
-            <p className="text-gray-600">
-              Lock your train ticket payment. Get automatic refunds when delays happen.
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
-
-    {/* Features */}
-    <section>
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-display font-bold text-gray-900 mb-4">
-          Why InClaim?
-        </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Traditional travel insurance requires trust. InClaim uses blockchain escrow for automatic, trustless refunds.
-        </p>
-      </div>
-
-      <div className="grid md:grid-cols-3 gap-6">
-        {features.map((feature, index) => (
-          <motion.div
-            key={feature.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <Card className="h-full">
-              <CardContent className="p-6">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-flare-500 to-primary-500 flex items-center justify-center mb-4">
-                  <feature.icon className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 text-sm">
-                  {feature.description}
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-
-    {/* How It Works */}
-    <section>
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-display font-bold text-gray-900 mb-4">
-          How It Works
-        </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          Four simple steps to trustless travel compensation
-        </p>
-      </div>
-
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {steps.map((step, index) => (
-          <motion.div
-            key={step.number}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="relative"
-          >
-            <Card className="h-full">
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl font-display font-bold text-flare-100 mb-4">
-                  {step.number}
-                </div>
-                <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                  <step.icon className="w-6 h-6 text-gray-700" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-gray-600 text-sm">
-                  {step.description}
-                </p>
-              </CardContent>
-            </Card>
-            {index < steps.length - 1 && (
-              <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-0.5 bg-gray-200" />
-            )}
-          </motion.div>
-        ))}
-      </div>
-    </section>
-
-    {/* CTA */}
-    <section>
-      <Card className="bg-primary-600 border-0">
-        <CardContent className="p-12 text-center">
-          <h2 className="text-3xl font-display font-bold text-white mb-4">
-            Ready to get started?
-          </h2>
-          <p className="text-white/90 mb-8 max-w-xl mx-auto">
-            File in a flash, get your cash. Lock your ticket payment in under a minute. Get automatic refunds if delays happen.
-          </p>
-          {isConnected ? (
-            <Link to="/create">
+            {isConnected ? (
+              <Link to="/create">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="bg-dark text-dark-900 border-dark-300 hover:bg-dark-50 hover:text-white"
+                >
+                  Create Policy
+                  <ArrowRight className="w-4 h-4" />
+                </Button>
+              </Link>
+            ) : (
               <Button
                 variant="secondary"
                 size="lg"
-                className="bg-white text-primary-600 hover:bg-gray-50 shadow-xl"
+                className="bg-dark text-dark-900 border-dark-300 hover:bg-dark-50 hover:text-white"
+                onClick={() => open()}
               >
-                Create Policy
-                <ArrowRight className="w-5 h-5" />
+                Connect Wallet
+                <ArrowRight className="w-4 h-4" />
               </Button>
-            </Link>
-          ) : (
-            <Button
-              variant="secondary"
-              size="lg"
-              className="bg-white text-primary-600 hover:bg-gray-50 shadow-xl"
-              onClick={() => open()}
-            >
-              Connect Wallet
-              <ArrowRight className="w-5 h-5" />
-            </Button>
-          )}
+            )}
           </CardContent>
         </Card>
       </section>

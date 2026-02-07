@@ -127,8 +127,8 @@ export default function ClaimPage() {
       <div className="max-w-2xl mx-auto">
         <Card>
           <CardContent className="p-12 text-center">
-            <Loader2 className="w-8 h-8 animate-spin text-primary-500 mx-auto mb-4" />
-            <p className="text-gray-600">Loading policy...</p>
+            <Loader2 className="w-6 h-6 animate-spin text-dark-500 mx-auto mb-4" />
+            <p className="text-dark-500 text-xs font-mono uppercase tracking-wider">Loading policy...</p>
           </CardContent>
         </Card>
       </div>
@@ -140,11 +140,11 @@ export default function ClaimPage() {
       <div className="max-w-2xl mx-auto">
         <Card>
           <CardContent className="p-12 text-center">
-            <XCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            <XCircle className="w-10 h-10 text-red-400 mx-auto mb-4" />
+            <h2 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">
               Policy Not Found
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-dark-500 text-sm mb-6">
               The requested policy does not exist.
             </p>
             <Link to="/policies">
@@ -168,9 +168,9 @@ export default function ClaimPage() {
         {/* Back Link */}
         <Link
           to="/policies"
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 transition-colors"
+          className="inline-flex items-center gap-2 text-dark-500 hover:text-dark-900 mb-6 transition-colors text-xs font-bold uppercase tracking-wider"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3 h-3" />
           Back to Policies
         </Link>
 
@@ -178,54 +178,48 @@ export default function ClaimPage() {
         <Card className="mb-6">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
-              <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${
-                policyData.tripType === 0 ? 'bg-primary-50' : 'bg-primary-50'
-              }`}>
-                <Icon className={`w-7 h-7 ${
-                  policyData.tripType === 0 ? 'text-primary-500' : 'text-primary-500'
-                }`} />
+              <div className="w-10 h-10 border border-dark-200 flex items-center justify-center">
+                <Icon className="w-5 h-5 text-dark-900" />
               </div>
 
               <div className="flex-1">
                 <div className="flex items-center gap-3 mb-2">
-                  <h1 className="text-2xl font-display font-bold text-gray-900">
+                  <h1 className="text-xl font-bold text-dark-900 uppercase tracking-wider">
                     Policy #{policyData.id}
                   </h1>
                   <StatusBadge status={isExpired ? 3 : policyData.status} />
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4 text-xs">
                   <div>
-                    <span className="text-sm text-gray-500">Type</span>
-                    <p className="font-medium text-gray-900">
+                    <span className="text-dark-400 uppercase tracking-widest text-[10px]">Type</span>
+                    <p className="font-mono text-dark-900 mt-0.5">
                       {getTripTypeLabel(policyData.tripType)}
                     </p>
                   </div>
                   <div>
-                    <span className="text-sm text-gray-500">Travel Date</span>
-                    <p className="font-medium text-gray-900">
+                    <span className="text-dark-400 uppercase tracking-widest text-[10px]">Travel Date</span>
+                    <p className="font-mono text-dark-900 mt-0.5">
                       {formatDate(policyData.travelDate)}
                     </p>
                   </div>
                   <div>
-                    <span className="text-sm text-gray-500">Threshold</span>
-                    <p className="font-medium text-gray-900">
+                    <span className="text-dark-400 uppercase tracking-widest text-[10px]">Threshold</span>
+                    <p className="font-mono text-dark-900 mt-0.5">
                       {policyData.thresholdMinutes} min
                     </p>
                   </div>
                   <div>
-                    <span className="text-sm text-gray-500">Ticket Price</span>
-                    <p className="font-medium text-gray-900">
+                    <span className="text-dark-400 uppercase tracking-widest text-[10px]">Ticket Price</span>
+                    <p className="font-mono text-dark-900 mt-0.5">
                       {formatC2FLR(policyData.payoutAmount)} C2FLR
                     </p>
                   </div>
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-4 text-sm text-gray-500">
-                  <div className="flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
-                    Deadline: {formatDate(policyData.deadline)}
-                  </div>
+                <div className="mt-4 pt-4 border-t border-dotted border-dark-200 flex items-center gap-2 text-[10px] text-dark-400 font-mono uppercase tracking-wider">
+                  <Clock className="w-3 h-3" />
+                  Deadline: {formatDate(policyData.deadline)}
                 </div>
               </div>
             </div>
@@ -245,73 +239,73 @@ export default function ClaimPage() {
                 >
                   {policyData.status === 1 ? (
                     <div className="text-center py-6">
-                      <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                        <CheckCircle className="w-8 h-8 text-green-500" />
+                      <div className="w-12 h-12 border border-green-500/30 flex items-center justify-center mx-auto mb-4">
+                        <CheckCircle className="w-5 h-5 text-green-400" />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                      <h2 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">
                         Claim Approved!
                       </h2>
-                      <p className="text-gray-600">
+                      <p className="text-dark-500 text-sm">
                         This policy has been successfully claimed and paid out.
                       </p>
                     </div>
                   ) : policyData.status === 2 ? (
                     <div className="text-center py-6">
-                      <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
-                        <XCircle className="w-8 h-8 text-red-500" />
+                      <div className="w-12 h-12 border border-red-500/30 flex items-center justify-center mx-auto mb-4">
+                        <XCircle className="w-5 h-5 text-red-400" />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                      <h2 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">
                         Claim Rejected
                       </h2>
-                      <p className="text-gray-600">
+                      <p className="text-dark-500 text-sm">
                         The trip was not delayed beyond the threshold. No payout.
                       </p>
                     </div>
                   ) : isExpired ? (
                     <div className="text-center py-6">
-                      <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                        <Clock className="w-8 h-8 text-gray-400" />
+                      <div className="w-12 h-12 border border-dark-200 flex items-center justify-center mx-auto mb-4">
+                        <Clock className="w-5 h-5 text-dark-400" />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                      <h2 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">
                         Policy Expired
                       </h2>
-                      <p className="text-gray-600">
+                      <p className="text-dark-500 text-sm">
                         The claim deadline has passed for this policy.
                       </p>
                     </div>
                   ) : !canClaim ? (
                     <div className="text-center py-6">
-                      <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-                        <Calendar className="w-8 h-8 text-blue-500" />
+                      <div className="w-12 h-12 border border-blue-500/30 flex items-center justify-center mx-auto mb-4">
+                        <Calendar className="w-5 h-5 text-blue-400" />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                      <h2 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">
                         Not Yet Claimable
                       </h2>
-                      <p className="text-gray-600">
+                      <p className="text-dark-500 text-sm">
                         You can claim after your travel date: {formatDate(policyData.travelDate)}
                       </p>
                     </div>
                   ) : (
                     <div className="text-center py-6">
-                      <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center mx-auto mb-4">
-                        <Shield className="w-8 h-8 text-primary-500" />
+                      <div className="w-12 h-12 border border-dark-900 flex items-center justify-center mx-auto mb-4">
+                        <Shield className="w-5 h-5 text-dark-900" />
                       </div>
-                      <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                      <h2 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">
                         Ready to Verify
                       </h2>
-                      <p className="text-gray-600 mb-4">
+                      <p className="text-dark-500 text-sm mb-4">
                         Click below to verify your trip status using real flight data.
                       </p>
-                      <div className="bg-gray-50 rounded-lg p-4 mb-6 text-sm text-left">
-                        <p className="font-semibold text-gray-900 mb-2">Potential Refunds:</p>
-                        <div className="space-y-1 text-gray-600">
-                          <p>• 3-23h delay: <span className="font-semibold text-yellow-600">{formatC2FLR(calculateRefund(formatC2FLR(policyData.payoutAmount), 180).refundAmount)} C2FLR</span> (20%)</p>
-                          <p>• ≥24h delay: <span className="font-semibold text-orange-600">{formatC2FLR(calculateRefund(formatC2FLR(policyData.payoutAmount), 1440).refundAmount)} C2FLR</span> (50%)</p>
-                          <p>• Cancelled: <span className="font-semibold text-red-600">{formatC2FLR(policyData.payoutAmount)} C2FLR</span> (100%)</p>
+                      <div className="bg-dark-100 p-4 mb-6 text-left">
+                        <p className="text-xs font-bold text-dark-900 mb-2 uppercase tracking-wider">Potential Refunds:</p>
+                        <div className="space-y-1 text-[10px] text-dark-500 font-mono">
+                          <p>3-23h delay: <span className="font-bold text-yellow-400">{formatC2FLR(calculateRefund(formatC2FLR(policyData.payoutAmount), 180).refundAmount)} C2FLR</span> (20%)</p>
+                          <p>24h+ delay: <span className="font-bold text-orange-400">{formatC2FLR(calculateRefund(formatC2FLR(policyData.payoutAmount), 1440).refundAmount)} C2FLR</span> (50%)</p>
+                          <p>Cancelled: <span className="font-bold text-red-400">{formatC2FLR(policyData.payoutAmount)} C2FLR</span> (100%)</p>
                         </div>
                       </div>
                       <Button size="lg" onClick={handleClaim}>
-                        <Shield className="w-5 h-5" />
+                        <Shield className="w-4 h-4" />
                         Verify with FDC
                       </Button>
                     </div>
@@ -327,11 +321,11 @@ export default function ClaimPage() {
                   exit={{ opacity: 0 }}
                   className="py-8"
                 >
-                  <h2 className="text-xl font-semibold text-gray-900 text-center mb-8">
+                  <h2 className="text-sm font-bold text-dark-900 text-center mb-8 uppercase tracking-wider">
                     Verifying Trip Status...
                   </h2>
 
-                  <div className="space-y-4">
+                  <div className="space-y-3">
                     {claimSteps.map((step, index) => {
                       const StepIcon = step.icon;
                       const isActive = index === currentStep;
@@ -343,35 +337,35 @@ export default function ClaimPage() {
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: index * 0.1 }}
-                          className={`flex items-center gap-4 p-4 rounded-xl transition-colors ${
+                          className={`flex items-center gap-4 p-4 border transition-colors ${
                             isActive
-                              ? 'bg-primary-50 border border-primary-200'
+                              ? 'border-dark-900 bg-dark-50'
                               : isComplete
-                              ? 'bg-green-50 border border-green-200'
-                              : 'bg-gray-50 border border-gray-200'
+                              ? 'border-green-500/30 bg-green-500/5'
+                              : 'border-dark-200 bg-dark-50/50'
                           }`}
                         >
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                          <div className={`w-8 h-8 flex items-center justify-center border ${
                             isActive
-                              ? 'bg-primary-500 text-white'
+                              ? 'border-dark-900 text-dark-900'
                               : isComplete
-                              ? 'bg-green-500 text-white'
-                              : 'bg-gray-200 text-gray-400'
+                              ? 'border-green-500/30 text-green-400 bg-green-500/10'
+                              : 'border-dark-200 text-dark-400'
                           }`}>
                             {isActive ? (
-                              <Loader2 className="w-5 h-5 animate-spin" />
+                              <Loader2 className="w-4 h-4 animate-spin" />
                             ) : isComplete ? (
-                              <CheckCircle className="w-5 h-5" />
+                              <CheckCircle className="w-4 h-4" />
                             ) : (
-                              <StepIcon className="w-5 h-5" />
+                              <StepIcon className="w-4 h-4" />
                             )}
                           </div>
-                          <span className={`font-medium ${
+                          <span className={`text-xs font-bold uppercase tracking-wider ${
                             isActive
-                              ? 'text-primary-700'
+                              ? 'text-dark-900'
                               : isComplete
-                              ? 'text-green-700'
-                              : 'text-gray-400'
+                              ? 'text-green-400'
+                              : 'text-dark-400'
                           }`}>
                             {step.label}
                           </span>
@@ -389,26 +383,26 @@ export default function ClaimPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="text-center py-6"
                 >
-                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
-                    claimResult.outcome === 'CLAIMED' ? 'bg-green-100' : 'bg-red-100'
+                  <div className={`w-12 h-12 border flex items-center justify-center mx-auto mb-4 ${
+                    claimResult.outcome === 'CLAIMED' ? 'border-green-500/30' : 'border-red-500/30'
                   }`}>
                     {claimResult.outcome === 'CLAIMED' ? (
-                      <PartyPopper className="w-8 h-8 text-green-500" />
+                      <PartyPopper className="w-5 h-5 text-green-400" />
                     ) : (
-                      <XCircle className="w-8 h-8 text-red-500" />
+                      <XCircle className="w-5 h-5 text-red-400" />
                     )}
                   </div>
 
-                  <h2 className="text-2xl font-display font-bold text-gray-900 mb-2">
+                  <h2 className="text-xl font-bold text-dark-900 mb-2 uppercase tracking-wider">
                     {claimResult.outcome === 'CLAIMED' ? 'Claim Approved!' : 'Not Eligible'}
                   </h2>
 
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-dark-500 text-sm mb-6">
                     {claimResult.outcome === 'CLAIMED' ? (
                       <>
                         Your trip was {claimResult.cancelled ? 'cancelled' : `delayed by ${claimResult.delayMinutes} minutes`}.
                         <br />
-                        Refund: <span className="font-semibold text-green-600">
+                        Refund: <span className="font-mono font-bold text-green-400">
                           {formatC2FLR(calculateRefund(formatC2FLR(policyData.payoutAmount), claimResult.delayMinutes, claimResult.cancelled).refundAmount)} C2FLR
                         </span>{' '}
                         ({getRefundPercent(claimResult.delayMinutes, claimResult.cancelled)}% of ticket price)
@@ -422,13 +416,13 @@ export default function ClaimPage() {
                   </p>
 
                   {claimResult.txHash && (
-                    <div className="bg-gray-50 rounded-xl p-4 mb-6">
-                      <p className="text-sm text-gray-500 mb-1">Transaction Hash</p>
+                    <div className="bg-dark-100 p-4 mb-6">
+                      <p className="text-[10px] text-dark-500 mb-1 uppercase tracking-widest">Transaction Hash</p>
                       <a
                         href={getTxExplorerUrl(claimResult.txHash)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-primary-500 hover:text-primary-600 font-mono text-sm break-all flex items-center justify-center gap-1"
+                        className="text-dark-700 hover:text-dark-900 font-mono text-xs break-all flex items-center justify-center gap-1"
                       >
                         {claimResult.txHash}
                         <ExternalLink className="w-3 h-3 flex-shrink-0" />
@@ -452,13 +446,13 @@ export default function ClaimPage() {
                   animate={{ opacity: 1 }}
                   className="text-center py-6"
                 >
-                  <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
-                    <XCircle className="w-8 h-8 text-red-500" />
+                  <div className="w-12 h-12 border border-red-500/30 flex items-center justify-center mx-auto mb-4">
+                    <XCircle className="w-5 h-5 text-red-400" />
                   </div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h2 className="text-sm font-bold text-dark-900 mb-2 uppercase tracking-wider">
                     Verification Failed
                   </h2>
-                  <p className="text-gray-600 mb-6">{error}</p>
+                  <p className="text-dark-500 text-sm mb-6">{error}</p>
                   <div className="flex justify-center gap-3">
                     <Button variant="secondary" onClick={() => setClaimStatus('idle')}>
                       Try Again
@@ -476,12 +470,12 @@ export default function ClaimPage() {
         </Card>
 
         {/* Info */}
-        <div className="mt-6 p-4 rounded-xl bg-blue-50 border border-blue-100">
-          <h3 className="font-medium text-blue-900 mb-2 flex items-center gap-2">
-            <Shield className="w-4 h-4" />
+        <div className="mt-6 p-4 border border-dark-200">
+          <h3 className="text-xs font-bold text-dark-900 mb-2 flex items-center gap-2 uppercase tracking-wider">
+            <Shield className="w-3 h-3" />
             How FDC Verification Works
           </h3>
-          <ul className="text-sm text-blue-700 space-y-1">
+          <ul className="text-xs text-dark-500 space-y-1 font-mono">
             <li>1. Backend queries transport status from external API</li>
             <li>2. Flare Data Connector creates cryptographic attestation</li>
             <li>3. Smart contract verifies proof on-chain (trustless!)</li>

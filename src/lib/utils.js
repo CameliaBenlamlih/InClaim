@@ -55,15 +55,15 @@ export function parseC2FLR(value) {
 export function getStatusColor(status) {
   switch (status) {
     case 0: // ACTIVE
-      return 'bg-blue-100 text-blue-700 border-blue-200';
+      return 'bg-blue-500/10 text-blue-400 border-blue-500/30';
     case 1: // CLAIMED
-      return 'bg-green-100 text-green-700 border-green-200';
+      return 'bg-green-500/10 text-green-400 border-green-500/30';
     case 2: // REJECTED
-      return 'bg-red-100 text-red-700 border-red-200';
+      return 'bg-red-500/10 text-red-400 border-red-500/30';
     case 3: // EXPIRED
-      return 'bg-gray-100 text-gray-700 border-gray-200';
+      return 'bg-dark-100 text-dark-500 border-dark-200';
     default:
-      return 'bg-gray-100 text-gray-700 border-gray-200';
+      return 'bg-dark-100 text-dark-500 border-dark-200';
   }
 }
 

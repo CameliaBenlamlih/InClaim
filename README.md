@@ -206,6 +206,20 @@ The current implementation uses a MockFDCVerifier with real transport data. To u
 
 The contract interface is designed to support this upgrade without changes to the frontend.
 
+## Feedback on Building with Flare
+
+Building InClaim on Flare was a great experience overall. The Coston2 testnet is fast and reliable -- transactions confirm in seconds, which made the development loop very smooth. The faucet works well and we never ran out of test tokens.
+
+The Flare Data Connector is the standout feature. The concept of having decentralized attestation of off-chain data baked into the protocol is exactly what insurance use cases need. Being able to verify real-world events (flight delays, cancellations) on-chain without relying on a single oracle is powerful.
+
+That said, the FDC JsonApi attestation type requires API sources to be whitelisted by attestation providers, which means we couldn't go fully trustless during the hackathon. We worked around this with a hybrid approach (real transport data + MockFDCVerifier), but the architecture is ready to plug into the real FDC once whitelisting is in place. The documentation on dev.flare.network was clear about this limitation and the upgrade path.
+
+The EVM compatibility made deployment straightforward -- standard Hardhat workflow, standard Solidity, no surprises. The Coston2 explorer is solid for debugging transactions.
+
+One area for improvement: more example code for FDC JsonApi attestation requests would help developers get started faster. The conceptual docs are good, but end-to-end code samples for common patterns (API data verification, proof submission) would reduce onboarding time significantly.
+
+Overall, Flare feels like the right chain for data-dependent dApps. The native data protocols (FDC, FTSO) set it apart from general-purpose L1s where you'd have to build or integrate oracle infrastructure yourself.
+
 ## License
 
 MIT

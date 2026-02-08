@@ -4,6 +4,12 @@
 
 Passengers rarely claim compensation for delayed or cancelled flights and trains due to paperwork and customer-service friction. InClaim turns rights into automatics -- if a trip is objectively delayed or cancelled, a smart contract pays out instantly with no disputes.
 
+## Screenshots
+
+![Trip Tracking - Booking Details](Picture%201.png)
+
+![Trip Tracking - Live Status](Picture%202.png)
+
 ## Architecture
 
 ```

@@ -13,12 +13,12 @@ export const SETTLEMENT_POLICY = {
     description: 'Trip arrived on time',
   },
   MINOR_DELAY: {
-    condition: 'delay_3h_to_24h',
-    minDelayMinutes: 180,
+    condition: 'delay_1h_to_24h',
+    minDelayMinutes: 60,
     maxDelayMinutes: 1439,
     userRefundPercent: 20,
     providerReceivesPercent: 80,
-    description: 'Delay between 3-23 hours',
+    description: 'Delay between 1-23 hours',
   },
   MAJOR_DELAY: {
     condition: 'delay_24h_plus',

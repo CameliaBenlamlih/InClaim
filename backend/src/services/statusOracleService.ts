@@ -29,32 +29,14 @@ class MockStatusAdapter implements StatusAdapter {
       return this.statusSimulations.get(key)!;
     }
     
-    const random = Math.random();
-    let status: TripStatus['status'];
-    let delayMinutes = 0;
-    
-    if (random < 0.70) {
-      status = 'on_time';
-    } else if (random < 0.85) {
-      status = 'delayed';
-      delayMinutes = Math.floor(Math.random() * 180) + 30;
-    } else if (random < 0.95) {
-      status = 'delayed';
-      delayMinutes = Math.floor(Math.random() * 600) + 360;
-    } else {
-      status = 'cancelled';
-      delayMinutes = 0;
-    }
+    const status: TripStatus['status'] = 'delayed';
+    const delayMinutes = 90;
     
     const scheduledDeparture = new Date(date);
-    const actualDeparture = status === 'cancelled' 
-      ? undefined 
-      : new Date(scheduledDeparture.getTime() + delayMinutes * 60000);
+    const actualDeparture = new Date(scheduledDeparture.getTime() + delayMinutes * 60000);
     
     const scheduledArrival = new Date(scheduledDeparture.getTime() + 2 * 3600000);
-    const actualArrival = actualDeparture 
-      ? new Date(actualDeparture.getTime() + 2 * 3600000)
-      : undefined;
+    const actualArrival = new Date(actualDeparture.getTime() + 2 * 3600000);
     
     const tripStatus: TripStatus = {
       tripId: flightNumber,
@@ -65,8 +47,8 @@ class MockStatusAdapter implements StatusAdapter {
       scheduledArrival,
       actualArrival,
       delayMinutes,
-      gate: status !== 'cancelled' ? `${Math.floor(Math.random() * 50) + 1}` : undefined,
-      terminal: status !== 'cancelled' ? ['1', '2', '3', '4', '5'][Math.floor(Math.random() * 5)] : undefined,
+      gate: `${Math.floor(Math.random() * 50) + 1}`,
+      terminal: ['1', '2', '3', '4', '5'][Math.floor(Math.random() * 5)],
       lastUpdated: new Date(),
       dataSource: 'Mock Flight Status API',
     };
@@ -82,31 +64,14 @@ class MockStatusAdapter implements StatusAdapter {
       return this.statusSimulations.get(key)!;
     }
     
-    const random = Math.random();
-    let status: TripStatus['status'];
-    let delayMinutes = 0;
-    
-    if (random < 0.75) {
-      status = 'on_time';
-    } else if (random < 0.90) {
-      status = 'delayed';
-      delayMinutes = Math.floor(Math.random() * 120) + 15;
-    } else if (random < 0.97) {
-      status = 'delayed';
-      delayMinutes = Math.floor(Math.random() * 480) + 240;
-    } else {
-      status = 'cancelled';
-    }
+    const status: TripStatus['status'] = 'delayed';
+    const delayMinutes = 60;
     
     const scheduledDeparture = new Date(date);
-    const actualDeparture = status === 'cancelled'
-      ? undefined
-      : new Date(scheduledDeparture.getTime() + delayMinutes * 60000);
+    const actualDeparture = new Date(scheduledDeparture.getTime() + delayMinutes * 60000);
     
     const scheduledArrival = new Date(scheduledDeparture.getTime() + 3 * 3600000);
-    const actualArrival = actualDeparture
-      ? new Date(actualDeparture.getTime() + 3 * 3600000)
-      : undefined;
+    const actualArrival = new Date(actualDeparture.getTime() + 3 * 3600000);
     
     const tripStatus: TripStatus = {
       tripId: trainNumber,
@@ -117,7 +82,7 @@ class MockStatusAdapter implements StatusAdapter {
       scheduledArrival,
       actualArrival,
       delayMinutes,
-      platform: status !== 'cancelled' ? `${Math.floor(Math.random() * 12) + 1}` : undefined,
+      platform: `${Math.floor(Math.random() * 12) + 1}`,
       lastUpdated: new Date(),
       dataSource: 'Mock Train Status API',
     };

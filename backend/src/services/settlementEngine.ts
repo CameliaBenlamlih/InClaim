@@ -1,5 +1,9 @@
+import { ethers } from 'ethers';
+import dotenv from 'dotenv';
 import type { TripStatus } from './statusOracleService';
 import type { FDCVerificationResult } from './fdcVerificationService';
+
+dotenv.config();
 
 export const SETTLEMENT_POLICY = {
   ON_TIME: {
@@ -146,20 +150,48 @@ export async function executeSettlement(settlementId: string): Promise<Settlemen
     throw new Error('Settlement already executed');
   }
   
-  await new Promise(resolve => setTimeout(resolve, 2000 + Math.random() * 2000));
+  const rpcUrl = process.env.RPC_URL || 'https://coston2-api.flare.network/ext/C/rpc';
+  const privateKey = process.env.RELAYER_PRIVATE_KEY;
   
-  const txHash = `0x${Array.from({ length: 64 }, () => 
-    Math.floor(Math.random() * 16).toString(16)
-  ).join('')}`;
+  if (!privateKey) {
+    throw new Error('RELAYER_PRIVATE_KEY not configured - cannot send transaction');
+  }
+  
+  const provider = new ethers.JsonRpcProvider(rpcUrl);
+  const wallet = new ethers.Wallet(privateKey, provider);
+  
+  const settlementData = ethers.toUtf8Bytes(JSON.stringify({
+    type: 'INCLAIM_SETTLEMENT',
+    settlementId: settlement.id,
+    bookingId: settlement.bookingId,
+    tripId: settlement.tripId,
+    policy: settlement.calculation.appliedPolicy,
+    refundPercent: settlement.calculation.refundPercent,
+    refundAmount: settlement.calculation.userRefund,
+    fdcVerificationId: settlement.fdcVerification.verificationId,
+    timestamp: Date.now(),
+  }));
+  
+  console.log(`Sending settlement transaction on Coston2...`);
+  
+  const tx = await wallet.sendTransaction({
+    to: wallet.address,
+    value: ethers.parseEther('0.001'),
+    data: ethers.hexlify(settlementData),
+  });
+  
+  console.log(`Transaction sent: ${tx.hash}`);
+  const receipt = await tx.wait();
+  console.log(`Transaction confirmed in block ${receipt?.blockNumber}`);
   
   settlement.executed = true;
   settlement.executedAt = new Date();
-  settlement.transactionHash = txHash;
+  settlement.transactionHash = tx.hash;
   
   settlements.set(settlementId, settlement);
   
   console.log(`Settlement Executed: ${settlementId}`);
-  console.log(`   Transaction Hash: ${txHash.substring(0, 20)}...`);
+  console.log(`   Transaction: https://coston2-explorer.flare.network/tx/${tx.hash}`);
   console.log(`   User receives: $${settlement.calculation.userRefund}`);
   console.log(`   Provider receives: $${settlement.calculation.providerPayment}`);
   

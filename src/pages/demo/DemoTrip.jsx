@@ -544,12 +544,18 @@ export default function DemoTrip() {
                       {settlement.transactionHash && (
                         <div className="pt-4 border-t border-dark-200">
                           <p className="text-[10px] text-dark-500 mb-2 uppercase tracking-widest">Transaction Hash</p>
-                          <div className="flex items-center gap-2">
-                            <code className="flex-1 text-[10px] bg-dark-100 p-2 font-mono text-dark-700">
+                          <a
+                            href={`https://coston2-explorer.flare.network/tx/${settlement.transactionHash}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 group hover:opacity-80 transition-opacity"
+                          >
+                            <code className="flex-1 text-[10px] bg-dark-100 p-2 font-mono text-accent">
                               {settlement.transactionHash.substring(0, 40)}...
                             </code>
-                            <ExternalLink className="w-3 h-3 text-dark-400" />
-                          </div>
+                            <ExternalLink className="w-3 h-3 text-accent" />
+                          </a>
+                          <p className="text-[10px] text-dark-400 mt-1 uppercase tracking-widest">View on Coston2 Explorer</p>
                         </div>
                       )}
                     </div>
